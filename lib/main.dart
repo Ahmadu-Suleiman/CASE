@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'case_card.dart';
 
 void main() {
   runApp(HomeWidget());
@@ -11,79 +12,18 @@ class HomeWidget extends StatefulWidget {
 
 class _HomeWidgetState extends State<HomeWidget> {
   List<String> texts = [
-    'The role of the parser, Context-free grammars',
-    'The role of the parser, Context-free grammars',
-    'The role of the parser, Context-free grammars',
-    'The role of the parser, Context-free grammars',
-    'The role of the parser, Context-free grammars',
-    'The role of the parser, Context-free grammars',
-    'The role of the parser, Context-free grammars'
+    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
+    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
+    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
+    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
+    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
+    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
+    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
+    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
   ];
 
   Widget template(text) {
-    return Card(
-      margin: const EdgeInsets.all(30),
-      child: Column(children: <Widget>[
-        const Row(
-          children: [
-            CircleAvatar(
-              backgroundImage: AssetImage('assets/profile.png'),
-              radius: 30,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Gent',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'genthamid@gmail.com',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black,
-                  ),
-                ),
-                Text(
-                  'Verified Case',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.greenAccent,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-        const Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Image(
-            image: AssetImage('assets/profile.png'),
-            width: 250,
-            height: 250,
-          ),
-        ),
-        Text(
-          text,
-          style: const TextStyle(fontSize: 18.0, color: Colors.black),
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        const Text(
-          'Salimated',
-          style: TextStyle(fontSize: 18.0, color: Colors.black),
-        ),
-      ]),
-    );
+    return CaseCard(text: text);
   }
 
   @override
@@ -112,34 +52,49 @@ class _HomeWidgetState extends State<HomeWidget> {
           ],
         ),
         drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: <Widget>[
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.green,
+          shape: Border.all(),
+          child: Container(
+            color: Colors.white,
+            child: ListView(
+              padding: const EdgeInsets.only(left: 5),
+              children: <Widget>[
+                const UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  accountName: Text(
+                    'Abdulhamid Gent',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  accountEmail: Text(
+                    'gent1226@gmail',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundImage: AssetImage('assets/profile.png'),
+                    radius: 60,
+                  ),
                 ),
-                child: Text('Drawer Header'),
-              ),
-              ListTile(
-                title: const Text('Item 1'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text('Item 2'),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+                ListTile(
+                  title: const Text('Item 1'),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Item 2'),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
           ),
         ),
         body: ListView.builder(
