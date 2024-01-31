@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'case_card.dart';
 
 void main() {
@@ -11,15 +12,16 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  int bottomNavIndex = 0;
+
   List<String> texts = [
-    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
-    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
-    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
-    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
-    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
-    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
-    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
-    'Thy role of the parser, Context-free grammars Writing a grammar, Top-down parsing',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
   ];
 
   Widget template(text) {
@@ -76,7 +78,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                   ),
                 ),
                 ListTile(
-                  title: const Text('Item 1'),
+                  title: const Text('Case catalog'),
+                  leading: const Icon(Icons.folder),
                   onTap: () {
                     // Update the state of the app
                     // ...
@@ -85,7 +88,18 @@ class _HomeWidgetState extends State<HomeWidget> {
                   },
                 ),
                 ListTile(
-                  title: const Text('Item 2'),
+                  title: const Text('Communities'),
+                  leading: const Icon(Icons.people),
+                  onTap: () {
+                    // Update the state of the app
+                    // ...
+                    // Then close the drawer
+                    Navigator.pop(context);
+                  },
+                ),
+                ListTile(
+                  title: const Text('Help'),
+                  leading: const Icon(Icons.help),
                   onTap: () {
                     // Update the state of the app
                     // ...
@@ -104,7 +118,23 @@ class _HomeWidgetState extends State<HomeWidget> {
             }),
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
+          shape: const CircleBorder(),
           child: const Icon(Icons.add),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: AnimatedBottomNavigationBar(
+          icons: const <IconData>[
+            Icons.home,
+            Icons.notifications,
+            Icons.message,
+            Icons.ondemand_video,
+          ],
+          activeIndex: bottomNavIndex,
+          gapLocation: GapLocation.center,
+          notchMargin: 8,
+          notchSmoothness: NotchSmoothness.sharpEdge,
+          onTap: (index) => setState(() => bottomNavIndex = index),
+          backgroundColor: Colors.white,
         ),
       ),
     );
