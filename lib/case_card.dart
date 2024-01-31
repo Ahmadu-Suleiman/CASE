@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CaseCard extends StatelessWidget {
+class CaseCard extends StatefulWidget {
   final String text;
 
   const CaseCard({
@@ -9,8 +9,13 @@ class CaseCard extends StatelessWidget {
   });
 
   @override
+  State<CaseCard> createState() => _CaseCardState();
+}
+
+class _CaseCardState extends State<CaseCard> {
+  @override
   Widget build(BuildContext context) {
-    return Case(text: text);
+    return Case(text: widget.text);
   }
 }
 
@@ -117,6 +122,16 @@ class Case extends StatelessWidget {
                     height: 250,
                     fit: BoxFit.cover,
                   ),
+                ),
+              ),
+              const Center(
+                child: Text(
+                  'Usman Salis has been missing for three days',
+                  maxLines: 3,
+                  style: TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
                 ),
               ),
               Text(

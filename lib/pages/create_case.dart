@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import '../case_card.dart';
 
 class CreateCase extends StatefulWidget {
   const CreateCase({super.key});
@@ -12,25 +10,60 @@ class CreateCase extends StatefulWidget {
 class _CreateCaseState extends State<CreateCase> {
   @override
   Widget build(BuildContext context) {
-    return  const Column(
+    return const Column(
       children: [
-        Text(
-          'Create Case',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+         Center(
+          child: Text(
+            'Create a mew Case',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        SizedBox(
+         SizedBox(
           height: 20,
         ),
-        Text(
-          'Create a new case',
+         Text(
+          'Case title',
           style: TextStyle(
             fontSize: 20,
-            fontWeight: FontWeight.bold,
           ),
         ),
+         TextField(
+          maxLines: 1,
+          style:  TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+          ),
+        ),
+         Text(
+          'Short description',
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+        TextField(
+          maxLines: 3,
+          style:  TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+          ),
+        ),
+         Text(
+          'Detailed description',
+          style: TextStyle(
+            fontSize: 20,
+          ),
+        ),
+         TextField(
+          style:  TextStyle(
+            fontSize: 18,
+            color: Colors.black,
+          ),
+        ),
+
+
       ],
     );
   }
