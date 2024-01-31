@@ -10,8 +10,22 @@ class CaseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return Case(text: text);
+  }
+}
+
+class Case extends StatelessWidget {
+  const Case({
+    super.key,
+    required this.text,
+  });
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.all(8),
+      margin: const EdgeInsets.all(10),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -22,8 +36,8 @@ class CaseCard extends StatelessWidget {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: CircleAvatar(
-                      backgroundImage: AssetImage('assets/profile.png'),
-                      radius: 22,
+                      backgroundImage: AssetImage('assets/child3.jpg'),
+                      radius: 30,
                     ),
                   ),
                   const SizedBox(
@@ -48,20 +62,19 @@ class CaseCard extends StatelessWidget {
                           color: Colors.black,
                         ),
                       ),
-                      SizedBox(
-                        height: 30,
-                        child: FilledButton.icon(
-                            style: const ButtonStyle(),
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.message,
-                              size: 12,
-                            ),
-                            label: const Text(
-                              'Direct contact',
-                              style: TextStyle(fontSize: 12),
-                            )),
-                      )
+                      FilledButton.icon(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.brown)),
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.message,
+                            size: 12,
+                          ),
+                          label: const Text(
+                            'Direct contact',
+                            style: TextStyle(fontSize: 12),
+                          )),
                     ],
                   ),
                 ],
@@ -73,14 +86,14 @@ class CaseCard extends StatelessWidget {
                 'Progress: Investigation pending',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.blue,
+                  color: Colors.red,
                 ),
               ),
               const Text(
                 'Type: Missing Person',
                 style: TextStyle(
                   fontSize: 14,
-                  color: Colors.blue,
+                  color: Colors.red,
                 ),
               ),
               TextButton.icon(
