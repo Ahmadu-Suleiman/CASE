@@ -37,7 +37,9 @@ class _HomeWidgetState extends State<HomeWidget> {
           );
         }),
         title: const Image(
-          image: AssetImage('assets/case_logo1.png'),
+          height: 80,
+          width: 80,
+          image: AssetImage('assets/case_logo_main.ico'),
           color: Colors.brown,
         ),
         centerTitle: true,
@@ -116,6 +118,7 @@ class _HomeWidgetState extends State<HomeWidget> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pushNamed(context, '/create_case'),
         shape: const CircleBorder(),
+        splashColor: Colors.brown,
         child: const Icon(
           Icons.add,
           color: Colors.brown,
@@ -134,7 +137,6 @@ class _HomeWidgetState extends State<HomeWidget> {
         notchMargin: 8,
         notchSmoothness: NotchSmoothness.sharpEdge,
         onTap: (index) => setState(() => bottomNavIndex = index),
-        backgroundColor: Colors.white,
       ),
     );
   }

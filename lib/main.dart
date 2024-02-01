@@ -4,9 +4,10 @@ import 'package:case_be_heard/pages/home.dart';
 
 void main() {
   runApp(MaterialApp(
+    theme: ThemeData(
+      primarySwatch: Colors.brown,
+    ),
     home: const HomeWidget(),
-    routes: {
-      '/create_case': (context) => const CreateCase()
-    },
+    routes: {'/create_case': (context) => const CreateCase()},
   ));
 }
