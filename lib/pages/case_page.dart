@@ -20,10 +20,12 @@ class _CasePageState extends State<CasePage> {
           ),
           centerTitle: true,
           actions: <Widget>[
-            TextButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.bookmark),
-                label: const Text('Bookmark')),
+            IconButton(
+              icon: const Icon(Icons.bookmark),
+              onPressed: () {
+                // Add your logic here
+              },
+            ),
           ],
         ),
         body: const DefaultTabController(

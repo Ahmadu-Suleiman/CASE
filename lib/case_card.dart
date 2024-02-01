@@ -128,7 +128,7 @@ class Case extends StatelessWidget {
                     borderRadius: BorderRadius.circular(30.0),
                     child: const Image(
                       image: AssetImage('assets/child.jpg'),
-                      width: 300,
+                      width: double.infinity,
                       height: 250,
                       fit: BoxFit.cover,
                     ),
@@ -154,13 +154,22 @@ class Case extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const Text(
-                  'tap for more details',
-                  style: TextStyle(fontSize: 12.0, color: Colors.black),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'tap for more details',
+                      style: TextStyle(fontSize: 12.0, color: Colors.black),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.share),
+                      onPressed: () {
+                        // Add your logic here
+                      },
+                    ),
+                  ],
+                )
               ]),
         ),
       ),
