@@ -10,20 +10,20 @@ class CasePage extends StatefulWidget {
 class _CasePageState extends State<CasePage> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Text('Others'),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Text('Relevant'),
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: EdgeInsets.all(8.0),
               child: Text('Verified'),
             ),
           ],
@@ -31,5 +31,5 @@ class _CasePageState extends State<CasePage> {
       ),
       body: Container(), // Add other widgets here
     );
-}
+  }
 }

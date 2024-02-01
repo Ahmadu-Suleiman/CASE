@@ -97,6 +97,16 @@ class _HomeWidgetState extends State<HomeWidget> {
                 },
               ),
               ListTile(
+                title: const Text('Achievement section'),
+                leading: const Icon(Icons.accessibility_sharp),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
                 title: const Text('Help'),
                 leading: const Icon(Icons.help),
                 onTap: () {
