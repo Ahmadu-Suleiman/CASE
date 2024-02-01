@@ -20,12 +20,11 @@ class _CreateCaseState extends State<CreateCase> {
 
   final ImagePicker _picker = ImagePicker();
   Image? image;
+  late List<XFile> photos = List.empty();
 
   void getMainImage() async {
     final XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
-      maxHeight: 250,
-      maxWidth: 250,
     );
 
     if (image != null) {
@@ -35,6 +34,14 @@ class _CreateCaseState extends State<CreateCase> {
         width: double.infinity,
         height: 250,
       );
+      setState(() {});
+    }
+  }
+
+  void getPhotos() async {
+    final List<XFile> photoList = await _picker.pickMultiImage();
+    if (photoList.isNotEmpty) {
+      photos.addAll(photoList);
       setState(() {});
     }
   }
@@ -140,14 +147,42 @@ class _CreateCaseState extends State<CreateCase> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+
+            //photos here
+            TextButton.icon(
+              onPressed: () async {
+                getPhotos();
+              },
+              icon: const Icon(Icons.image),
+              label: const Text(
+                'Upload photos here',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
             const SizedBox(height: 20),
+            Container(
+              height: 600,
+              child: GridView.builder(
+                  shrinkWrap: true,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3),
+                  itemBuilder: (context, index) => Image.file(
+                        File(photos[index].path),
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 250,
+                      )),
+            ),
             GridView.count(
               shrinkWrap: true,
               mainAxisSpacing: 4,
               crossAxisSpacing: 4,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 3,
-              children: images
+              children: photos
                   .map((image) => Image.asset(
                         'assets/$image',
                         height: 150,
