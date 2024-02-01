@@ -11,25 +11,47 @@ class _CasePageState extends State<CasePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Row(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Others'),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Relevant'),
-            ),
-            Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Verified'),
-            ),
+        appBar: AppBar(
+          title: const Image(
+            height: 80,
+            width: 80,
+            image: AssetImage('assets/case_logo_main.ico'),
+            color: Colors.brown,
+          ),
+          centerTitle: true,
+          actions: <Widget>[
+            TextButton.icon(
+                onPressed: () {},
+                icon: const Icon(Icons.bookmark),
+                label: const Text('Bookmark')),
           ],
         ),
-      ),
-      body: Container(), // Add other widgets here
-    );
+        body: const DefaultTabController(
+          length: 3,
+          child: Scaffold(
+            body: Column(
+              children: [
+                TabBar(
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  tabs: [
+                    Tab(text: 'others'),
+                    Tab(text: 'relevant'),
+                    Tab(text: 'verified'),
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      Text('others'),
+                      Text('relevant'),
+                      Text('verified'),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ) // Add other widgets here
+        );
   }
 }

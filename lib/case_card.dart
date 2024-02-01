@@ -107,6 +107,11 @@ class Case extends StatelessWidget {
                   ),
                 ),
                 TextButton.icon(
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   onPressed: () {},
                   icon: const Icon(Icons.verified),
                   label: const Text(
@@ -133,15 +138,20 @@ class Case extends StatelessWidget {
                   child: Text(
                     'Usman Salis has been missing for three days',
                     maxLines: 3,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 25.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
                 ),
+                const SizedBox(
+                  height: 12,
+                ),
                 Text(
                   text,
                   maxLines: 3,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
                 const SizedBox(
