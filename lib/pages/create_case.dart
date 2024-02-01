@@ -40,12 +40,20 @@ class _CreateCaseState extends State<CreateCase> {
             ),
           ),
            TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(8),
+                ),
+              ),
+            ),
             maxLines: 1,
             style:  TextStyle(
               fontSize: 18,
               color: Colors.black,
             ),
           ),
+          SizedBox(height: 20),
            Text(
             'Short description',
             style: TextStyle(
@@ -59,7 +67,15 @@ class _CreateCaseState extends State<CreateCase> {
               fontSize: 18,
               color: Colors.black,
             ),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(8),
+                ),
+              ),
+            ),
           ),
+          SizedBox(height: 25),
            Text(
             'Detailed description',
             style: TextStyle(
@@ -71,6 +87,13 @@ class _CreateCaseState extends State<CreateCase> {
             style:  TextStyle(
               fontSize: 18,
               color: Colors.black,
+            ),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(8),
+                ),
+              ),
             ),
           ),
         ],
