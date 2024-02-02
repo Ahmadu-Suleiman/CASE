@@ -1,7 +1,9 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:video_player/video_player.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:file_picker/file_picker.dart';
 
 class CreateCase extends StatefulWidget {
   const CreateCase({super.key});
@@ -20,10 +22,11 @@ class _CreateCaseState extends State<CreateCase> {
 
   final ImagePicker _picker = ImagePicker();
   Image? image;
-  late List<XFile> photos = List.empty();
+  List<XFile> photos = List.empty(growable: true);
+  List<XFile> videos = List.empty(growable: true);
 
   void getMainImage() async {
-    final XFile? image = await _picker.pickImage(
+    XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
     );
 
@@ -39,10 +42,39 @@ class _CreateCaseState extends State<CreateCase> {
   }
 
   void getPhotos() async {
-    final List<XFile> photoList = await _picker.pickMultiImage();
+    List<XFile> photoList = await _picker.pickMultiImage();
     if (photoList.isNotEmpty) {
       photos.addAll(photoList);
       setState(() {});
+    }
+  }
+
+  Future getVideo(ImageSource img) async {
+    final videoFile = await _picker.pickVideo(
+      source: ImageSource.gallery,
+    );
+
+    if (videoFile != null) {
+      photos.add(videoFile);
+      setState(() {});
+    }
+  }
+
+  void pickAudioFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.audio,
+    );
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+
+      print(file.name);
+      print(file.bytes);
+      print(file.size);
+      print(file.extension);
+      print(file.path);
+    } else {
+      // User canceled the picker
     }
   }
 
@@ -147,7 +179,6 @@ class _CreateCaseState extends State<CreateCase> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
             //photos here
             TextButton.icon(
               onPressed: () async {
@@ -163,19 +194,6 @@ class _CreateCaseState extends State<CreateCase> {
               ),
             ),
             const SizedBox(height: 20),
-            Container(
-              height: 600,
-              child: GridView.builder(
-                  shrinkWrap: true,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3),
-                  itemBuilder: (context, index) => Image.file(
-                        File(photos[index].path),
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 250,
-                      )),
-            ),
             GridView.count(
               shrinkWrap: true,
               mainAxisSpacing: 4,
@@ -183,10 +201,11 @@ class _CreateCaseState extends State<CreateCase> {
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 3,
               children: photos
-                  .map((image) => Image.asset(
-                        'assets/$image',
-                        height: 150,
+                  .map((image) => Image.file(
+                        File(image.path),
                         fit: BoxFit.cover,
+                        width: 250,
+                        height: 250,
                       ))
                   .toList(),
             ),
@@ -205,15 +224,29 @@ class _CreateCaseState extends State<CreateCase> {
               crossAxisSpacing: 4,
               physics: const NeverScrollableScrollPhysics(),
               crossAxisCount: 3,
-              children: images
-                  .map((image) => Image.asset(
-                        'assets/$image',
-                        height: 150,
+              children: videos
+                  .map((video) => Image.file(
+                        File(video.path),
                         fit: BoxFit.cover,
+                        width: 250,
+                        height: 250,
                       ))
                   .toList(),
             ),
             const SizedBox(height: 20),
+            TextButton.icon(
+              onPressed: () async {
+                pickAudioFile();
+              },
+              icon: const Icon(Icons.image),
+              label: const Text(
+                'Upload videos here',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
             const Text(
               'Audio',
               style: TextStyle(
