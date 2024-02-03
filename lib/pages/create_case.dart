@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:case_be_heard/custom_widgets/audio_widget.dart';
+import 'package:case_be_heard/models/video.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_player/video_player.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 class CreateCase extends StatefulWidget {
   const CreateCase({super.key});
@@ -13,19 +17,14 @@ class CreateCase extends StatefulWidget {
 }
 
 class _CreateCaseState extends State<CreateCase> {
-  List<String> images = [
-    'child.jpg',
-    'child2.jpg',
-    'child3.jpg',
-    'profile.png',
-  ];
-
   final ImagePicker _picker = ImagePicker();
+  final audioPlayer = AudioPlayer();
   Image? image;
   List<XFile> photos = List.empty(growable: true);
-  List<XFile> videos = List.empty(growable: true);
+  List<Video> videos = List.empty(growable: true);
+  List<String> audios = List.empty(growable: true);
 
-  void getMainImage() async {
+  void addMainImage() async {
     XFile? image = await _picker.pickImage(
       source: ImageSource.gallery,
     );
@@ -41,7 +40,7 @@ class _CreateCaseState extends State<CreateCase> {
     }
   }
 
-  void getPhotos() async {
+  void addPhotos() async {
     List<XFile> photoList = await _picker.pickMultiImage();
     if (photoList.isNotEmpty) {
       photos.addAll(photoList);
@@ -49,32 +48,36 @@ class _CreateCaseState extends State<CreateCase> {
     }
   }
 
-  Future getVideo(ImageSource img) async {
+  Future addVideo() async {
     final videoFile = await _picker.pickVideo(
       source: ImageSource.gallery,
     );
 
     if (videoFile != null) {
-      photos.add(videoFile);
-      setState(() {});
+      Uint8List? thumbnailData = await VideoThumbnail.thumbnailData(
+        video: videoFile.path,
+        imageFormat: ImageFormat.JPEG,
+        maxWidth: 128,
+        quality: 25,
+      );
+
+      if (thumbnailData != null) {
+        videos.add(Video(videoFile, thumbnailData));
+        setState(() {});
+      }
     }
   }
 
-  void pickAudioFile() async {
+  void addAudios() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.audio,
     );
-
     if (result != null) {
-      PlatformFile file = result.files.first;
-
-      print(file.name);
-      print(file.bytes);
-      print(file.size);
-      print(file.extension);
-      print(file.path);
-    } else {
-      // User canceled the picker
+      audios.addAll(result.files.nonNulls
+          .where((file) => file.path != null)
+          .map((file) => file.path!)
+          .toList());
+      setState(() {});
     }
   }
 
@@ -98,7 +101,7 @@ class _CreateCaseState extends State<CreateCase> {
                   const SizedBox(height: 20),
                   TextButton.icon(
                     onPressed: () {
-                      getMainImage();
+                      addMainImage();
                     },
                     icon: const Icon(Icons.image),
                     label: const Text(
@@ -182,7 +185,7 @@ class _CreateCaseState extends State<CreateCase> {
             //photos here
             TextButton.icon(
               onPressed: () async {
-                getPhotos();
+                addPhotos();
               },
               icon: const Icon(Icons.image),
               label: const Text(
@@ -218,25 +221,9 @@ class _CreateCaseState extends State<CreateCase> {
               ),
             ),
             const SizedBox(height: 20),
-            GridView.count(
-              shrinkWrap: true,
-              mainAxisSpacing: 4,
-              crossAxisSpacing: 4,
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 3,
-              children: videos
-                  .map((video) => Image.file(
-                        File(video.path),
-                        fit: BoxFit.cover,
-                        width: 250,
-                        height: 250,
-                      ))
-                  .toList(),
-            ),
-            const SizedBox(height: 20),
             TextButton.icon(
               onPressed: () async {
-                pickAudioFile();
+                addVideo();
               },
               icon: const Icon(Icons.image),
               label: const Text(
@@ -247,6 +234,23 @@ class _CreateCaseState extends State<CreateCase> {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
+            GridView.count(
+              shrinkWrap: true,
+              mainAxisSpacing: 4,
+              crossAxisSpacing: 4,
+              physics: const NeverScrollableScrollPhysics(),
+              crossAxisCount: 3,
+              children: videos
+                  .map((video) => Image.memory(
+                        video.videoThumbnail,
+                        fit: BoxFit.cover,
+                        width: 250,
+                        height: 250,
+                      ))
+                  .toList(),
+            ),
+            const SizedBox(height: 20),
             const Text(
               'Audio',
               style: TextStyle(
@@ -254,6 +258,37 @@ class _CreateCaseState extends State<CreateCase> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+            const SizedBox(height: 20),
+            TextButton.icon(
+              onPressed: () async {
+                addAudios();
+              },
+              icon: const Icon(Icons.image),
+              label: const Text(
+                'Upload audios here',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.blue,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Column(
+                children: audios
+                    .asMap()
+                    .entries
+                    .map((audio) => Column(
+                          children: [
+                            AudioWidget(
+                                audioPlayer: audioPlayer,
+                                path: audio.value,
+                                remove: () {
+                                  audios.removeAt(audio.key);
+                                  setState(() {});
+                                })
+                          ],
+                        ))
+                    .toList()),
             const SizedBox(height: 20),
             const Text(
               'External links',

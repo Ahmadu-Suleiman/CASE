@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Case needs access to the photo library to select videos.</string>
+	<key>NSDocumentsFolderUsageDescription</key>
+	<string>Case needs access to your audio files</string>
 </dict>
 </plist>
