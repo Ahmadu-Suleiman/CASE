@@ -2,15 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 
 class AudioWidget extends StatelessWidget {
-  const AudioWidget(
-      {super.key,
-      required this.audioPlayer,
-      required this.path,
-      required this.remove});
+  const AudioWidget({super.key, required this.audioPlayer, required this.path});
 
   final AudioPlayer audioPlayer;
   final String path;
-  final Function remove;
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +22,10 @@ class AudioWidget extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.pause),
             onPressed: () {
-              audioPlayer.pause();
+              audioPlayer.source.toString();
+              audioPlayer.play(DeviceFileSource(audioPlayer.source.toString()));
             },
-          ),
-          IconButton(
-            icon: const Icon(Icons.remove),
-            onPressed: remove(),
-          ),
+          )
         ],
       ),
     );
