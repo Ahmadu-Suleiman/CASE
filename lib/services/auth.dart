@@ -1,10 +1,9 @@
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
-
-class AuthService {
-
+class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // create user obj based on firebase user
@@ -14,9 +13,10 @@ class AuthService {
 
   // auth change user stream
   Stream<CommunityMember?> get communityMember {
-    return _auth.authStateChanges()
-      //.map((FirebaseUser user) => _userFromFirebaseUser(user));
-      .map(_communityMemberFromFirebaseUser);
+    return _auth
+        .authStateChanges()
+        //.map((FirebaseUser user) => _userFromFirebaseUser(user));
+        .map(_communityMemberFromFirebaseUser);
   }
 
   // sign in anon
@@ -34,27 +34,30 @@ class AuthService {
   // sign in with email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
       return user;
     } catch (error) {
       print(error.toString());
       return null;
-    } 
+    }
   }
 
   // register with email and password
   Future registerWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
       User? user = result.user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user.uid).updateUserData('0','new crew member', 100);
+      await DatabaseService(uid: user.uid)
+          .updateUserData('0', 'new crew member', 100);
       return _communityMemberFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());
-      return null; 
-    } 
+      return null;
+    }
   }
 
   // sign out
