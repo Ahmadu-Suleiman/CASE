@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "178229758128",
+    "project_id": "case-be-heard",
+    "storage_bucket": "case-be-heard.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:178229758128:android:f7d0f3a2f9c068d1fbd375",
+        "android_client_info": {
+          "package_name": "com.gdsc.kasu.case_be_heard"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvQuLQ2QnC7A-0o2YYslImRQFWmxhnZM8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

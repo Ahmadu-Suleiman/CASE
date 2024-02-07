@@ -88,12 +88,6 @@ class _CreateCaseState extends State<CreateCase> {
     }
   }
 
-  void removeAudioWidget(int index, List<String> audios) {
-    setState(() {
-      audios.removeAt(index);
-    });
-  }
-
   void appendlinkWidgets(TextEditingController linkControllers) {
     setState(() {
       addlinkWidgets = [
