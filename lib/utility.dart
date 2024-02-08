@@ -4,6 +4,17 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Utility {
   static late BuildContext storedContext;
+
+  static List<String> texts = [
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
+  ];
+
   static Future<bool> checkPermission() async {
     var status = await Permission.storage.status;
     if (!status.isGranted) {

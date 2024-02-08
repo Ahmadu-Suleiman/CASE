@@ -14,20 +14,6 @@ class HomeWidget extends StatefulWidget {
 class _HomeWidgetState extends State<HomeWidget> {
   int bottomNavIndex = 0;
 
-  List<String> texts = [
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-  ];
-
-  Widget template(text) {
-    return CaseCard(text: text);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,21 +47,24 @@ class _HomeWidgetState extends State<HomeWidget> {
           child: ListView(
             padding: const EdgeInsets.only(left: 5),
             children: <Widget>[
-              const UserAccountsDrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                ),
-                accountName: Text(
-                  'Abdulhamid Gent',
-                  style: TextStyle(color: Colors.black),
-                ),
-                accountEmail: Text(
-                  'gent1226@gmail',
-                  style: TextStyle(color: Colors.black),
-                ),
-                currentAccountPicture: CircleAvatar(
-                  backgroundImage: AssetImage('assets/profile.png'),
-                  radius: 60,
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/member_profile'),
+                child: const UserAccountsDrawerHeader(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                  ),
+                  accountName: Text(
+                    'Abdulhamid Gent',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  accountEmail: Text(
+                    'gent1226@gmail',
+                    style: TextStyle(color: Colors.black),
+                  ),
+                  currentAccountPicture: CircleAvatar(
+                    backgroundImage: AssetImage('assets/profile.png'),
+                    radius: 60,
+                  ),
                 ),
               ),
               ListTile(
@@ -148,9 +137,9 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
       ),
       body: ListView.builder(
-          itemCount: texts.length,
+          itemCount: Utility.texts.length,
           itemBuilder: (context, index) {
-            return template(texts[index]);
+            return CaseCard(text: Utility.texts[index]);
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pushNamed(context, '/create_case'),
