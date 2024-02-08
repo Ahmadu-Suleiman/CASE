@@ -2,10 +2,11 @@ import 'package:case_be_heard/custom_widgets/case_page.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/pages/create_case.dart';
 import 'package:case_be_heard/services/auth.dart';
+import 'package:case_be_heard/style.dart';
+import 'package:case_be_heard/utility.dart';
 import 'package:case_be_heard/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:case_be_heard/pages/home.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

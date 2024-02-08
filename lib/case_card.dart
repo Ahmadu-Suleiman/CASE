@@ -34,7 +34,7 @@ class Case extends StatelessWidget {
         Navigator.pushNamed(context, '/case_page');
       },
       child: Card(
-        color: Colors.grey,
+        color: Colors.white,
         margin: const EdgeInsets.all(10),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -65,26 +65,37 @@ class Case extends StatelessWidget {
                             color: Colors.black,
                           ),
                         ),
-                        const Text(
-                          'genthamid@gmail.com',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.black,
-                          ),
-                        ),
                         FilledButton.icon(
                             style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.brown)),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.zero),
+                              minimumSize: MaterialStateProperty.all(Size.zero),
+                            ),
                             onPressed: () {},
                             icon: const Icon(
                               Icons.message,
                               size: 12,
                             ),
                             label: const Text(
-                              'Direct contact',
+                              'Contact directly',
                               style: TextStyle(fontSize: 12),
                             )),
+                        TextButton.icon(
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          ),
+                          onPressed: () {},
+                          icon: const Icon(Icons.verified),
+                          label: const Text(
+                            'Verified Case',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -106,26 +117,11 @@ class Case extends StatelessWidget {
                     color: Colors.red,
                   ),
                 ),
-                TextButton.icon(
-                  style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  onPressed: () {},
-                  icon: const Icon(Icons.verified),
-                  label: const Text(
-                    'Verified Case',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(30.0),
+                    borderRadius: BorderRadius.circular(15.0),
                     child: const Image(
                       image: AssetImage('assets/child.jpg'),
                       width: double.infinity,
@@ -154,13 +150,37 @@ class Case extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18.0, color: Colors.black),
                 ),
+                const Divider(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    const Text(
-                      'tap for more details',
-                      style: TextStyle(fontSize: 12.0, color: Colors.black),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        TextButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.remove_red_eye),
+                          label: const Text(
+                            '148',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                        TextButton.icon(
+                          onPressed: () {},
+                          icon: const Icon(Icons.mark_chat_read),
+                          label: const Text(
+                            '65',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     IconButton(
                       icon: const Icon(Icons.share),

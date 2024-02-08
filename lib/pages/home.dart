@@ -1,3 +1,5 @@
+import 'package:case_be_heard/style.dart';
+import 'package:case_be_heard/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:case_be_heard/case_card.dart';
@@ -29,6 +31,7 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: secondaryColor,
       appBar: AppBar(
         leading: Builder(builder: (context) {
           return IconButton(
@@ -40,7 +43,6 @@ class _HomeWidgetState extends State<HomeWidget> {
           height: 80,
           width: 80,
           image: AssetImage('assets/case_logo_main.ico'),
-          color: Colors.brown,
         ),
         centerTitle: true,
         actions: <Widget>[
@@ -77,7 +79,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                 ),
               ),
               ListTile(
-                title: const Text('Case catalog'),
+                title: const Text(
+                  'Case catalog',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 leading: const Icon(Icons.folder),
                 onTap: () {
                   // Update the state of the app
@@ -87,7 +92,23 @@ class _HomeWidgetState extends State<HomeWidget> {
                 },
               ),
               ListTile(
-                title: const Text('Communities'),
+                title: const Text(
+                  'Petitions',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                leading: const Icon(Icons.article),
+                onTap: () {
+                  // Update the state of the app
+                  // ...
+                  // Then close the drawer
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Communities',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 leading: const Icon(Icons.people),
                 onTap: () {
                   // Update the state of the app
@@ -97,7 +118,10 @@ class _HomeWidgetState extends State<HomeWidget> {
                 },
               ),
               ListTile(
-                title: const Text('Achievement section'),
+                title: const Text(
+                  'Achievement section',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 leading: const Icon(Icons.accessibility_sharp),
                 onTap: () {
                   // Update the state of the app
@@ -107,8 +131,11 @@ class _HomeWidgetState extends State<HomeWidget> {
                 },
               ),
               ListTile(
-                title: const Text('Help'),
-                leading: const Icon(Icons.help),
+                title: const Text(
+                  'Settings',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                leading: const Icon(Icons.settings),
                 onTap: () {
                   // Update the state of the app
                   // ...
@@ -128,10 +155,10 @@ class _HomeWidgetState extends State<HomeWidget> {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.pushNamed(context, '/create_case'),
         shape: const CircleBorder(),
-        splashColor: Colors.brown,
-        child: const Icon(
+        splashColor: secondaryColor,
+        child: Icon(
           Icons.add,
-          color: Colors.brown,
+          color: primaryColor,
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
