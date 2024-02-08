@@ -23,6 +23,10 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+flutter.targetSdkVersion =  34
+flutter.compileSdkVersion =   34
+
+
 android {
     namespace "com.example.case_be_heard"
     compileSdkVersion flutter.compileSdkVersion

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:case_be_heard/custom_widgets/audio_widget.dart';
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/utility.dart';
@@ -61,10 +60,11 @@ class _CreateCaseState extends State<CreateCase> {
     );
 
     if (videoFile != null) {
-      Uint8List? thumbnailData = await VideoThumbnail.thumbnailData(
+      final thumbnailData = await VideoThumbnail.thumbnailData(
         video: videoFile.path,
         imageFormat: ImageFormat.JPEG,
-        maxWidth: 128,
+        maxHeight: 250,
+        maxWidth: 250,
         quality: 25,
       );
 
