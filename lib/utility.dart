@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Utility {
   static late BuildContext storedContext;
+  static const String defaultProfileImage = 'assets/profile.png';
 
   static List<String> texts = [
     'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
@@ -46,4 +47,6 @@ class Utility {
       return false;
     }
   }
+
+  static getProfileImage()
 }

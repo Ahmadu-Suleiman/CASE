@@ -1,3 +1,4 @@
+import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/style.dart';
 import 'package:case_be_heard/utility.dart';
@@ -18,155 +19,159 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    CommunityMember member = Provider.of<CommunityMember>(context);
-    return Scaffold(
-      backgroundColor: secondaryColor,
-      appBar: AppBar(
-        leading: Builder(builder: (context) {
-          return IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () => Scaffold.of(context).openDrawer(),
-          );
-        }),
-        title: const Image(
-          height: 80,
-          width: 80,
-          image: AssetImage('assets/case_logo_main.ico'),
-        ),
-        centerTitle: true,
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: () {
-              // Add your logic here
-            },
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        shape: Border.all(),
-        child: Container(
-          color: Colors.white,
-          child: ListView(
-            padding: const EdgeInsets.only(left: 5),
-            children: <Widget>[
-              GestureDetector(
-                onTap: () => Navigator.pushNamed(context, '/member_profile'),
-                child: UserAccountsDrawerHeader(
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  accountName: Text(
-                    '${member.firstName} ${member.lastName}',
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                  accountEmail: Text(
-                    member.email,
-                    style: const TextStyle(color: Colors.black),
-                  ),
-                  currentAccountPicture: CircleAvatar(
-                    backgroundImage: AssetImage(member.photoUrl),
-                    radius: 60,
-                  ),
+    CommunityMember? member = Provider.of<CommunityMember?>(context);
+    return member != null
+        ? Scaffold(
+            backgroundColor: secondaryColor,
+            appBar: AppBar(
+              leading: Builder(builder: (context) {
+                return IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                );
+              }),
+              title: const Image(
+                height: 80,
+                width: 80,
+                image: AssetImage('assets/case_logo_main.ico'),
+              ),
+              centerTitle: true,
+              actions: <Widget>[
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {
+                    // Add your logic here
+                  },
+                ),
+              ],
+            ),
+            drawer: Drawer(
+              shape: Border.all(),
+              child: Container(
+                color: Colors.white,
+                child: ListView(
+                  padding: const EdgeInsets.only(left: 5),
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () =>
+                          Navigator.pushNamed(context, '/member_profile'),
+                      child: UserAccountsDrawerHeader(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        accountName: Text(
+                          '${member.firstName} ${member.lastName}',
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        accountEmail: Text(
+                          member.email,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        currentAccountPicture: CircleAvatar(
+                          backgroundImage: AssetImage(member.photoUrl),
+                          radius: 60,
+                        ),
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'Case catalog',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      leading: const Icon(Icons.folder),
+                      onTap: () {
+                        // Update the state of the app
+                        // ...
+                        // Then close the drawer
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'Petitions',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      leading: const Icon(Icons.article),
+                      onTap: () {
+                        // Update the state of the app
+                        // ...
+                        // Then close the drawer
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'Communities',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      leading: const Icon(Icons.people),
+                      onTap: () {
+                        // Update the state of the app
+                        // ...
+                        // Then close the drawer
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'Achievement section',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      leading: const Icon(Icons.accessibility_sharp),
+                      onTap: () {
+                        // Update the state of the app
+                        // ...
+                        // Then close the drawer
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      title: const Text(
+                        'Settings',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      leading: const Icon(Icons.settings),
+                      onTap: () {
+                        // Update the state of the app
+                        // ...
+                        // Then close the drawer
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
                 ),
               ),
-              ListTile(
-                title: const Text(
-                  'Case catalog',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                leading: const Icon(Icons.folder),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
+            ),
+            body: ListView.builder(
+                itemCount: Utility.texts.length,
+                itemBuilder: (context, index) {
+                  return CaseCard(text: Utility.texts[index]);
+                }),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => Navigator.pushNamed(context, '/create_case'),
+              shape: const CircleBorder(),
+              splashColor: secondaryColor,
+              child: Icon(
+                Icons.add,
+                color: primaryColor,
               ),
-              ListTile(
-                title: const Text(
-                  'Petitions',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                leading: const Icon(Icons.article),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Communities',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                leading: const Icon(Icons.people),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Achievement section',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                leading: const Icon(Icons.accessibility_sharp),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Settings',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                leading: const Icon(Icons.settings),
-                onTap: () {
-                  // Update the state of the app
-                  // ...
-                  // Then close the drawer
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
-      body: ListView.builder(
-          itemCount: Utility.texts.length,
-          itemBuilder: (context, index) {
-            return CaseCard(text: Utility.texts[index]);
-          }),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.pushNamed(context, '/create_case'),
-        shape: const CircleBorder(),
-        splashColor: secondaryColor,
-        child: Icon(
-          Icons.add,
-          color: primaryColor,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        icons: const <IconData>[
-          Icons.home,
-          Icons.notifications,
-          Icons.message,
-          Icons.ondemand_video,
-        ],
-        activeIndex: bottomNavIndex,
-        gapLocation: GapLocation.center,
-        notchMargin: 8,
-        notchSmoothness: NotchSmoothness.sharpEdge,
-        onTap: (index) => setState(() => bottomNavIndex = index),
-      ),
-    );
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: AnimatedBottomNavigationBar(
+              icons: const <IconData>[
+                Icons.home,
+                Icons.notifications,
+                Icons.message,
+                Icons.ondemand_video,
+              ],
+              activeIndex: bottomNavIndex,
+              gapLocation: GapLocation.center,
+              notchMargin: 8,
+              notchSmoothness: NotchSmoothness.sharpEdge,
+              onTap: (index) => setState(() => bottomNavIndex = index),
+            ),
+          )
+        : Loading();
   }
 }

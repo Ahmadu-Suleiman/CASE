@@ -23,18 +23,6 @@ class DatabaseService {
     });
   }
 
-  // brew list from snapshot
-  // List<Brew> _brewListFromSnapshot(QuerySnapshot snapshot) {
-  //   return snapshot.documents.map((doc) {
-  //     //print(doc.data);
-  //     return Brew(
-  //         name: doc.data['name'] ?? '',
-  //         strength: doc.data['strength'] ?? 0,
-  //         sugars: doc.data['sugars'] ?? '0');
-  //   }).toList();
-  // }
-
-  // user data from snapshots
   CommunityMember _communityMemberFromSnapshot(DocumentSnapshot snapshot) {
     return CommunityMember.full(
       uid: uid,
@@ -50,12 +38,12 @@ class DatabaseService {
     );
   }
 
-  // get brews stream
-  // Stream<List<Brew>> get brews {
-  //   return brewCollection.snapshots().map(_brewListFromSnapshot);
-  // }
+  Stream<List<CommunityMember?>> get communityMembers {
+    return communityMemberCollection.snapshots().map((snapshots) {
+      return snapshots.docs.map(_communityMemberFromSnapshot).toList();
+    });
+  }
 
-  // get user doc stream
   Stream<CommunityMember> get member {
     return communityMemberCollection
         .doc(uid)
