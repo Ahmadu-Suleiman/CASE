@@ -3,6 +3,8 @@ import 'package:case_be_heard/pages/authenticate/sign_in.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
+  const Authenticate({super.key});
+
   @override
   AuthenticateState createState() => AuthenticateState();
 }
@@ -10,7 +12,6 @@ class Authenticate extends StatefulWidget {
 class AuthenticateState extends State<Authenticate> {
   bool showSignIn = true;
   void toggleView() {
-    //print(showSignIn.toString());
     setState(() => showSignIn = !showSignIn);
   }
 

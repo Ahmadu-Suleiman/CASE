@@ -9,6 +9,12 @@ class DatabaseService {
   final CollectionReference communityMemberCollection =
       FirebaseFirestore.instance.collection('communityMembers');
 
+  Future<void> createCommunityMemberData(CommunityMember member) async {
+    return await communityMemberCollection.doc(uid).set({
+      'email': member.email,
+    });
+  }
+
   Future<void> updateCommunityMemberData(CommunityMember member) async {
     return await communityMemberCollection.doc(uid).set({
       'firstName': member.firstName,
@@ -44,10 +50,12 @@ class DatabaseService {
     });
   }
 
-  Stream<CommunityMember> get member {
-    return communityMemberCollection
-        .doc(uid)
-        .snapshots()
-        .map(_communityMemberFromSnapshot);
+  Stream<CommunityMember?>? get member {
+    return uid != null
+        ? communityMemberCollection
+            .doc(uid)
+            .snapshots()
+            .map(_communityMemberFromSnapshot)
+        : null;
   }
 }

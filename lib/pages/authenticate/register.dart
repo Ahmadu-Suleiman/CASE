@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
-  Register({required this.toggleView});
+  const Register({super.key, required this.toggleView});
 
   @override
-  _RegisterState createState() => _RegisterState();
+  RegisterState createState() => RegisterState();
 }
 
-class _RegisterState extends State<Register> {
+class RegisterState extends State<Register> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';

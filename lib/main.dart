@@ -30,19 +30,28 @@ class StartWidget extends StatelessWidget {
       value: AuthService().communityMember,
       builder: (context, child) {
         return StreamProvider<CommunityMember?>.value(
-          initialData: null,
-          value: DatabaseService(uid: Provider.of<User?>(context)?.uid).member,
-          child: MaterialApp(
-            home: const Wrapper(),
-            routes: {
-              '/create_case': (context) => const CreateCase(),
-              '/case_page': (context) => const CasePage(),
-              '/member_profile': (context) => const Profile(),
-              '/edit_member_profile': (context) => const EditProfile(),
-              '/profile_image': (context) => const ProfileImage(),
-            },
-          ),
-        );
+            initialData: null,
+            value: DatabaseService(uid: Provider.of<User>(context).uid).member,
+            child: MaterialApp(
+              home: const Wrapper(),
+              routes: {
+                '/create_case': (context) => const CreateCase(),
+                '/case_page': (context) => const CasePage(),
+                '/member_profile': (context) => const Profile(),
+                '/edit_member_profile': (context) => const EditProfile(),
+                '/profile_image': (context) => const ProfileImage(),
+              },
+              theme: ThemeData(
+                // Set the primary color
+                primaryColor: Colors.blue,
+                // Set the secondary color
+                secondaryHeaderColor: Colors.red,
+                // You can also set the color scheme which includes primary and secondary colors
+                colorScheme: ColorScheme.fromSwatch(
+                  primarySwatch: Colors.blue,
+                ),
+              ),
+            ));
       },
     );
   }
