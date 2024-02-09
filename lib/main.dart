@@ -1,9 +1,10 @@
 import 'package:case_be_heard/pages/case_page.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/pages/create_case.dart';
+import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/services/auth.dart';
-import 'package:case_be_heard/wrapper.dart';
+import 'package:case_be_heard/pages/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ void main() async {
         '/create_case': (context) => const CreateCase(),
         '/case_page': (context) => const CasePage(),
         '/member_profile': (context) => Profile(),
+        '/edit_member_profile': (context) => const EditProfile(),
       },
     ),
   ));

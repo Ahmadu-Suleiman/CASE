@@ -9,12 +9,17 @@ class DatabaseService {
   final CollectionReference communityMemberCollection =
       FirebaseFirestore.instance.collection('communityMembers');
 
-  Future<void> updateCommunityMemberData(
-      String sugars, String name, int strength) async {
+  Future<void> updateCommunityMemberData(CommunityMember member) async {
     return await communityMemberCollection.doc(uid).set({
-      'sugars': sugars,
-      'name': name,
-      'strength': strength,
+      'firstName': member.firstName,
+      'lastName': member.lastName,
+      'email': member.email,
+      'phoneNumber': member.phoneNumber,
+      'occupation': member.occupation,
+      'location': member.location,
+      'gender': member.gender,
+      'bio': member.bio,
+      'photoUrl': member.photoUrl,
     });
   }
 
@@ -30,8 +35,19 @@ class DatabaseService {
   // }
 
   // user data from snapshots
-  CommunityMember _userDataFromSnapshot(DocumentSnapshot snapshot) {
-    return CommunityMember(uid: uid);
+  CommunityMember _communityMemberFromSnapshot(DocumentSnapshot snapshot) {
+    return CommunityMember.full(
+      uid: uid,
+      firstName: snapshot['firstName'],
+      lastName: snapshot['lastName'],
+      phoneNumber: snapshot['phoneNumber'],
+      email: snapshot['email'],
+      occupation: snapshot['occupation'],
+      gender: snapshot['gender'],
+      location: snapshot['location'],
+      photoUrl: snapshot['photoUrl'],
+      bio: snapshot['bio'],
+    );
   }
 
   // get brews stream
@@ -39,8 +55,11 @@ class DatabaseService {
   //   return brewCollection.snapshots().map(_brewListFromSnapshot);
   // }
 
-  // // get user doc stream
-  // Stream<UserData> get userData {
-  //   return brewCollection.document(uid).snapshots().map(_userDataFromSnapshot);
-  // }
+  // get user doc stream
+  Stream<CommunityMember> get member {
+    return communityMemberCollection
+        .doc(uid)
+        .snapshots()
+        .map(_communityMemberFromSnapshot);
+  }
 }

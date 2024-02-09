@@ -58,18 +58,19 @@ class Case extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Text(
-                          'Gent',
+                          'Gent Hamid',
                           style: TextStyle(
-                            fontSize: 16,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
                           ),
                         ),
                         FilledButton.icon(
                             style: ButtonStyle(
-                              padding:
-                                  MaterialStateProperty.all(EdgeInsets.zero),
+                              padding: MaterialStateProperty.all(
+                                  const EdgeInsets.all(8)),
                               minimumSize: MaterialStateProperty.all(Size.zero),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             ),
                             onPressed: () {},
                             icon: const Icon(
@@ -81,9 +82,7 @@ class Case extends StatelessWidget {
                               style: TextStyle(fontSize: 12),
                             )),
                         TextButton.icon(
-                          style: TextButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            minimumSize: Size.zero,
+                          style: const ButtonStyle(
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                           ),
                           onPressed: () {},

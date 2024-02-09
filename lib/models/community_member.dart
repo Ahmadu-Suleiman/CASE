@@ -9,7 +9,7 @@ class CommunityMember {
   String occupation = '';
   String location = '';
   String gender = '';
-  String imageUrl = '';
+  String photoUrl = '';
   String bio = '';
   List<Case> cases = [];
 
@@ -23,7 +23,7 @@ class CommunityMember {
     required this.occupation,
     required this.location,
     required this.gender,
-    required this.imageUrl,
+    required this.photoUrl,
     required this.bio,
   });
 }

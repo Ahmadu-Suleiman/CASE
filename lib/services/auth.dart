@@ -52,7 +52,7 @@ class AuthService extends ChangeNotifier {
       User? user = result.user;
       // create a new document for the user with the uid
       await DatabaseService(uid: user!.uid)
-          .updateCommunityMemberData('0', 'new crew member', 100);
+          .updateCommunityMemberData(CommunityMember(uid: user.uid));
       return _communityMemberFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());
