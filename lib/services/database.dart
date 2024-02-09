@@ -9,12 +9,6 @@ class DatabaseService {
   final CollectionReference communityMemberCollection =
       FirebaseFirestore.instance.collection('communityMembers');
 
-  Future<void> createCommunityMemberData(CommunityMember member) async {
-    return await communityMemberCollection.doc(uid).set({
-      'email': member.email,
-    });
-  }
-
   Future<void> updateCommunityMemberData(CommunityMember member) async {
     return await communityMemberCollection.doc(uid).set({
       'firstName': member.firstName,

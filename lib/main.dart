@@ -7,6 +7,7 @@ import 'package:case_be_heard/pages/profile/profile_image.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
 import 'package:case_be_heard/services/database.dart';
+import 'package:case_be_heard/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +32,8 @@ class StartWidget extends StatelessWidget {
       builder: (context, child) {
         return StreamProvider<CommunityMember?>.value(
             initialData: null,
-            value: DatabaseService(uid: Provider.of<User>(context).uid).member,
+            value:
+                DatabaseService(uid: Provider.of<User?>(context)?.uid).member,
             child: MaterialApp(
               home: const Wrapper(),
               routes: {
@@ -42,13 +44,15 @@ class StartWidget extends StatelessWidget {
                 '/profile_image': (context) => const ProfileImage(),
               },
               theme: ThemeData(
-                // Set the primary color
-                primaryColor: Colors.blue,
-                // Set the secondary color
-                secondaryHeaderColor: Colors.red,
-                // You can also set the color scheme which includes primary and secondary colors
+                focusColor: secondaryColor,
+                hoverColor: secondaryColor,
+                primaryColor: primaryColor,
+                iconTheme: const IconThemeData(
+                  color: Colors.black, // Set the global color for icons
+                ),
                 colorScheme: ColorScheme.fromSwatch(
-                  primarySwatch: Colors.blue,
+                  backgroundColor: Colors.white,
+                  accentColor: primaryColor,
                 ),
               ),
             ));

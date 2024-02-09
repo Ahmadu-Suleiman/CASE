@@ -1,5 +1,6 @@
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/database.dart';
+import 'package:case_be_heard/services/location.dart';
 import 'package:case_be_heard/utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +32,14 @@ class _EditProfileState extends State<EditProfile> {
               child: CircleAvatar(
                 backgroundImage: Utility.getProfileImage(member.photoUrl),
                 radius: 50,
+                child: const Icon(Icons.person),
               ),
             ),
             ElevatedButton(
               onPressed: () async {
                 if (_formKey.currentState != null &&
                     _formKey.currentState!.validate()) {
-                  await DatabaseService(uid: member!.uid ?? user!.uid)
+                  await DatabaseService(uid: member.uid ?? user!.uid)
                       .updateCommunityMemberData(member);
                 }
               },
@@ -50,79 +52,87 @@ class _EditProfileState extends State<EditProfile> {
                     TextFormField(
                         validator: (val) =>
                             val!.isEmpty ? 'Supply a value' : null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
                           hintText: 'First name',
-                          labelText: member.firstName,
                         ),
+                        initialValue: member.firstName,
                         onChanged: (value) {
                           member.firstName = value;
                         }),
                     TextFormField(
                         validator: (val) =>
                             val!.isEmpty ? 'Supply a value' : null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
                           hintText: 'Last name',
-                          labelText: member.lastName,
                         ),
+                        initialValue: member.lastName,
                         onChanged: (value) {
                           member.lastName = value;
                         }),
                     TextFormField(
                         validator: (val) =>
                             val!.isEmpty ? 'Supply a value' : null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
                           hintText: 'Email',
-                          labelText: member.email,
                         ),
+                        initialValue: member.email,
                         onChanged: (value) {
                           member.email = value;
                         }),
                     TextFormField(
                         validator: (val) =>
                             val!.isEmpty ? 'Supply a value' : null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
                           hintText: 'Phone number',
-                          labelText: member.phoneNumber,
                         ),
+                        initialValue: member.phoneNumber,
                         onChanged: (value) {
                           member.phoneNumber = value;
                         }),
                     TextFormField(
                         validator: (val) =>
                             val!.isEmpty ? 'Supply a value' : null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
                           hintText: 'Occupation',
-                          labelText: member.occupation,
                         ),
+                        initialValue: member.occupation,
                         onChanged: (value) {
                           member.occupation = value;
                         }),
                     TextFormField(
-                        validator: (val) =>
-                            val!.isEmpty ? 'Supply a value' : null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
-                          hintText: 'Location',
-                          labelText: member.location,
+                      readOnly: true,
+                      validator: (val) =>
+                          val!.isEmpty ? 'Supply a value' : null,
+                      decoration: InputDecoration(
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() async {
+                              member.location =
+                                  await LocationService.getLocation(context);
+                            });
+                          },
+                          icon: const Icon(Icons.location_on),
                         ),
-                        onChanged: (value) {
-                          member.location = value;
-                        }),
+                        border: const OutlineInputBorder(),
+                        hintText: 'Location',
+                      ),
+                      initialValue: member.location.join(','),
+                    ),
                     TextFormField(
                         validator: (val) =>
                             val!.isEmpty ? 'Supply a value' : null,
                         minLines: 4,
                         maxLines: null,
-                        decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
                           hintText: 'Bio',
-                          labelText: member.bio,
                         ),
+                        initialValue: member.bio,
                         onChanged: (value) {
                           member.bio = value;
                         }),

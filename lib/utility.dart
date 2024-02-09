@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 class Utility {
   static late BuildContext _storedContext;
   static final ImagePicker _picker = ImagePicker();
+  static const defaultImage = AssetImage('assets/profile.png');
 
   static List<String> texts = [
     'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
@@ -35,13 +36,18 @@ class Utility {
   static void openLink(BuildContext context, String url) async {
     _storedContext = context;
     if (!await launchUrl(Uri.parse(url))) {
-      if (_storedContext.mounted) {
-        ScaffoldMessenger.of(_storedContext).showSnackBar(
-          const SnackBar(
-            content: Text("Could not open link"),
-          ),
-        );
-      }
+      // ignore: use_build_context_synchronously
+      showSnackBar(_storedContext, 'Could not open link');
+    }
+  }
+
+  static void showSnackBar(BuildContext context, String text) {
+    if (_storedContext.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(text),
+        ),
+      );
     }
   }
 
