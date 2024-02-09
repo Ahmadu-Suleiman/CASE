@@ -121,7 +121,7 @@ class _EditProfileState extends State<EditProfile> {
                         border: const OutlineInputBorder(),
                         hintText: 'Location',
                       ),
-                      initialValue: member.location.join(','),
+                      initialValue: member.bio,
                     ),
                     TextFormField(
                         validator: (val) =>
