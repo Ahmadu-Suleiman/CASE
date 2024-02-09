@@ -1,8 +1,10 @@
+import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/style.dart';
 import 'package:case_be_heard/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
-import 'package:case_be_heard/case_card.dart';
+import 'package:case_be_heard/custom_widgets/case_card.dart';
+import 'package:provider/provider.dart';
 
 class HomeWidget extends StatefulWidget {
   const HomeWidget({super.key});
@@ -16,6 +18,7 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    CommunityMember member = Provider.of<CommunityMember>(context);
     return Scaffold(
       backgroundColor: secondaryColor,
       appBar: AppBar(
@@ -49,20 +52,20 @@ class _HomeWidgetState extends State<HomeWidget> {
             children: <Widget>[
               GestureDetector(
                 onTap: () => Navigator.pushNamed(context, '/member_profile'),
-                child: const UserAccountsDrawerHeader(
-                  decoration: BoxDecoration(
+                child: UserAccountsDrawerHeader(
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
                   accountName: Text(
-                    'Abdulhamid Gent',
-                    style: TextStyle(color: Colors.black),
+                    '${member.firstName} ${member.lastName}',
+                    style: const TextStyle(color: Colors.black),
                   ),
                   accountEmail: Text(
-                    'gent1226@gmail',
-                    style: TextStyle(color: Colors.black),
+                    member.email,
+                    style: const TextStyle(color: Colors.black),
                   ),
                   currentAccountPicture: CircleAvatar(
-                    backgroundImage: AssetImage('assets/profile.png'),
+                    backgroundImage: AssetImage(member.photoUrl),
                     radius: 60,
                   ),
                 ),

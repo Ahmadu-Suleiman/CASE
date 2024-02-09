@@ -12,11 +12,8 @@ class AuthService extends ChangeNotifier {
   }
 
   // auth change user stream
-  Stream<CommunityMember?> get communityMember {
-    return _auth
-        .authStateChanges()
-        //.map((FirebaseUser user) => _userFromFirebaseUser(user));
-        .map(_communityMemberFromFirebaseUser);
+  Stream<User?> get communityMember {
+    return _auth.authStateChanges();
   }
 
   // sign in anon

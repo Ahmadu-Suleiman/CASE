@@ -2,22 +2,14 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Profile extends StatelessWidget {
-  Profile({super.key});
+class Profile extends StatefulWidget {
+  const Profile({super.key});
 
-  final CommunityMember member = CommunityMember.full(
-      uid: '1234',
-      firstName: 'Gent',
-      lastName: 'Hamid',
-      email: 'genthamid@gmail.com',
-      phoneNumber: '080239832774',
-      occupation: 'Student',
-      location: 'Kaduna, NIgeria',
-      gender: 'Male',
-      photoUrl: 'assets/child3.jpg',
-      bio:
-          'I am a student who is passionate about helping my fellow studentd for a better tomorrow');
+  @override
+  State<Profile> createState() => _ProfileState();
+}
 
+class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     CommunityMember member = Provider.of<CommunityMember>(context);
@@ -30,8 +22,8 @@ class Profile extends StatelessWidget {
               radius: 50,
             ),
             Text(
-              '${member.firstName} ${member.lastName} ',
-              maxLines: 3,
+              '${member.firstName} ${member.lastName}',
+              maxLines: 1,
               textAlign: TextAlign.center,
               style: const TextStyle(
                   fontSize: 25.0,

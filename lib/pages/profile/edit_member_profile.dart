@@ -15,91 +15,89 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     CommunityMember member = Provider.of<CommunityMember>(context);
-
-    return StreamBuilder<CommunityMember>(
-        stream: DatabaseService(uid: member.uid).member,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            member = snapshot.data ?? member;
-            return Scaffold(
-              body: Material(
-                child: Center(
-                  child: Column(children: [
-                    CircleAvatar(
-                      backgroundImage: AssetImage(member.photoUrl),
-                      radius: 50,
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        await DatabaseService(uid: member.uid)
-                            .updateCommunityMemberData(member);
-                      },
-                      child: const Text('Update community member information'),
-                    ),
-                    TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'First name',
-                        ),
-                        onChanged: (value) {
-                          member.firstName = value;
-                        }),
-                    TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Last name',
-                        ),
-                        onChanged: (value) {
-                          member.firstName = value;
-                        }),
-                    TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Email',
-                        ),
-                        onChanged: (value) {
-                          member.firstName = value;
-                        }),
-                    TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Phone number',
-                        ),
-                        onChanged: (value) {
-                          member.firstName = value;
-                        }),
-                    TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Occupation',
-                        ),
-                        onChanged: (value) {
-                          member.firstName = value;
-                        }),
-                    TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Location',
-                        ),
-                        onChanged: (value) {
-                          member.firstName = value;
-                        }),
-                    TextField(
-                        minLines: 4,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: 'Bio',
-                        ),
-                        onChanged: (value) {
-                          member.firstName = value;
-                        }),
-                  ]),
+    return Scaffold(
+      body: Material(
+        child: Center(
+          child: Column(children: [
+            CircleAvatar(
+              backgroundImage: AssetImage(member.photoUrl),
+              radius: 50,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await DatabaseService(uid: member.uid)
+                    .updateCommunityMemberData(member);
+              },
+              child: const Text('Update community member information'),
+            ),
+            TextField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'First name',
+                  labelText: member.firstName,
                 ),
-              ),
-            );
-          } else {
-            return Loading();
-          }
-        });
+                onChanged: (value) {
+                  member.firstName = value;
+                }),
+            TextField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Last name',
+                  labelText: member.lastName,
+                ),
+                onChanged: (value) {
+                  member.lastName = value;
+                }),
+            TextField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Email',
+                  labelText: member.email,
+                ),
+                onChanged: (value) {
+                  member.email = value;
+                }),
+            TextField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Phone number',
+                  labelText: member.phoneNumber,
+                ),
+                onChanged: (value) {
+                  member.phoneNumber = value;
+                }),
+            TextField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Occupation',
+                  labelText: member.occupation,
+                ),
+                onChanged: (value) {
+                  member.occupation = value;
+                }),
+            TextField(
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Location',
+                  labelText: member.location,
+                ),
+                onChanged: (value) {
+                  member.location = value;
+                }),
+            TextField(
+                minLines: 4,
+                maxLines: null,
+                decoration: InputDecoration(
+                  border: const OutlineInputBorder(),
+                  hintText: 'Bio',
+                  labelText: member.bio,
+                ),
+                onChanged: (value) {
+                  member.bio = value;
+                }),
+          ]),
+        ),
+      ),
+    );
   }
 }

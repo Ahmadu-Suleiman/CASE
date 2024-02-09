@@ -5,6 +5,8 @@ import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
+import 'package:case_be_heard/services/database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,18 +14,34 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  runApp(const StartWidget());
+}
 
-  runApp(StreamProvider<CommunityMember?>.value(
-    initialData: null,
-    value: AuthService().communityMember,
-    child: MaterialApp(
-      home: Wrapper(),
-      routes: {
-        '/create_case': (context) => const CreateCase(),
-        '/case_page': (context) => const CasePage(),
-        '/member_profile': (context) => Profile(),
-        '/edit_member_profile': (context) => const EditProfile(),
+class StartWidget extends StatelessWidget {
+  const StartWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<User?>.value(
+      initialData: null,
+      value: AuthService().communityMember,
+      builder: (context, child) {
+        return StreamProvider<CommunityMember?>.value(
+          initialData: null,
+          value: DatabaseService(uid: Provider.of<User>(context).uid).member,
+          child: MaterialApp(
+            home: const Wrapper(),
+            routes: {
+              '/create_case': (context) => const CreateCase(),
+              '/case_page': (context) => const CasePage(),
+              '/member_profile': (context) => const Profile(),
+              '/edit_member_profile': (context) => const EditProfile(),
+            },
+          ),
+        );
       },
-    ),
-  ));
+    );
+  }
 }
