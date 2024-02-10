@@ -1,5 +1,5 @@
 import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/utility.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

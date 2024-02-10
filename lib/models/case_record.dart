@@ -1,9 +1,6 @@
 class CaseRecord {
-  String uidMember,
-      title,
-      shortDescription,
-      detailedDescription,
-      mainImage = '';
+  String uidMember, title, shortDescription, detailedDescription = '';
+  String? mainImage;
   late List<String> photos, videos, audios, links = [];
 
   CaseRecord(
@@ -21,6 +18,4 @@ class CaseRecord {
       required this.title,
       required this.shortDescription,
       required this.detailedDescription});
-  CaseRecord.createCase(this.uidMember, this.title, this.shortDescription,
-      this.detailedDescription, this.mainImage);
 }
