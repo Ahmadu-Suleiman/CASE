@@ -151,6 +151,19 @@ class _CreateCaseState extends State<CreateCase> {
                         onPressed: () {
                           addMainImage();
                         },
+                        icon: const Icon(Icons.create),
+                        label: const Text(
+                          'Create',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                      TextButton.icon(
+                        onPressed: () {
+                          addMainImage();
+                        },
                         icon: const Icon(Icons.image),
                         label: const Text(
                           'Add main image',

@@ -16,6 +16,11 @@ class CaseRecord {
       required this.videos,
       required this.audios,
       required this.links});
+  CaseRecord.init(
+      {required this.uidMember,
+      required this.title,
+      required this.shortDescription,
+      required this.detailedDescription});
   CaseRecord.createCase(this.uidMember, this.title, this.shortDescription,
       this.detailedDescription, this.mainImage);
 }

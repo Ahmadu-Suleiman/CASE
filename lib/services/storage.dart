@@ -2,36 +2,35 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 
 class StorageService {
-  static final storage = FirebaseStorage.instance;
-  static var storageRef = FirebaseStorage.instance.ref();
-  static final profileImagesRef = storageRef.child("profileImages");
-  static final mainImageCaseRef = storageRef.child("mainImageCase");
-  static final photosCaseRef = storageRef.child("photosCase");
-  static final videosCaseRef = storageRef.child("videosCase");
-  static final audiosCaseRef = storageRef.child("audiosCase");
+  static final _storageRef = FirebaseStorage.instance.ref();
+  static final _profileImagesRef = _storageRef.child("profileImages");
+  static final _mainImageCaseRef = _storageRef.child("mainImageCase");
+  static final _photosCaseRef = _storageRef.child("photosCase");
+  static final _videosCaseRef = _storageRef.child("videosCase");
+  static final _audiosCaseRef = _storageRef.child("audiosCase");
 
   static Future<String> uploadProfileImage(String uid, File file) async {
     String fileName = uid;
-    final imageRef = profileImagesRef.child(fileName);
+    final imageRef = _profileImagesRef.child(fileName);
     await imageRef.putFile(file);
     return await imageRef.getDownloadURL();
   }
 
   static Future<String> uploadCaseRecordMainImage(
-      String uidCase, File file) async {
+      String uidCase, String filePath) async {
     String fileName = '$uidCase mainImage';
-    final mainImageRef = mainImageCaseRef.child(fileName);
-    await mainImageRef.putFile(file);
+    final mainImageRef = _mainImageCaseRef.child(fileName);
+    await mainImageRef.putFile(File(filePath));
     return await mainImageRef.getDownloadURL();
   }
 
   static Future<List<String>> uploadCaseRecordPhotos(
-      String uidCase, List<File> files) async {
+      String uidCase, List<String> filePaths) async {
     List<String> photoLinks = List.empty(growable: true);
-    for (int i = 0; i < files.length; i++) {
-      File file = files[i];
+    for (int i = 0; i < filePaths.length; i++) {
+      File file = File(filePaths[i]);
       String fileName = '$uidCase photo $i';
-      final photoRef = photosCaseRef.child(fileName);
+      final photoRef = _photosCaseRef.child(fileName);
       await photoRef.putFile(file);
       String photoLink = await photoRef.getDownloadURL();
       photoLinks.add(photoLink);
@@ -40,12 +39,12 @@ class StorageService {
   }
 
   static Future<List<String>> uploadCaseRecordVideos(
-      String uidCase, List<File> files) async {
+      String uidCase, List<String> filePaths) async {
     List<String> videoLinks = List.empty(growable: true);
-    for (int i = 0; i < files.length; i++) {
-      File file = files[i];
+    for (int i = 0; i < filePaths.length; i++) {
+      File file = File(filePaths[i]);
       String fileName = '$uidCase video $i';
-      final videoRef = videosCaseRef.child(fileName);
+      final videoRef = _videosCaseRef.child(fileName);
       await videoRef.putFile(file);
       String videoLink = await videoRef.getDownloadURL();
       videoLinks.add(videoLink);
@@ -53,13 +52,13 @@ class StorageService {
     return videoLinks;
   }
 
-  static Future<List<String>> uploadCaseRecordAudio(
-      String uidCase, List<File> files) async {
+  static Future<List<String>> uploadCaseRecordAudios(
+      String uidCase, List<String> filePaths) async {
     List<String> audioLinks = List.empty(growable: true);
-    for (int i = 0; i < files.length; i++) {
-      File file = files[i];
+    for (int i = 0; i < filePaths.length; i++) {
+      File file = File(filePaths[i]);
       String fileName = '$uidCase audio $i';
-      final audioRef = audiosCaseRef.child(fileName);
+      final audioRef = _audiosCaseRef.child(fileName);
       await audioRef.putFile(file);
       String videoLink = await audioRef.getDownloadURL();
       audioLinks.add(videoLink);
