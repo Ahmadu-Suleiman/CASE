@@ -21,6 +21,7 @@ class _ProfileState extends State<Profile> {
             CircleAvatar(
               backgroundImage: Utility.getProfileImage(member.photoUrl),
               radius: 50,
+              child: const Icon(Icons.person),
             ),
             Text(
               '${member.firstName} ${member.lastName}',
@@ -72,9 +73,9 @@ class _ProfileState extends State<Profile> {
             ),
             TextButton.icon(
               onPressed: () {},
-              icon: const Icon(Icons.location_city),
+              icon: const Icon(Icons.location_on),
               label: Text(
-                member.location,
+                member.location.join(','),
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.blue,

@@ -11,7 +11,7 @@ class StorageService {
   static final audiosCaseRef = storageRef.child("audiosCase");
 
   static Future<String> uploadProfileImage(String uid, File file) async {
-    String fileName = '$uid${DateTime.now().toString()}';
+    String fileName = uid;
     final imageRef = profileImagesRef.child(fileName);
     await imageRef.putFile(file);
     return await imageRef.getDownloadURL();

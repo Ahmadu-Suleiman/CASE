@@ -1,5 +1,5 @@
 import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/services/database.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 
@@ -48,7 +48,7 @@ class AuthService extends ChangeNotifier {
           email: email, password: password);
       User? user = result.user;
       // create a new document for the user with the uid
-      await DatabaseService(uid: user!.uid)
+      await DatabaseMember(uid: user!.uid)
           .updateCommunityMemberData(CommunityMember(uid: user.uid));
       return _communityMemberFromFirebaseUser(user);
     } catch (error) {

@@ -1,44 +1,36 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
-import 'package:case_be_heard/services/location.dart';
-import 'package:case_be_heard/utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({super.key});
+class CreateProfile extends StatefulWidget {
+  const CreateProfile({super.key});
 
   @override
-  State<EditProfile> createState() => _EditProfileState();
+  State<CreateProfile> createState() => _CreateProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
-  CommunityMember member = CommunityMember.empty();
+class _CreateProfileState extends State<CreateProfile> {
   final _formKey = GlobalKey<FormState>();
   bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     User? user = Provider.of<User?>(context);
-    member = Provider.of<CommunityMember?>(context) ?? member;
+    CommunityMember member =
+        Provider.of<CommunityMember?>(context) ?? CommunityMember.empty();
+    if (user != null) {
+      var m = DatabaseMember(uid: user.uid).member;
+      print(m);
+    }
     return isLoading
         ? Loading()
         : Scaffold(
             body: Material(
               child: Center(
                 child: Column(children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/profile_image');
-                    },
-                    child: CircleAvatar(
-                      backgroundImage: Utility.getProfileImage(member.photoUrl),
-                      radius: 50,
-                      child: const Icon(Icons.person),
-                    ),
-                  ),
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState != null &&
@@ -108,24 +100,6 @@ class _EditProfileState extends State<EditProfile> {
                               onChanged: (value) {
                                 member.occupation = value;
                               }),
-                          TextButton.icon(
-                            onPressed: () async {
-                              setState(() => isLoading = true);
-                              member.location =
-                                  await LocationService.getLocation(context);
-                              setState(() => isLoading = false);
-                            },
-                            icon: const Icon(Icons.location_on),
-                            label: Text(
-                              member.location.isEmpty
-                                  ? 'Choose your location'
-                                  : member.location.join(','),
-                              style: const TextStyle(
-                                fontSize: 18,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          ),
                           TextFormField(
                               validator: (val) =>
                                   val!.isEmpty ? 'Supply a value' : null,

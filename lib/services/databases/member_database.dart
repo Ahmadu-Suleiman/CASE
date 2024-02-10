@@ -1,9 +1,10 @@
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DatabaseService {
+class DatabaseMember {
   final String? uid;
-  DatabaseService({required this.uid});
+  DatabaseMember({required this.uid});
 
   // collection reference
   final CollectionReference communityMemberCollection =
@@ -26,15 +27,15 @@ class DatabaseService {
   CommunityMember _communityMemberFromSnapshot(DocumentSnapshot snapshot) {
     return CommunityMember.full(
       uid: uid,
-      firstName: snapshot['firstName'],
-      lastName: snapshot['lastName'],
-      phoneNumber: snapshot['phoneNumber'],
-      email: snapshot['email'],
-      occupation: snapshot['occupation'],
-      gender: snapshot['gender'],
-      location: snapshot['location'],
-      photoUrl: snapshot['photoUrl'],
-      bio: snapshot['bio'],
+      firstName: snapshot['firstName'] ?? '',
+      lastName: snapshot['lastName'] ?? '',
+      email: snapshot['email'] ?? '',
+      phoneNumber: snapshot['phoneNumber'] ?? '',
+      occupation: snapshot['occupation'] ?? '',
+      location: Utility.stringList(snapshot['location']),
+      gender: snapshot['gender'] ?? '',
+      photoUrl: snapshot['photoUrl'] ?? '',
+      bio: snapshot['bio'] ?? '',
     );
   }
 
@@ -44,10 +45,12 @@ class DatabaseService {
     });
   }
 
-  Stream<CommunityMember> get member {
-    return communityMemberCollection
-        .doc(uid)
-        .snapshots()
-        .map(_communityMemberFromSnapshot);
+  Stream<CommunityMember?>? get member {
+    return uid != null
+        ? communityMemberCollection
+            .doc(uid)
+            .snapshots()
+            .map(_communityMemberFromSnapshot)
+        : null;
   }
 }

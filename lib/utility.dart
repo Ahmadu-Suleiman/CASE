@@ -1,8 +1,9 @@
 import 'dart:io';
 
 import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/services/database.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -11,6 +12,7 @@ import 'package:url_launcher/url_launcher.dart';
 class Utility {
   static late BuildContext _storedContext;
   static final ImagePicker _picker = ImagePicker();
+  static const defaultImage = AssetImage('assets/profile.png');
 
   static List<String> texts = [
     'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
@@ -35,13 +37,18 @@ class Utility {
   static void openLink(BuildContext context, String url) async {
     _storedContext = context;
     if (!await launchUrl(Uri.parse(url))) {
-      if (_storedContext.mounted) {
-        ScaffoldMessenger.of(_storedContext).showSnackBar(
-          const SnackBar(
-            content: Text("Could not open link"),
-          ),
-        );
-      }
+      // ignore: use_build_context_synchronously
+      showSnackBar(_storedContext, 'Could not open link');
+    }
+  }
+
+  static void showSnackBar(BuildContext context, String text) {
+    if (_storedContext.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(text),
+        ),
+      );
     }
   }
 
@@ -68,9 +75,17 @@ class Utility {
       String link =
           await StorageService.uploadProfileImage(uid, File(imageFile.path));
       member.photoUrl = link;
-      await DatabaseService(uid: member.uid).updateCommunityMemberData(member);
+      await DatabaseMember(uid: member.uid).updateCommunityMemberData(member);
       return link;
     }
     return null;
+  }
+
+  static List<String> stringList(dynamic input) {
+    if (input is List<dynamic>) {
+      return input.cast<String>();
+    } else {
+      return [];
+    }
   }
 }

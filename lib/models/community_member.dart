@@ -7,11 +7,11 @@ class CommunityMember {
   String email = '';
   String phoneNumber = '';
   String occupation = '';
-  String location = '';
+  List<String> location = [];
   String gender = '';
   String? photoUrl;
   String bio = '';
-  List<Case> cases = [];
+  List<CaseRecord> cases = [];
 
   CommunityMember({required this.uid});
   CommunityMember.empty();

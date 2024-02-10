@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
-  SignIn({required this.toggleView});
+  const SignIn({super.key, required this.toggleView});
 
   @override
-  _SignInState createState() => _SignInState();
+  SignInState createState() => SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class SignInState extends State<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
