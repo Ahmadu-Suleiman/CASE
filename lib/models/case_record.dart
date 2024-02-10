@@ -1,6 +1,9 @@
 class CaseRecord {
-  String uidMember, title, shortDescription, detailedDescription = '';
-  String? mainImage;
+  String uidMember,
+      title,
+      shortDescription,
+      detailedDescription,
+      mainImage = '';
   late List<String> photos, videos, audios, links = [];
 
   CaseRecord(

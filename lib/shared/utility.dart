@@ -35,7 +35,6 @@ class Utility {
   }
 
   static void openLink(BuildContext context, String url) async {
-    _storedContext = context;
     if (!await launchUrl(Uri.parse(url))) {
       // ignore: use_build_context_synchronously
       showSnackBar(_storedContext, 'Could not open link');
@@ -43,6 +42,7 @@ class Utility {
   }
 
   static void showSnackBar(BuildContext context, String text) {
+    _storedContext = context;
     if (_storedContext.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(

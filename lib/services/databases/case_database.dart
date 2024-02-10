@@ -18,9 +18,9 @@ class DatabaseCase {
     });
   }
 
-  static Future<DocumentReference> _uploadCase(
-      CaseRecord caseRecord, String uidMember) async {
-    return await caseCollection.add({
+  static Future<void> _updateCase(
+      CaseRecord caseRecord, String uidCase, String uidMember) async {
+    return await caseCollection.doc(uidCase).set({
       'uidMember': uidMember,
       'title': caseRecord.title,
       'shortDescription': caseRecord.shortDescription,
@@ -62,7 +62,8 @@ class DatabaseCase {
     });
   }
 
-  static void uploadCaseRecord(CaseRecord caseRecord, String uidMember) async {
+  static Future<void> uploadCaseRecord(
+      CaseRecord caseRecord, String uidMember) async {
     DocumentReference caseRef = await _uploadCaseInit(caseRecord, uidMember);
     caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
         caseRef.id, caseRecord.mainImage);
@@ -73,6 +74,6 @@ class DatabaseCase {
     caseRecord.audios = await StorageService.uploadCaseRecordAudios(
         caseRef.id, caseRecord.audios);
 
-    await _uploadCase(caseRecord, uidMember);
+    return await _updateCase(caseRecord, caseRef.id, uidMember);
   }
 }

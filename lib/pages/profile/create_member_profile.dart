@@ -21,10 +21,6 @@ class _CreateProfileState extends State<CreateProfile> {
     User? user = Provider.of<User?>(context);
     CommunityMember member =
         Provider.of<CommunityMember?>(context) ?? CommunityMember.empty();
-    if (user != null) {
-      var m = DatabaseMember(uid: user.uid).member;
-      print(m);
-    }
     return isLoading
         ? const Loading()
         : Scaffold(
