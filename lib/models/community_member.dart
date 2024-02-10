@@ -1,4 +1,4 @@
-import 'package:case_be_heard/models/case.dart';
+import 'package:case_be_heard/models/case_record.dart';
 
 class CommunityMember {
   String? uid;

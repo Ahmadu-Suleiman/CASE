@@ -1,4 +1,4 @@
-import 'package:case_be_heard/models/case.dart';
+import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
