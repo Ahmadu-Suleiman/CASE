@@ -1,4 +1,5 @@
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMember {
@@ -24,8 +25,6 @@ class DatabaseMember {
   }
 
   CommunityMember _communityMemberFromSnapshot(DocumentSnapshot snapshot) {
-    List<String> locationList =
-        snapshot['location']?.whereType<String>().toList() ?? [];
     return CommunityMember.full(
       uid: uid,
       firstName: snapshot['firstName'] ?? '',
@@ -33,7 +32,7 @@ class DatabaseMember {
       email: snapshot['email'] ?? '',
       phoneNumber: snapshot['phoneNumber'] ?? '',
       occupation: snapshot['occupation'] ?? '',
-      location: locationList,
+      location: Utility.stringList(snapshot['location']),
       gender: snapshot['gender'] ?? '',
       photoUrl: snapshot['photoUrl'] ?? '',
       bio: snapshot['bio'] ?? '',

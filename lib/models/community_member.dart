@@ -11,7 +11,7 @@ class CommunityMember {
   String gender = '';
   String? photoUrl;
   String bio = '';
-  List<Case> cases = [];
+  List<CaseRecord> cases = [];
 
   CommunityMember({required this.uid});
   CommunityMember.empty();

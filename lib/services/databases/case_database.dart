@@ -1,59 +1,67 @@
-import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/models/case.dart';
+import 'package:case_be_heard/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DatabaseService {
-  final String? uid;
-  DatabaseService({required this.uid});
-
+class DatabaseCase {
   // collection reference
-  final CollectionReference communityMemberCollection =
-      FirebaseFirestore.instance.collection('communityMembers');
+  static final CollectionReference caseCollection =
+      FirebaseFirestore.instance.collection('caseRecords');
 
-  Future<void> updateCommunityMemberData(CommunityMember member) async {
-    return await communityMemberCollection.doc(uid).set({
-      'firstName': member.firstName,
-      'lastName': member.lastName,
-      'email': member.email,
-      'phoneNumber': member.phoneNumber,
-      'occupation': member.occupation,
-      'location': member.location,
-      'gender': member.gender,
-      'bio': member.bio,
-      'photoUrl': member.photoUrl,
+  static Future<DocumentReference> createCase(CaseRecord caseRecord) async {
+    return await caseCollection.add({
+      'title': caseRecord.title,
+      'shortDescription': caseRecord.shortDescription,
+      'detailedDescription': caseRecord.detailedDescription,
+      'mainImage': caseRecord.mainImage,
+      'photos': caseRecord.photos,
+      'videos': caseRecord.videos,
+      'audios': caseRecord.audios,
+      'links': caseRecord.links,
     });
   }
 
-  CommunityMember _communityMemberFromSnapshot(DocumentSnapshot snapshot) {
-    List<String> locationList = [];
-    if (snapshot['location'] is List<dynamic>) {
-      locationList = List<String>.from(snapshot['location'].cast<String>());
-    }
-    return CommunityMember.full(
-      uid: uid,
-      firstName: snapshot['firstName'] ?? '',
-      lastName: snapshot['lastName'] ?? '',
-      email: snapshot['email'] ?? '',
-      phoneNumber: snapshot['phoneNumber'] ?? '',
-      occupation: snapshot['occupation'] ?? '',
-      location: locationList,
-      gender: snapshot['gender'] ?? '',
-      photoUrl: snapshot['photoUrl'] ?? '',
-      bio: snapshot['bio'] ?? '',
+  static CaseRecord _caseRecordsFromSnapshot(DocumentSnapshot snapshot) {
+    return CaseRecord(
+      uidMember: uidMember,
+      title: snapshot['title'],
+      shortDescription: snapshot['shortDescription'],
+      detailedDescription: snapshot['detailedDescription'],
+      mainImage: snapshot['mainImage'],
+      photos: Utility.stringList(snapshot['photos']),
+      videos: Utility.stringList(snapshot['videos']),
+      audios: Utility.stringList(snapshot['audios']),
+      links: Utility.stringList(snapshot['links']),
     );
   }
 
-  Stream<List<CommunityMember?>> get communityMembers {
-    return communityMemberCollection.snapshots().map((snapshots) {
-      return snapshots.docs.map(_communityMemberFromSnapshot).toList();
+  static CaseRecord _caseRecordsFromSnapshotMember(
+      DocumentSnapshot snapshot, String uidMember) {
+    return CaseRecord(
+      uidMember: uidMember,
+      title: snapshot['title'],
+      shortDescription: snapshot['shortDescription'],
+      detailedDescription: snapshot['detailedDescription'],
+      mainImage: snapshot['mainImage'],
+      photos: Utility.stringList(snapshot['photos']),
+      videos: Utility.stringList(snapshot['videos']),
+      audios: Utility.stringList(snapshot['audios']),
+      links: Utility.stringList(snapshot['links']),
+    );
+  }
+
+  static Stream<List<CaseRecord?>> get caseRecords {
+    return caseCollection.snapshots().map((snapshots) {
+      return snapshots.docs
+          .map((doc) => _caseRecordsFromSnapshot(doc, uidMember))
+          .toList();
     });
   }
 
-  Stream<CommunityMember?>? get member {
-    return uid != null
-        ? communityMemberCollection
-            .doc(uid)
-            .snapshots()
-            .map(_communityMemberFromSnapshot)
-        : null;
+  static Stream<List<CaseRecord?>> caseRecordsMember(String uidMember) {
+    return caseCollection.snapshots().map((snapshots) {
+      return snapshots.docs
+          .map((doc) => _caseRecordsFromSnapshot(doc, uidMember))
+          .toList();
+    });
   }
 }
