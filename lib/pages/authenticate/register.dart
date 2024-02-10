@@ -1,6 +1,6 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/services/auth.dart';
-import 'package:case_be_heard/style.dart';
+import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -40,7 +40,8 @@ class RegisterState extends State<Register> {
               ],
             ),
             body: Container(
-              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -48,7 +49,7 @@ class RegisterState extends State<Register> {
                     const SizedBox(height: 20.0),
                     TextFormField(
                       decoration:
-                          textInputDecoration.copyWith(hintText: 'email'),
+                          Style.textInputDecoration.copyWith(hintText: 'email'),
                       validator: (val) =>
                           val!.isEmpty ? 'Enter an email' : null,
                       onChanged: (val) {
@@ -57,8 +58,8 @@ class RegisterState extends State<Register> {
                     ),
                     const SizedBox(height: 20.0),
                     TextFormField(
-                      decoration:
-                          textInputDecoration.copyWith(hintText: 'password'),
+                      decoration: Style.textInputDecoration
+                          .copyWith(hintText: 'password'),
                       obscureText: true,
                       validator: (val) => val!.length < 6
                           ? 'Enter a password 6+ chars long'

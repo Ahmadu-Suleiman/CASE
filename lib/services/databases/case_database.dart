@@ -1,6 +1,6 @@
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/services/storage.dart';
-import 'package:case_be_heard/utility.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseCase {
@@ -40,10 +40,10 @@ class DatabaseCase {
       shortDescription: snapshot['shortDescription'],
       detailedDescription: snapshot['detailedDescription'],
       mainImage: snapshot['mainImage'],
-      photos: Utility.stringList(snapshot['photos']),
-      videos: Utility.stringList(snapshot['videos']),
-      audios: Utility.stringList(snapshot['audios']),
-      links: Utility.stringList(snapshot['links']),
+      photos: Utility.stringList(snapshot, 'photos'),
+      videos: Utility.stringList(snapshot, 'videos'),
+      audios: Utility.stringList(snapshot, 'audios'),
+      links: Utility.stringList(snapshot, 'links'),
     );
   }
 

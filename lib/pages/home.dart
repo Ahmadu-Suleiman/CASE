@@ -1,7 +1,7 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/style.dart';
-import 'package:case_be_heard/utility.dart';
+import 'package:case_be_heard/shared/style.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:case_be_heard/custom_widgets/case_card.dart';
@@ -22,7 +22,7 @@ class _HomeWidgetState extends State<HomeWidget> {
     CommunityMember? member = Provider.of<CommunityMember?>(context);
     return member != null
         ? Scaffold(
-            backgroundColor: secondaryColor,
+            backgroundColor: Style.secondaryColor,
             appBar: AppBar(
               leading: Builder(builder: (context) {
                 return IconButton(
@@ -61,7 +61,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                         accountName: Text(
                           '${member.firstName} ${member.lastName}',
-                          style: const TextStyle(color: Colors.black),
+                          style: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                         accountEmail: Text(
                           member.email,
@@ -151,10 +152,10 @@ class _HomeWidgetState extends State<HomeWidget> {
             floatingActionButton: FloatingActionButton(
               onPressed: () => Navigator.pushNamed(context, '/create_case'),
               shape: const CircleBorder(),
-              splashColor: secondaryColor,
+              splashColor: Style.secondaryColor,
               child: Icon(
                 Icons.add,
-                color: primaryColor,
+                color: Style.primaryColor,
               ),
             ),
             floatingActionButtonLocation:

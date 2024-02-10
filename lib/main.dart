@@ -7,7 +7,7 @@ import 'package:case_be_heard/pages/profile/profile_image.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
-import 'package:case_be_heard/style.dart';
+import 'package:case_be_heard/shared/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -43,15 +43,15 @@ class StartWidget extends StatelessWidget {
                 '/profile_image': (context) => const ProfileImage(),
               },
               theme: ThemeData(
-                focusColor: secondaryColor,
-                hoverColor: secondaryColor,
-                primaryColor: primaryColor,
+                focusColor: Style.secondaryColor,
+                hoverColor: Style.secondaryColor,
+                primaryColor: Style.primaryColor,
                 iconTheme: const IconThemeData(
                   color: Colors.black, // Set the global color for icons
                 ),
                 colorScheme: ColorScheme.fromSwatch(
                   backgroundColor: Colors.white,
-                  accentColor: primaryColor,
+                  accentColor: Style.primaryColor,
                 ),
               ),
             ));

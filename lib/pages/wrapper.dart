@@ -1,6 +1,6 @@
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/pages/authenticate/authenticate.dart';
-import 'package:case_be_heard/home.dart';
+import 'package:case_be_heard/pages/home.dart';
 import 'package:case_be_heard/pages/profile/create_member_profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
