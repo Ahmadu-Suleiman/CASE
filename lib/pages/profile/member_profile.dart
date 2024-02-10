@@ -21,7 +21,6 @@ class _ProfileState extends State<Profile> {
             CircleAvatar(
               backgroundImage: Utility.getProfileImage(member.photoUrl),
               radius: 50,
-              child: const Icon(Icons.person),
             ),
             Text(
               '${member.firstName} ${member.lastName}',

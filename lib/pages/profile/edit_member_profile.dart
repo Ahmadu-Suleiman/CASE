@@ -36,7 +36,6 @@ class _EditProfileState extends State<EditProfile> {
                     child: CircleAvatar(
                       backgroundImage: Utility.getProfileImage(member.photoUrl),
                       radius: 50,
-                      child: const Icon(Icons.person),
                     ),
                   ),
                   ElevatedButton(

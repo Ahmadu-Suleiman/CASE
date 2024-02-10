@@ -20,7 +20,7 @@ class _CreateCaseState extends State<CreateCase> {
   final audioPlayer = AudioPlayer();
   final linkController = TextEditingController();
 
-  Image? image;
+  String? mainImagePath;
   List<Widget> linkWidgets = [];
   List<Widget> addlinkWidgets = [];
 
@@ -34,15 +34,7 @@ class _CreateCaseState extends State<CreateCase> {
       source: ImageSource.gallery,
     );
 
-    if (image != null) {
-      this.image = Image.file(
-        File(image.path),
-        fit: BoxFit.cover,
-        width: double.infinity,
-        height: 250,
-      );
-      setState(() {});
-    }
+    if (image != null) setState(() => mainImagePath = image.path);
   }
 
   void addPhotos() async {
@@ -177,7 +169,14 @@ class _CreateCaseState extends State<CreateCase> {
                         padding: const EdgeInsets.all(8.0),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(30.0),
-                          child: image,
+                          child: mainImagePath != null
+                              ? Image.file(
+                                  File(mainImagePath!),
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 250,
+                                )
+                              : Container(),
                         ),
                       ),
                       const SizedBox(height: 20),

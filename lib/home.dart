@@ -71,7 +71,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                           backgroundImage:
                               Utility.getProfileImage(member.photoUrl),
                           radius: 60,
-                          child: const Icon(Icons.person),
                         ),
                       ),
                     ),

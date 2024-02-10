@@ -1,6 +1,6 @@
-import 'package:case_be_heard/pages/case_page.dart';
+import 'package:case_be_heard/pages/case_pages/case_page.dart';
 import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/pages/create_case.dart';
+import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/pages/profile/profile_image.dart';
