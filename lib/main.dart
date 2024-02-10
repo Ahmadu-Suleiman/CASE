@@ -3,6 +3,7 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/pages/create_case.dart';
 import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
+import 'package:case_be_heard/pages/profile/profile_image.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
 import 'package:case_be_heard/services/database.dart';
@@ -30,7 +31,7 @@ class StartWidget extends StatelessWidget {
       builder: (context, child) {
         return StreamProvider<CommunityMember?>.value(
           initialData: null,
-          value: DatabaseService(uid: Provider.of<User>(context).uid).member,
+          value: DatabaseService(uid: Provider.of<User?>(context)?.uid).member,
           child: MaterialApp(
             home: const Wrapper(),
             routes: {
@@ -38,6 +39,7 @@ class StartWidget extends StatelessWidget {
               '/case_page': (context) => const CasePage(),
               '/member_profile': (context) => const Profile(),
               '/edit_member_profile': (context) => const EditProfile(),
+              '/profile_image': (context) => const ProfileImage(),
             },
           ),
         );

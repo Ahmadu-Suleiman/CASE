@@ -1,7 +1,7 @@
 import 'package:case_be_heard/models/case.dart';
 
 class CommunityMember {
-  String uid;
+  String? uid;
   String firstName = '';
   String lastName = '';
   String email = '';
@@ -14,6 +14,7 @@ class CommunityMember {
   List<Case> cases = [];
 
   CommunityMember({required this.uid});
+  CommunityMember.empty();
   CommunityMember.full({
     required this.uid,
     required this.firstName,

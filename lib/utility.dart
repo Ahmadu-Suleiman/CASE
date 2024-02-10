@@ -1,10 +1,16 @@
+import 'dart:io';
+
+import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/services/database.dart';
+import 'package:case_be_heard/services/storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utility {
-  static late BuildContext storedContext;
-  static const String defaultProfileImage = 'assets/profile.png';
+  static late BuildContext _storedContext;
+  static final ImagePicker _picker = ImagePicker();
 
   static List<String> texts = [
     'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
@@ -27,10 +33,10 @@ class Utility {
   }
 
   static void openLink(BuildContext context, String url) async {
-    storedContext = context;
+    _storedContext = context;
     if (!await launchUrl(Uri.parse(url))) {
-      if (storedContext.mounted) {
-        ScaffoldMessenger.of(storedContext).showSnackBar(
+      if (_storedContext.mounted) {
+        ScaffoldMessenger.of(_storedContext).showSnackBar(
           const SnackBar(
             content: Text("Could not open link"),
           ),
@@ -48,5 +54,23 @@ class Utility {
     }
   }
 
-  static getProfileImage()
+  static getProfileImage(String? photoUrl) {
+    return photoUrl != null
+        ? NetworkImage(photoUrl)
+        : const AssetImage('assets/profile.png');
+  }
+
+  static Future<String?> pickandUpdateProfileImage(
+      CommunityMember member) async {
+    XFile? imageFile = await _picker.pickImage(source: ImageSource.gallery);
+    String? uid = member.uid;
+    if (imageFile != null && uid != null) {
+      String link =
+          await StorageService.uploadProfileImage(uid, File(imageFile.path));
+      member.photoUrl = link;
+      await DatabaseService(uid: member.uid).updateCommunityMemberData(member);
+      return link;
+    }
+    return null;
+  }
 }

@@ -68,7 +68,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                           style: const TextStyle(color: Colors.black),
                         ),
                         currentAccountPicture: CircleAvatar(
-                          backgroundImage: AssetImage(member.photoUrl),
+                          backgroundImage:
+                              Utility.getProfileImage(member.photoUrl),
                           radius: 60,
                         ),
                       ),

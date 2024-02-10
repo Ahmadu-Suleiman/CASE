@@ -1,45 +1,43 @@
 import 'package:case_be_heard/models/community_member.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:case_be_heard/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class _ProfileImageState extends StatefulWidget {
-  const _ProfileImageState({super.key});
+class ProfileImage extends StatefulWidget {
+  const ProfileImage({super.key});
 
   @override
-  State<_ProfileImageState> createState() => __ProfileImageStateState();
+  State<ProfileImage> createState() => _ProfileImageState();
 }
 
-class __ProfileImageStateState extends State<_ProfileImageState> {
+class _ProfileImageState extends State<ProfileImage> {
   @override
   Widget build(BuildContext context) {
     CommunityMember member = Provider.of<CommunityMember>(context);
-  String? photoUrl=member.photoUrl;
+    String? photoUrl = member.photoUrl;
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: member.photoUrl != null
-      ? NetworkImage(member.photoUrl!)
-      : const AssetImage('assets/person.jpg'),
+            image: Utility.getProfileImage(photoUrl),
             fit: BoxFit.cover,
           ),
         ),
-        child:  Align(
+        child: Align(
           alignment: Alignment.bottomCenter,
-          child:TextButton.icon(
-                  onPressed: () async {
-                    addPhotos();
-                  },
-                  icon: const Icon(Icons.image),
-                  label: const Text(
-                    'Change image',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
+          child: TextButton.icon(
+            onPressed: () async {
+              Utility.pickandUpdateProfileImage(member);
+            },
+            icon: const Icon(Icons.image),
+            label: const Text(
+              'Change image',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.blue,
+              ),
+            ),
+          ),
         ),
       ),
     );

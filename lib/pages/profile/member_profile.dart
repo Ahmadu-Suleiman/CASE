@@ -1,4 +1,5 @@
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,7 @@ class _ProfileState extends State<Profile> {
         child: Center(
           child: Column(children: [
             CircleAvatar(
-              backgroundImage: AssetImage(member.photoUrl),
+              backgroundImage: Utility.getProfileImage(member.photoUrl),
               radius: 50,
             ),
             Text(

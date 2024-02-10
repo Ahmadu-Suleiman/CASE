@@ -1,5 +1,6 @@
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/database.dart';
+import 'package:case_be_heard/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,9 +19,14 @@ class _EditProfileState extends State<EditProfile> {
       body: Material(
         child: Center(
           child: Column(children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(member.photoUrl),
-              radius: 50,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/profile_image');
+              },
+              child: CircleAvatar(
+                backgroundImage: Utility.getProfileImage(member.photoUrl),
+                radius: 50,
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
