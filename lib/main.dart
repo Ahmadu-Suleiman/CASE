@@ -6,7 +6,7 @@ import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/pages/profile/profile_image.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
-import 'package:case_be_heard/services/database.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,8 +32,7 @@ class StartWidget extends StatelessWidget {
       builder: (context, child) {
         return StreamProvider<CommunityMember?>.value(
             initialData: null,
-            value:
-                DatabaseService(uid: Provider.of<User?>(context)?.uid).member,
+            value: DatabaseMember(uid: Provider.of<User?>(context)?.uid).member,
             child: MaterialApp(
               home: const Wrapper(),
               routes: {

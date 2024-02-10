@@ -40,7 +40,8 @@ class LocationService {
     Position? currentPosition;
     final hasPermission = await _handleLocationPermission(context);
     if (!hasPermission) return currentPosition;
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
   }
 
   static Future<List<String>> getLocation(BuildContext context) async {

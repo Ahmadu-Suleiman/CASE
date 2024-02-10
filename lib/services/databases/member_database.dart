@@ -1,9 +1,9 @@
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DatabaseService {
+class DatabaseMember {
   final String? uid;
-  DatabaseService({required this.uid});
+  DatabaseMember({required this.uid});
 
   // collection reference
   final CollectionReference communityMemberCollection =
@@ -24,17 +24,19 @@ class DatabaseService {
   }
 
   CommunityMember _communityMemberFromSnapshot(DocumentSnapshot snapshot) {
+    List<String> locationList =
+        snapshot['location']?.whereType<String>().toList() ?? [];
     return CommunityMember.full(
       uid: uid,
-      firstName: snapshot['firstName'],
-      lastName: snapshot['lastName'],
-      phoneNumber: snapshot['phoneNumber'],
-      email: snapshot['email'],
-      occupation: snapshot['occupation'],
-      gender: snapshot['gender'],
-      location: snapshot['location'],
-      photoUrl: snapshot['photoUrl'],
-      bio: snapshot['bio'],
+      firstName: snapshot['firstName'] ?? '',
+      lastName: snapshot['lastName'] ?? '',
+      email: snapshot['email'] ?? '',
+      phoneNumber: snapshot['phoneNumber'] ?? '',
+      occupation: snapshot['occupation'] ?? '',
+      location: locationList,
+      gender: snapshot['gender'] ?? '',
+      photoUrl: snapshot['photoUrl'] ?? '',
+      bio: snapshot['bio'] ?? '',
     );
   }
 

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/services/database.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -74,7 +74,7 @@ class Utility {
       String link =
           await StorageService.uploadProfileImage(uid, File(imageFile.path));
       member.photoUrl = link;
-      await DatabaseService(uid: member.uid).updateCommunityMemberData(member);
+      await DatabaseMember(uid: member.uid).updateCommunityMemberData(member);
       return link;
     }
     return null;
