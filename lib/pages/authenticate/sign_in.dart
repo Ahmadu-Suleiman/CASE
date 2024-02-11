@@ -24,28 +24,28 @@ class SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return loading
-        ? Loading()
+        ? const Loading()
         : Scaffold(
             backgroundColor: Colors.brown[100],
             appBar: AppBar(
               backgroundColor: Colors.brown[400],
               elevation: 0.0,
-              title: Text('Sign in to Brew Crew'),
+              title: const Text('Sign in to Brew Crew'),
               actions: <Widget>[
                 TextButton.icon(
-                  icon: Icon(Icons.person),
-                  label: Text('Register'),
+                  icon: const Icon(Icons.person),
+                  label: const Text('Register'),
                   onPressed: () => widget.toggleView(),
                 ),
               ],
             ),
             body: Container(
-              padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
+              padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                       decoration:
                           textInputDecoration.copyWith(hintText: 'email'),
@@ -55,7 +55,7 @@ class SignInState extends State<SignIn> {
                         setState(() => email = val);
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     TextFormField(
                       obscureText: true,
                       decoration:
@@ -67,12 +67,12 @@ class SignInState extends State<SignIn> {
                         setState(() => password = val);
                       },
                     ),
-                    SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
                     ElevatedButton(
                         style: const ButtonStyle(
                             iconColor:
                                 MaterialStatePropertyAll<Color>(Colors.pink)),
-                        child: Text(
+                        child: const Text(
                           'Sign In',
                           style: TextStyle(color: Colors.white),
                         ),
@@ -91,10 +91,10 @@ class SignInState extends State<SignIn> {
                             }
                           }
                         }),
-                    SizedBox(height: 12.0),
+                    const SizedBox(height: 12.0),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red, fontSize: 14.0),
+                      style: const TextStyle(color: Colors.red, fontSize: 14.0),
                     ),
                   ],
                 ),

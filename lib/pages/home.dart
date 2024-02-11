@@ -174,6 +174,6 @@ class _HomeWidgetState extends State<HomeWidget> {
               onTap: (index) => setState(() => bottomNavIndex = index),
             ),
           )
-        : Loading();
+        : const Loading();
   }
 }

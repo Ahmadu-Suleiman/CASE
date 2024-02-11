@@ -26,7 +26,7 @@ class _CreateProfileState extends State<CreateProfile> {
       print(m);
     }
     return isLoading
-        ? Loading()
+        ? const Loading()
         : Scaffold(
             body: Material(
               child: Center(

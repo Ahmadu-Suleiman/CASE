@@ -24,7 +24,7 @@ class _EditProfileState extends State<EditProfile> {
     User? user = Provider.of<User?>(context);
     member = Provider.of<CommunityMember?>(context) ?? member;
     return isLoading
-        ? Loading()
+        ? const Loading()
         : Scaffold(
             body: Material(
               child: Center(
