@@ -126,20 +126,20 @@ class Case extends StatelessWidget {
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
-                    child: const Image(
-                      image: AssetImage('assets/child.jpg'),
+                    child: Image(
+                      image: NetworkImage(caseRecord.mainImage),
                       width: double.infinity,
                       height: 250,
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-                const Center(
+                Center(
                   child: Text(
-                    'Usman Salis has been missing for three days',
+                    caseRecord.title,
                     maxLines: 3,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 25.0,
                         fontWeight: FontWeight.bold,
                         color: Colors.black),

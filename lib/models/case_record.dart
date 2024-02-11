@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 
 class CaseRecord {
   String uid = generateCaseId();
-  String dateCreated = FieldValue.serverTimestamp().toString();
+  Timestamp dateCreated = Timestamp.now();
   String uidMember;
   String title,
       shortDescription,

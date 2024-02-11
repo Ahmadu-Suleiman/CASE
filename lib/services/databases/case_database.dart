@@ -17,16 +17,17 @@ class DatabaseCase {
     CommunityMember member =
         await DatabaseMember(uid: snapshot['uidMember']).getCommunityMember();
     return CaseRecord(
-      uid: snapshot['uid'],
-      uidMember: snapshot['uidMember'],
-      dateCreated: snapshot['dateCreated'],
+      uid: snapshot['uid'] ?? '',
+      uidMember: snapshot['uidMember'] ?? '',
+      dateCreated: snapshot['dateCreated'] ?? Timestamp.now(),
       member: member,
-      title: snapshot['title'],
-      shortDescription: snapshot['shortDescription'],
-      detailedDescription: snapshot['detailedDescription'],
-      type: snapshot['type'],
-      progress: snapshot['progress'],
-      mainImage: snapshot['mainImage'],
+      title: snapshot['title'] ?? '',
+      shortDescription: snapshot['shortDescription'] ?? '',
+      detailedDescription: snapshot['detailedDescription'] ?? '',
+      type: snapshot['type'] ?? '',
+      progress: snapshot['progress'] ?? '',
+      mainImage: snapshot['mainImage'] ?? '',
+      location: Utility.stringList(snapshot, 'photos'),
       photos: Utility.stringList(snapshot, 'photos'),
       videos: Utility.stringList(snapshot, 'videos'),
       audios: Utility.stringList(snapshot, 'audios'),
@@ -63,8 +64,8 @@ class DatabaseCase {
   static Future<List<CaseRecord>> getAllCaseRecords() async {
     // Fetch all documents from the collection
     QuerySnapshot querySnapshot = await caseCollection.get();
-
     // Convert each document to a CaseRecord and wait for all futures to complete
+
     List<Future<CaseRecord>> caseRecordFutures =
         querySnapshot.docs.map(_caseRecordFromSnapshot).toList();
     return await Future.wait(caseRecordFutures);
