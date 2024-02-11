@@ -1,16 +1,16 @@
+import 'package:case_be_heard/models/community_member.dart';
 import 'package:flutter/foundation.dart';
 
 class CaseRecord {
-  late String dateCreated;
-  String uidMember,
-      title,
-      shortDescription,
-      detailedDescription,
-      mainImage = '';
+  late String dateCreated, uid, uidMember;
+  String title, shortDescription, detailedDescription, mainImage = '';
+  late CommunityMember member;
   late List<String> location, photos, videos, audios, links = [];
 
   CaseRecord(
-      {required this.uidMember,
+      {required this.uid,
+      required this.uidMember,
+      required this.member,
       required this.title,
       required this.shortDescription,
       required this.detailedDescription,

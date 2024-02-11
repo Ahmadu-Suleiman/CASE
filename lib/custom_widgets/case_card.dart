@@ -1,11 +1,13 @@
+import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/shared/routes.dart';
 import 'package:flutter/material.dart';
 
 class CaseCard extends StatefulWidget {
-  final String text;
+  final CaseRecord caseRecord;
 
   const CaseCard({
     super.key,
-    required this.text,
+    required this.caseRecord,
   });
 
   @override
@@ -15,23 +17,24 @@ class CaseCard extends StatefulWidget {
 class _CaseCardState extends State<CaseCard> {
   @override
   Widget build(BuildContext context) {
-    return Case(text: widget.text);
+    return Case(caseRecord: widget.caseRecord);
   }
 }
 
 class Case extends StatelessWidget {
   const Case({
     super.key,
-    required this.text,
+    required this.caseRecord,
   });
 
-  final String text;
+  final CaseRecord caseRecord;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/case_page');
+        Navigator.pushNamed(context, Routes.routeCasePage,
+            arguments: caseRecord.uid);
       },
       child: Card(
         color: Colors.white,

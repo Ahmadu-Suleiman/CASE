@@ -53,4 +53,9 @@ class DatabaseMember {
             .map(_communityMemberFromSnapshot)
         : null;
   }
+
+  Future<CommunityMember> getCommunityMembr() async {
+    return _communityMemberFromSnapshot(
+        await communityMemberCollection.doc(uid).get());
+  }
 }

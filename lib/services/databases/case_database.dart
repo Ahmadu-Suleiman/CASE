@@ -1,4 +1,6 @@
 import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/storage.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -36,9 +38,14 @@ class DatabaseCase {
     });
   }
 
-  static CaseRecord _caseRecordFromSnapshot(DocumentSnapshot snapshot) {
+  static Future<CaseRecord> _caseRecordFromSnapshot(
+      DocumentSnapshot snapshot) async {
+    CommunityMember member =
+        await DatabaseMember(uid: snapshot['uidMember']).getCommunityMember();
     return CaseRecord(
+      uid: snapshot.id,
       uidMember: snapshot['uidMember'],
+      member: member,
       title: snapshot['title'],
       shortDescription: snapshot['shortDescription'],
       detailedDescription: snapshot['detailedDescription'],
@@ -50,23 +57,40 @@ class DatabaseCase {
     );
   }
 
-  static Stream<List<CaseRecord?>> get caseRecords {
-    return caseCollection.snapshots().map((snapshots) {
-      return snapshots.docs.map(_caseRecordFromSnapshot).toList();
+  static Stream<List<CaseRecord>> get caseRecords {
+    return caseCollection.snapshots().asyncMap((snapshots) async {
+      // Convert each document to a CaseRecord and wait for all futures to complete
+      List<Future<CaseRecord>> caseRecordFutures =
+          snapshots.docs.map(_caseRecordFromSnapshot).toList();
+      return await Future.wait(caseRecordFutures);
     });
   }
 
-  static Stream<List<CaseRecord?>> caseRecordsMember(String uidMember) {
+  static Stream<List<CaseRecord>> caseRecordsMember(String uidMember) {
     return caseCollection
         .where('uidMember', isEqualTo: uidMember)
         .snapshots()
-        .map((snapshots) {
-      return snapshots.docs.map(_caseRecordFromSnapshot).toList();
+        .asyncMap((snapshots) async {
+      // Convert each document to a CaseRecord and wait for all futures to complete
+      List<Future<CaseRecord>> caseRecordFutures =
+          snapshots.docs.map(_caseRecordFromSnapshot).toList();
+      return await Future.wait(caseRecordFutures);
     });
   }
 
   static Future<CaseRecord> getCaseRecord(String uidCase) async {
-    return _caseRecordFromSnapshot(await caseCollection.doc(uidCase).get());
+    DocumentSnapshot docSnapshot = await caseCollection.doc(uidCase).get();
+    return await _caseRecordFromSnapshot(docSnapshot);
+  }
+
+  static Future<List<CaseRecord>> getAllCaseRecords() async {
+    // Fetch all documents from the collection
+    QuerySnapshot querySnapshot = await caseCollection.get();
+
+    // Convert each document to a CaseRecord and wait for all futures to complete
+    List<Future<CaseRecord>> caseRecordFutures =
+        querySnapshot.docs.map(_caseRecordFromSnapshot).toList();
+    return await Future.wait(caseRecordFutures);
   }
 
   static Future<void> uploadCaseRecord(
