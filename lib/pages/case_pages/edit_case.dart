@@ -105,6 +105,7 @@ class _EditCaseState extends State<EditCase> {
                                         caseRecord.detailedDescription =
                                             detailedDescription;
                                         caseRecord.mainImage = mainImagePath;
+                                        caseRecord.location = member.location;
                                         caseRecord.photos = photos
                                             .map((file) => file.path)
                                             .toList();

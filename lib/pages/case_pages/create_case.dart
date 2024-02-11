@@ -80,6 +80,7 @@ class _CreateCaseState extends State<CreateCase> {
                                     type: 'Assault',
                                     progress: 'Pending',
                                     mainImage: mainImagePath,
+                                    location: member.location,
                                     photos: photos
                                         .map((file) => file.path)
                                         .toList(),
