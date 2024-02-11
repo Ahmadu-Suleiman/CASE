@@ -7,7 +7,6 @@ import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -103,7 +102,7 @@ class _CreateCaseState extends State<CreateCase> {
                           ),
                           TextButton.icon(
                             onPressed: () async {
-                              await CreateCaseHelper.addMainImage((imagePath) =>
+                              await CaseHelper.addMainImage((imagePath) =>
                                   setState(() => mainImagePath = imagePath));
                             },
                             icon: const Icon(Icons.image),
@@ -202,7 +201,7 @@ class _CreateCaseState extends State<CreateCase> {
                     //photos here
                     TextButton.icon(
                       onPressed: () async {
-                        await CreateCaseHelper.addPhotos((photoList) =>
+                        await CaseHelper.addPhotos((photoList) =>
                             setState(() => photos.addAll(photoList)));
                       },
                       icon: const Icon(Icons.image),
@@ -241,7 +240,7 @@ class _CreateCaseState extends State<CreateCase> {
                     const SizedBox(height: 20),
                     TextButton.icon(
                       onPressed: () async {
-                        await CreateCaseHelper.addVideo(
+                        await CaseHelper.addVideo(
                             (video) => setState(() => videos.add(video)));
                       },
                       icon: const Icon(Icons.image),
@@ -262,7 +261,7 @@ class _CreateCaseState extends State<CreateCase> {
                       crossAxisCount: 3,
                       children: videos
                           .map((video) => Image.memory(
-                                video.videoThumbnail,
+                                video.videoThumbnail!,
                                 fit: BoxFit.cover,
                                 width: 250,
                                 height: 250,
@@ -280,7 +279,7 @@ class _CreateCaseState extends State<CreateCase> {
                     const SizedBox(height: 20),
                     TextButton.icon(
                       onPressed: () async {
-                        await CreateCaseHelper.addAudios((audioList) =>
+                        await CaseHelper.addAudios((audioList) =>
                             setState(() => audios.addAll(audioList)));
                       },
                       icon: const Icon(Icons.image),

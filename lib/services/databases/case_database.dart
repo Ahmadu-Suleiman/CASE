@@ -1,7 +1,9 @@
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/services/storage.dart';
+import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class DatabaseCase {
   // collection reference
@@ -15,6 +17,7 @@ class DatabaseCase {
       'title': caseRecord.title,
       'shortDescription': caseRecord.shortDescription,
       'detailedDescription': caseRecord.detailedDescription,
+      'dateCreated': FieldValue.serverTimestamp(),
     });
   }
 
@@ -33,7 +36,7 @@ class DatabaseCase {
     });
   }
 
-  static CaseRecord _caseRecordsFromSnapshot(DocumentSnapshot snapshot) {
+  static CaseRecord _caseRecordFromSnapshot(DocumentSnapshot snapshot) {
     return CaseRecord(
       uidMember: snapshot['uidMember'],
       title: snapshot['title'],
@@ -49,7 +52,7 @@ class DatabaseCase {
 
   static Stream<List<CaseRecord?>> get caseRecords {
     return caseCollection.snapshots().map((snapshots) {
-      return snapshots.docs.map(_caseRecordsFromSnapshot).toList();
+      return snapshots.docs.map(_caseRecordFromSnapshot).toList();
     });
   }
 
@@ -58,8 +61,12 @@ class DatabaseCase {
         .where('uidMember', isEqualTo: uidMember)
         .snapshots()
         .map((snapshots) {
-      return snapshots.docs.map(_caseRecordsFromSnapshot).toList();
+      return snapshots.docs.map(_caseRecordFromSnapshot).toList();
     });
+  }
+
+  static Future<CaseRecord> getCaseRecord(String uidCase) async {
+    return _caseRecordFromSnapshot(await caseCollection.doc(uidCase).get());
   }
 
   static Future<void> uploadCaseRecord(
@@ -75,5 +82,16 @@ class DatabaseCase {
         caseRef.id, caseRecord.audios);
 
     return await _updateCase(caseRecord, caseRef.id, uidMember);
+  }
+
+  static Future<CaseRecordAndThumbnails> getCaseRecordAndThumbnails(
+      String uidCase) async {
+    CaseRecord caseRecord = await getCaseRecord(uidCase);
+    List<Uint8List?> thumbnails = List.empty(growable: true);
+    for (int i = 0; i < caseRecord.videos.length; i++) {
+      thumbnails[i] = await CaseHelper.getThumbnail(caseRecord.videos[i]);
+    }
+    return CaseRecordAndThumbnails(
+        caseRecord: caseRecord, thumbnails: thumbnails);
   }
 }

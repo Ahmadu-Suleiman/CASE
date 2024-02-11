@@ -1,10 +1,13 @@
+import 'package:flutter/foundation.dart';
+
 class CaseRecord {
+  late String dateCreated;
   String uidMember,
       title,
       shortDescription,
       detailedDescription,
       mainImage = '';
-  late List<String> photos, videos, audios, links = [];
+  late List<String> location, photos, videos, audios, links = [];
 
   CaseRecord(
       {required this.uidMember,
@@ -21,4 +24,11 @@ class CaseRecord {
       required this.title,
       required this.shortDescription,
       required this.detailedDescription});
+}
+
+class CaseRecordAndThumbnails {
+  CaseRecord caseRecord;
+  List<Uint8List?> thumbnails;
+
+  CaseRecordAndThumbnails({required this.caseRecord, required this.thumbnails});
 }

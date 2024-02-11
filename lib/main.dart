@@ -7,6 +7,7 @@ import 'package:case_be_heard/pages/profile/profile_image.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
+import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -36,11 +37,11 @@ class StartWidget extends StatelessWidget {
             child: MaterialApp(
               home: const Wrapper(),
               routes: {
-                '/create_case': (context) => const CreateCase(),
-                '/case_page': (context) => const CasePage(),
-                '/member_profile': (context) => const Profile(),
-                '/edit_member_profile': (context) => const EditProfile(),
-                '/profile_image': (context) => const ProfileImage(),
+                Routes.routeCreateCase: (context) => const CreateCase(),
+                Routes.routeCasePage: (context) => const CasePage(),
+                Routes.routeMemberProfile: (context) => const Profile(),
+                Routes.routeEditMemberProfile: (context) => const EditProfile(),
+                Routes.routeProfileImage: (context) => const ProfileImage(),
               },
               theme: ThemeData(
                 focusColor: Style.secondaryColor,

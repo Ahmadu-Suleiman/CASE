@@ -1,5 +1,6 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
@@ -53,8 +54,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                   padding: const EdgeInsets.only(left: 5),
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/member_profile'),
+                      onTap: () => Navigator.pushNamed(
+                          context, Routes.routeMemberProfile),
                       child: UserAccountsDrawerHeader(
                         decoration: const BoxDecoration(
                           color: Colors.white,
@@ -150,7 +151,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                   return CaseCard(text: Utility.texts[index]);
                 }),
             floatingActionButton: FloatingActionButton(
-              onPressed: () => Navigator.pushNamed(context, '/create_case'),
+              onPressed: () =>
+                  Navigator.pushNamed(context, Routes.routeCreateCase),
               shape: const CircleBorder(),
               splashColor: Style.secondaryColor,
               child: Icon(

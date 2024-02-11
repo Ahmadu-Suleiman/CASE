@@ -1,11 +1,12 @@
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-class CreateCaseHelper {
+class CaseHelper {
   static final ImagePicker _picker = ImagePicker();
 
   static Future<void> addMainImage(Function(String) updateMainImage) async {
@@ -26,14 +27,7 @@ class CreateCaseHelper {
     );
 
     if (videoFile != null) {
-      final thumbnailData = await VideoThumbnail.thumbnailData(
-        video: videoFile.path,
-        imageFormat: ImageFormat.JPEG,
-        maxHeight: 250,
-        maxWidth: 250,
-        quality: 25,
-      );
-
+      final thumbnailData = await getThumbnail(videoFile.path);
       if (thumbnailData != null) updateVideos(Video(videoFile, thumbnailData));
     }
   }
@@ -81,6 +75,16 @@ class CreateCaseHelper {
           },
         ),
       ),
+    );
+  }
+
+  static Future<Uint8List?> getThumbnail(String path) async {
+    return await VideoThumbnail.thumbnailData(
+      video: path,
+      imageFormat: ImageFormat.JPEG,
+      maxHeight: 250,
+      maxWidth: 250,
+      quality: 25,
     );
   }
 }
