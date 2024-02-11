@@ -1,8 +1,13 @@
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 
 class CaseRecord {
-  late String dateCreated, uid, uidMember;
+  String uid = generateCaseId();
+  String dateCreated = FieldValue.serverTimestamp().toString();
+  String uidMember;
   String title,
       shortDescription,
       detailedDescription,
@@ -16,6 +21,7 @@ class CaseRecord {
       {required this.uid,
       required this.uidMember,
       required this.member,
+      required this.dateCreated,
       required this.title,
       required this.shortDescription,
       required this.detailedDescription,
@@ -46,6 +52,33 @@ class CaseRecord {
     required this.type,
     required this.progress,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'uidMember': uidMember,
+      'dateCreated': dateCreated,
+      'title': title,
+      'shortDescription': shortDescription,
+      'detailedDescription': detailedDescription,
+      'type': type,
+      'progress': progress,
+      'mainImage': mainImage,
+      'location': location,
+      'photos': photos,
+      'videos': videos,
+      'audios': audios,
+      'links': links,
+    };
+  }
+
+  static String generateCaseId() {
+    DateTime now = DateTime.now();
+    String timestamp = DateFormat('yyyyMMddHHmmss').format(now);
+
+    String randomStr = const Uuid().v4();
+    return '$timestamp-$randomStr';
+  }
 }
 
 class CaseRecordAndThumbnails {

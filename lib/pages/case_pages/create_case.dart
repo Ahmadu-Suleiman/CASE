@@ -88,8 +88,7 @@ class _CreateCaseState extends State<CreateCase> {
                                         .toList(),
                                     audios: audios,
                                     links: links);
-                                await DatabaseCase.uploadCaseRecord(
-                                    caseRecord, member.uid!, null);
+                                await DatabaseCase.uploadCaseRecord(caseRecord);
                                 if (mounted) Navigator.pop(context);
                               }
                             },

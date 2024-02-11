@@ -12,42 +12,14 @@ class DatabaseCase {
   static final CollectionReference caseCollection =
       FirebaseFirestore.instance.collection('caseRecords');
 
-  static Future<DocumentReference> _uploadCaseInit(
-      CaseRecord caseRecord, String uidMember) async {
-    return await caseCollection.add({
-      'uidMember': uidMember,
-      'title': caseRecord.title,
-      'shortDescription': caseRecord.shortDescription,
-      'detailedDescription': caseRecord.detailedDescription,
-      'dateCreated': FieldValue.serverTimestamp(),
-    });
-  }
-
-  static Future<void> _updateCase(
-      CaseRecord caseRecord, String uidCase, String uidMember) async {
-    return await caseCollection.doc(uidCase).set({
-      'uidMember': uidMember,
-      'uid': caseRecord.uid,
-      'title': caseRecord.title,
-      'shortDescription': caseRecord.shortDescription,
-      'detailedDescription': caseRecord.detailedDescription,
-      'type': caseRecord.type,
-      'progress': caseRecord.progress,
-      'mainImage': caseRecord.mainImage,
-      'photos': caseRecord.photos,
-      'videos': caseRecord.videos,
-      'audios': caseRecord.audios,
-      'links': caseRecord.links,
-    });
-  }
-
   static Future<CaseRecord> _caseRecordFromSnapshot(
       DocumentSnapshot snapshot) async {
     CommunityMember member =
         await DatabaseMember(uid: snapshot['uidMember']).getCommunityMember();
     return CaseRecord(
-      uid: snapshot.id,
+      uid: snapshot['uid'],
       uidMember: snapshot['uidMember'],
+      dateCreated: snapshot['dateCreated'],
       member: member,
       title: snapshot['title'],
       shortDescription: snapshot['shortDescription'],
@@ -98,22 +70,17 @@ class DatabaseCase {
     return await Future.wait(caseRecordFutures);
   }
 
-  static Future<void> uploadCaseRecord(
-      CaseRecord caseRecord, String uidMember, String? uid) async {
-    DocumentReference caseRef = uid != null
-        ? caseCollection.doc(uid)
-        : await _uploadCaseInit(caseRecord, uidMember);
-    String caseId = caseRef.id;
+  static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
     caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
-        caseId, caseRecord.mainImage);
-    caseRecord.photos =
-        await StorageService.uploadCaseRecordPhotos(caseId, caseRecord.photos);
-    caseRecord.videos =
-        await StorageService.uploadCaseRecordVideos(caseId, caseRecord.videos);
-    caseRecord.audios =
-        await StorageService.uploadCaseRecordAudios(caseId, caseRecord.audios);
+        caseRecord.uid, caseRecord.mainImage);
+    caseRecord.photos = await StorageService.uploadCaseRecordPhotos(
+        caseRecord.uid, caseRecord.photos);
+    caseRecord.videos = await StorageService.uploadCaseRecordVideos(
+        caseRecord.uid, caseRecord.videos);
+    caseRecord.audios = await StorageService.uploadCaseRecordAudios(
+        caseRecord.uid, caseRecord.audios);
 
-    return await _updateCase(caseRecord, caseId, uidMember);
+    await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
   }
 
   static Future<CaseRecordAndThumbnails> getCaseRecordAndThumbnails(

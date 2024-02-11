@@ -98,6 +98,7 @@ class _EditCaseState extends State<EditCase> {
                                             context, 'Please add main image');
                                       } else {
                                         setState(() => loading = true);
+                                        caseRecord.uidMember = member.uid!;
                                         caseRecord.title = title;
                                         caseRecord.shortDescription =
                                             shortDescription;
@@ -113,9 +114,7 @@ class _EditCaseState extends State<EditCase> {
                                         caseRecord.audios = audios;
                                         caseRecord.links = links;
                                         await DatabaseCase.uploadCaseRecord(
-                                            caseRecord,
-                                            member.uid!,
-                                            caseRecord.uid);
+                                            caseRecord);
                                         if (mounted) Navigator.pop(context);
                                       }
                                     },

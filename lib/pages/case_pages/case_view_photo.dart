@@ -1,5 +1,4 @@
 import 'package:case_be_heard/shared/utility.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
 class CasePhotoWidget extends StatelessWidget {

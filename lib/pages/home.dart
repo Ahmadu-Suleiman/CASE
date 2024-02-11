@@ -1,4 +1,3 @@
-import 'package:case_be_heard/custom_widgets/empty.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
@@ -29,7 +28,7 @@ class _HomeWidgetState extends State<HomeWidget> {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loading();
-          } else if (snapshot.hasData) {
+          } else {
             List<CaseRecord> caseRecords = snapshot.data ?? [];
             return member != null
                 ? Scaffold(
@@ -188,8 +187,6 @@ class _HomeWidgetState extends State<HomeWidget> {
                     ),
                   )
                 : const Loading();
-          } else {
-            return const Empty();
           }
         });
   }
