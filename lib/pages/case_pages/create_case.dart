@@ -72,11 +72,13 @@ class _CreateCaseState extends State<CreateCase> {
                                     context, 'Please add main image');
                               } else {
                                 setState(() => loading = true);
-                                CaseRecord caseRecord = CaseRecord(
+                                CaseRecord caseRecord = CaseRecord.forUpload(
                                     uidMember: member.uid!,
                                     title: title,
                                     shortDescription: shortDescription,
                                     detailedDescription: detailedDescription,
+                                    type: 'Assault',
+                                    progress: 'Pending',
                                     mainImage: mainImagePath,
                                     photos: photos
                                         .map((file) => file.path)
@@ -87,7 +89,7 @@ class _CreateCaseState extends State<CreateCase> {
                                     audios: audios,
                                     links: links);
                                 await DatabaseCase.uploadCaseRecord(
-                                    caseRecord, member.uid!);
+                                    caseRecord, member.uid!, null);
                                 if (mounted) Navigator.pop(context);
                               }
                             },

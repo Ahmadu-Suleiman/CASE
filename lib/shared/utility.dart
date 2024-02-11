@@ -67,6 +67,9 @@ class Utility {
         : const AssetImage('assets/profile.png');
   }
 
+  static getFirstAndlastNam(CommunityMember member) =>
+      '${member.firstName} ${member.lastName}';
+
   static Future<String?> pickandUpdateProfileImage(
       CommunityMember member) async {
     XFile? imageFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -81,7 +84,6 @@ class Utility {
     return null;
   }
 
-  static List<String> stringList(DocumentSnapshot snapshot, String field) {
-    return snapshot[field]?.whereType<String>().toList() ?? [];
-  }
+  static List<String> stringList(DocumentSnapshot snapshot, String field) =>
+      snapshot[field]?.whereType<String>().toList() ?? [];
 }

@@ -3,7 +3,12 @@ import 'package:flutter/foundation.dart';
 
 class CaseRecord {
   late String dateCreated, uid, uidMember;
-  String title, shortDescription, detailedDescription, mainImage = '';
+  String title,
+      shortDescription,
+      detailedDescription,
+      type,
+      progress,
+      mainImage = '';
   late CommunityMember member;
   late List<String> location, photos, videos, audios, links = [];
 
@@ -14,16 +19,33 @@ class CaseRecord {
       required this.title,
       required this.shortDescription,
       required this.detailedDescription,
+      required this.type,
+      required this.progress,
       required this.mainImage,
       required this.photos,
       required this.videos,
       required this.audios,
       required this.links});
-  CaseRecord.init(
+  CaseRecord.forUpload(
       {required this.uidMember,
       required this.title,
       required this.shortDescription,
-      required this.detailedDescription});
+      required this.detailedDescription,
+      required this.type,
+      required this.progress,
+      required this.mainImage,
+      required this.photos,
+      required this.videos,
+      required this.audios,
+      required this.links});
+  CaseRecord.init({
+    required this.uidMember,
+    required this.title,
+    required this.shortDescription,
+    required this.detailedDescription,
+    required this.type,
+    required this.progress,
+  });
 }
 
 class CaseRecordAndThumbnails {

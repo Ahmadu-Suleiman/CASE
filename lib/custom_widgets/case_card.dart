@@ -1,5 +1,6 @@
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/shared/routes.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 
 class CaseCard extends StatefulWidget {
@@ -46,10 +47,11 @@ class Case extends StatelessWidget {
               children: <Widget>[
                 Row(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
                       child: CircleAvatar(
-                        backgroundImage: AssetImage('assets/child3.jpg'),
+                        backgroundImage:
+                            Utility.getProfileImage(caseRecord.member.photoUrl),
                         radius: 30,
                       ),
                     ),
@@ -60,9 +62,9 @@ class Case extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Gent Hamid',
-                          style: TextStyle(
+                        Text(
+                          Utility.getFirstAndlastNam(caseRecord.member),
+                          style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                             color: Colors.black,
@@ -91,7 +93,7 @@ class Case extends StatelessWidget {
                           onPressed: () {},
                           icon: const Icon(Icons.verified),
                           label: const Text(
-                            'Verified Case',
+                            'ID Verified',
                             style: TextStyle(
                               fontSize: 14,
                               color: Colors.blue,
@@ -147,7 +149,7 @@ class Case extends StatelessWidget {
                   height: 12,
                 ),
                 Text(
-                  text,
+                  caseRecord.shortDescription,
                   maxLines: 3,
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18.0, color: Colors.black),

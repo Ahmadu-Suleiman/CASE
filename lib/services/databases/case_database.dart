@@ -27,9 +27,12 @@ class DatabaseCase {
       CaseRecord caseRecord, String uidCase, String uidMember) async {
     return await caseCollection.doc(uidCase).set({
       'uidMember': uidMember,
+      'uid': caseRecord.uid,
       'title': caseRecord.title,
       'shortDescription': caseRecord.shortDescription,
       'detailedDescription': caseRecord.detailedDescription,
+      'type': caseRecord.type,
+      'progress': caseRecord.progress,
       'mainImage': caseRecord.mainImage,
       'photos': caseRecord.photos,
       'videos': caseRecord.videos,
@@ -49,6 +52,8 @@ class DatabaseCase {
       title: snapshot['title'],
       shortDescription: snapshot['shortDescription'],
       detailedDescription: snapshot['detailedDescription'],
+      type: snapshot['type'],
+      progress: snapshot['progress'],
       mainImage: snapshot['mainImage'],
       photos: Utility.stringList(snapshot, 'photos'),
       videos: Utility.stringList(snapshot, 'videos'),
@@ -94,18 +99,21 @@ class DatabaseCase {
   }
 
   static Future<void> uploadCaseRecord(
-      CaseRecord caseRecord, String uidMember) async {
-    DocumentReference caseRef = await _uploadCaseInit(caseRecord, uidMember);
+      CaseRecord caseRecord, String uidMember, String? uid) async {
+    DocumentReference caseRef = uid != null
+        ? caseCollection.doc(uid)
+        : await _uploadCaseInit(caseRecord, uidMember);
+    String caseId = caseRef.id;
     caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
-        caseRef.id, caseRecord.mainImage);
-    caseRecord.photos = await StorageService.uploadCaseRecordPhotos(
-        caseRef.id, caseRecord.photos);
-    caseRecord.videos = await StorageService.uploadCaseRecordVideos(
-        caseRef.id, caseRecord.videos);
-    caseRecord.audios = await StorageService.uploadCaseRecordAudios(
-        caseRef.id, caseRecord.audios);
+        caseId, caseRecord.mainImage);
+    caseRecord.photos =
+        await StorageService.uploadCaseRecordPhotos(caseId, caseRecord.photos);
+    caseRecord.videos =
+        await StorageService.uploadCaseRecordVideos(caseId, caseRecord.videos);
+    caseRecord.audios =
+        await StorageService.uploadCaseRecordAudios(caseId, caseRecord.audios);
 
-    return await _updateCase(caseRecord, caseRef.id, uidMember);
+    return await _updateCase(caseRecord, caseId, uidMember);
   }
 
   static Future<CaseRecordAndThumbnails> getCaseRecordAndThumbnails(

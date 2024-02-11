@@ -1,3 +1,4 @@
+import 'package:case_be_heard/custom_widgets/empty.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
@@ -29,8 +30,8 @@ class _HomeWidgetState extends State<HomeWidget> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loading();
           } else if (snapshot.hasData) {
-            List<CaseRecord> caseRecords = snapshot as List<CaseRecord>;
-            member != null
+            List<CaseRecord> caseRecords = snapshot.data ?? [];
+            return member != null
                 ? Scaffold(
                     backgroundColor: Style.secondaryColor,
                     appBar: AppBar(
@@ -70,7 +71,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   color: Colors.white,
                                 ),
                                 accountName: Text(
-                                  '${member.firstName} ${member.lastName}',
+                                  Utility.getFirstAndlastNam(member),
                                   style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold),
@@ -156,9 +157,9 @@ class _HomeWidgetState extends State<HomeWidget> {
                       ),
                     ),
                     body: ListView.builder(
-                        itemCount: Utility.texts.length,
+                        itemCount: caseRecords.length,
                         itemBuilder: (context, index) {
-                          return CaseCard(text: Utility.texts[index]);
+                          return CaseCard(caseRecord: caseRecords[index]);
                         }),
                     floatingActionButton: FloatingActionButton(
                       onPressed: () =>
@@ -188,7 +189,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   )
                 : const Loading();
           } else {
-            return const Loading();
+            return const Empty();
           }
         });
   }

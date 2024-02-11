@@ -98,23 +98,24 @@ class _EditCaseState extends State<EditCase> {
                                             context, 'Please add main image');
                                       } else {
                                         setState(() => loading = true);
-                                        CaseRecord caseRecord = CaseRecord(
-                                            uidMember: member.uid!,
-                                            title: title,
-                                            shortDescription: shortDescription,
-                                            detailedDescription:
-                                                detailedDescription,
-                                            mainImage: mainImagePath,
-                                            photos: photos
-                                                .map((file) => file.path)
-                                                .toList(),
-                                            videos: videos
-                                                .map((video) => video.file.path)
-                                                .toList(),
-                                            audios: audios,
-                                            links: links);
+                                        caseRecord.title = title;
+                                        caseRecord.shortDescription =
+                                            shortDescription;
+                                        caseRecord.detailedDescription =
+                                            detailedDescription;
+                                        caseRecord.mainImage = mainImagePath;
+                                        caseRecord.photos = photos
+                                            .map((file) => file.path)
+                                            .toList();
+                                        caseRecord.videos = videos
+                                            .map((video) => video.file.path)
+                                            .toList();
+                                        caseRecord.audios = audios;
+                                        caseRecord.links = links;
                                         await DatabaseCase.uploadCaseRecord(
-                                            caseRecord, member.uid!);
+                                            caseRecord,
+                                            member.uid!,
+                                            caseRecord.uid);
                                         if (mounted) Navigator.pop(context);
                                       }
                                     },
@@ -428,9 +429,8 @@ class _EditCaseState extends State<EditCase> {
                       ),
                     ))
                 : const Loading();
-          } else {
-            return const Loading();
           }
+          return const Loading();
         });
   }
 }
