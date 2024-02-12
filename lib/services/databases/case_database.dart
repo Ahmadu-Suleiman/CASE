@@ -6,6 +6,7 @@ import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class DatabaseCase {
   // collection reference
@@ -85,14 +86,16 @@ class DatabaseCase {
         caseRecord: caseRecord, thumbnails: thumbnails);
   }
 
-  static Future<List<CaseRecord>> fetchCaseRecords(
-      {int limit = 10, DocumentSnapshot? lastDoc}) async {
+  static Future<void> fetchCaseRecords(
+      {int limit = 10,
+      DocumentSnapshot? pageKey,
+      required PagingController pagingController}) async {
     QuerySnapshot querySnapshot;
     List<CaseRecord> caseRecords = [];
-    if (lastDoc != null) {
+    if (pageKey != null) {
       querySnapshot = await caseCollection
           .orderBy('timestamp', descending: true)
-          .startAfterDocument(lastDoc)
+          .startAfterDocument(pageKey)
           .limit(limit)
           .get();
     } else {
@@ -103,11 +106,18 @@ class DatabaseCase {
     }
 
     if (querySnapshot.docs.isNotEmpty) {
-      lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
       List<Future<CaseRecord>> caseRecordFutures =
           querySnapshot.docs.map(_caseRecordFromSnapshot).toList();
-      return await Future.wait(caseRecordFutures);
+      final caseRecordList = await Future.wait(caseRecordFutures);
+      final bool isLastPage = caseRecordList.length < 10;
+      final DocumentSnapshot? lastDoc =
+          isLastPage ? null : querySnapshot.docs.last;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(caseRecordList);
+      } else {
+        pagingController.appendPage(caseRecordList, lastDoc);
+      }
     }
-    return caseRecords;
   }
 }

@@ -30,14 +30,10 @@ class _EditProfileState extends State<EditProfile> {
               child: Center(
                 child: Column(children: [
                   GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(context, '/profile_image');
-                    },
-                    child: CircleAvatar(
-                      backgroundImage: Utility.getProfileImage(member.photoUrl),
-                      radius: 50,
-                    ),
-                  ),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/profile_image');
+                      },
+                      child: Utility.getProfileImage(member.photoUrl)),
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState != null &&
