@@ -5,6 +5,7 @@ import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:case_be_heard/custom_widgets/case_card.dart';
@@ -18,18 +19,53 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
+  final _scrollController = ScrollController();
+  final _caseRecords = <CaseRecord>[];
   int bottomNavIndex = 0;
+  DocumentSnapshot? _lastDoc;
+  bool _isLoading = false;
+
+  Future<void> _initialize() async {
+    final fetchedCaseRecord =
+        await DatabaseCase.fetchCaseRecords(limit: 10, lastDoc: _lastDoc);
+    setState(() => _caseRecords.addAll(fetchedCaseRecord));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_loadMore);
+    _initialize();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _loadMore() async {
+    if (!_isLoading &&
+        _scrollController.position.extentAfter < 200 &&
+        _scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent) {
+      setState(() => _isLoading = true);
+      final fetchedCaseRecord =
+          await DatabaseCase.fetchCaseRecords(limit: 10, lastDoc: _lastDoc);
+      setState(() => _caseRecords.addAll(fetchedCaseRecord));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     CommunityMember? member = Provider.of<CommunityMember?>(context);
     return FutureBuilder(
-        future: DatabaseCase.getAllCaseRecords(),
+        future: DatabaseCase.fetchCaseRecords(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Loading();
-          } else {
-            List<CaseRecord> caseRecords = snapshot.data ?? [];
+          } else if (snapshot.hasData) {
+            _caseRecords.addAll(snapshot.data!);
             return member != null
                 ? Scaffold(
                     backgroundColor: Style.secondaryColor,
@@ -43,7 +79,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                       title: const Image(
                         height: 80,
                         width: 80,
-                        image: AssetImage('assets/case_logo_main.ico'),
+                        image: AssetImage('assets/case_logo_smain.ico'),
                       ),
                       centerTitle: true,
                       actions: <Widget>[
@@ -79,11 +115,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                                   member.email,
                                   style: const TextStyle(color: Colors.black),
                                 ),
-                                currentAccountPicture: CircleAvatar(
-                                  backgroundImage:
-                                      Utility.getProfileImage(member.photoUrl),
-                                  radius: 60,
-                                ),
+                                currentAccountPicture:
+                                    Utility.getProfileImage(member.photoUrl),
                               ),
                             ),
                             ListTile(
@@ -155,11 +188,25 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                       ),
                     ),
-                    body: ListView.builder(
-                        itemCount: caseRecords.length,
-                        itemBuilder: (context, index) {
-                          return CaseCard(caseRecord: caseRecords[index]);
-                        }),
+                    body: RefreshIndicator(
+                      onRefresh: () async {
+                        // Callback for refreshing the list
+                        // Clear the existing list and fetch the latest data
+                        setState(() {
+                          _caseRecords.clear();
+                        });
+                        await DatabaseCase.fetchCaseRecords()
+                            .then((newRecords) {
+                          setState(() => _caseRecords.addAll(newRecords));
+                        });
+                      },
+                      child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: _caseRecords.length,
+                          itemBuilder: (context, index) {
+                            return CaseCard(caseRecord: _caseRecords[index]);
+                          }),
+                    ),
                     floatingActionButton: FloatingActionButton(
                       onPressed: () =>
                           Navigator.pushNamed(context, Routes.routeCreateCase),
@@ -187,6 +234,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                     ),
                   )
                 : const Loading();
+          } else {
+            return const Loading();
           }
         });
   }

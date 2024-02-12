@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -125,14 +126,17 @@ class Case extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Image(
-                      image: NetworkImage(caseRecord.mainImage),
-                      width: double.infinity,
-                      height: 250,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: CachedNetworkImage(
+                        imageUrl: caseRecord.mainImage,
+                        width: double.infinity,
+                        height: 250,
+                        fit: BoxFit.cover,
+                        placeholder: (context, url) =>
+                            const CircularProgressIndicator(),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                      )),
                 ),
                 Center(
                   child: Text(

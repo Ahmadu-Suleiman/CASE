@@ -61,16 +61,6 @@ class DatabaseCase {
     return await _caseRecordFromSnapshot(docSnapshot);
   }
 
-  static Future<List<CaseRecord>> getAllCaseRecords() async {
-    // Fetch all documents from the collection
-    QuerySnapshot querySnapshot = await caseCollection.get();
-    // Convert each document to a CaseRecord and wait for all futures to complete
-
-    List<Future<CaseRecord>> caseRecordFutures =
-        querySnapshot.docs.map(_caseRecordFromSnapshot).toList();
-    return await Future.wait(caseRecordFutures);
-  }
-
   static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
     caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
         caseRecord.uid, caseRecord.mainImage);
@@ -93,5 +83,31 @@ class DatabaseCase {
     }
     return CaseRecordAndThumbnails(
         caseRecord: caseRecord, thumbnails: thumbnails);
+  }
+
+  static Future<List<CaseRecord>> fetchCaseRecords(
+      {int limit = 10, DocumentSnapshot? lastDoc}) async {
+    QuerySnapshot querySnapshot;
+    List<CaseRecord> caseRecords = [];
+    if (lastDoc != null) {
+      querySnapshot = await caseCollection
+          .orderBy('timestamp', descending: true)
+          .startAfterDocument(lastDoc)
+          .limit(limit)
+          .get();
+    } else {
+      querySnapshot = await caseCollection
+          .orderBy('timestamp', descending: true)
+          .limit(limit)
+          .get();
+    }
+
+    if (querySnapshot.docs.isNotEmpty) {
+      lastDoc = querySnapshot.docs[querySnapshot.docs.length - 1];
+      List<Future<CaseRecord>> caseRecordFutures =
+          querySnapshot.docs.map(_caseRecordFromSnapshot).toList();
+      return await Future.wait(caseRecordFutures);
+    }
+    return caseRecords;
   }
 }

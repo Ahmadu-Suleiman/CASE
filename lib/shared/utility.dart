@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/storage.dart';
@@ -61,10 +62,16 @@ class Utility {
     }
   }
 
-  static getProfileImage(String? photoUrl) {
-    return photoUrl != null
-        ? NetworkImage(photoUrl)
-        : const AssetImage('assets/profile.png');
+  static getProfileImage(String photoUrl) {
+    return CachedNetworkImage(
+      imageUrl: photoUrl,
+      imageBuilder: (context, imageProvider) => CircleAvatar(
+        backgroundImage: imageProvider,
+        radius: 60,
+      ),
+      placeholder: (context, url) => const Icon(Icons.person),
+      errorWidget: (context, url, error) => const Icon(Icons.error),
+    );
   }
 
   static getFirstAndlastNam(CommunityMember member) =>
