@@ -174,7 +174,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                 // Clear the existing list and fetch the latest data
                 setState(() => _caseRecords.clear());
                 await DatabaseCase.fetchCaseRecords().then((newRecords) {
-                  setState(() => _caseRecords.addAll(newRecords));
+                  setState(() => _caseRecords.addAll(newRecords));print
                 });
               },
               child: PagedListView<DocumentSnapshot, CaseRecord>(
