@@ -8,14 +8,15 @@ class CaseRecord {
   String uid = generateCaseId();
   Timestamp dateCreated = Timestamp.now();
   String uidMember;
-  String title,
-      shortDescription,
-      detailedDescription,
+  String title = '',
+      shortDescription = '',
+      detailedDescription = '',
       type,
       progress,
       mainImage = '';
   late CommunityMember member;
-  late List<String> location, photos, videos, audios, links = [];
+  late GeoPoint location;
+  late List<String> photos, videos, audios, links = [];
 
   CaseRecord(
       {required this.uid,
@@ -46,14 +47,6 @@ class CaseRecord {
       required this.videos,
       required this.audios,
       required this.links});
-  CaseRecord.init({
-    required this.uidMember,
-    required this.title,
-    required this.shortDescription,
-    required this.detailedDescription,
-    required this.type,
-    required this.progress,
-  });
 
   Map<String, dynamic> toMap() {
     return {

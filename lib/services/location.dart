@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:case_be_heard/shared/utility.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -36,29 +37,27 @@ class LocationService {
     return true;
   }
 
-  static Future<Position?> _getCurrentPosition(BuildContext context) async {
+  static Future<GeoPoint> getCurrentLocation(BuildContext context) async {
     Position? currentPosition;
     final hasPermission = await _handleLocationPermission(context);
-    if (!hasPermission) return currentPosition;
-    return await Geolocator.getCurrentPosition(
+    if (!hasPermission) return const GeoPoint(-1, -1);
+    currentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
+    return GeoPoint(currentPosition.latitude, currentPosition.longitude);
   }
 
-  static Future<List<String>> getLocation(BuildContext context) async {
-    Position? position = await _getCurrentPosition(context);
-    if (position != null) {
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(position.latitude, position.longitude);
-      Placemark place = placemarks[0];
-      List<String> location = [
-        place.street,
-        place.thoroughfare,
-        place.locality,
-        place.administrativeArea,
-        place.country
-      ].nonNulls.toList();
-      return location;
-    }
-    return <String>[];
+  static Future<String> getLocationAddress(GeoPoint geoPoint,
+      {BuildContext? context}) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(geoPoint.latitude, geoPoint.longitude);
+    Placemark place = placemarks[0];
+    List<String> location = [
+      place.street,
+      place.thoroughfare,
+      place.locality,
+      place.administrativeArea,
+      place.country
+    ].nonNulls.toList();
+    return location.join(',');
   }
 }

@@ -1,4 +1,5 @@
 import 'package:case_be_heard/models/case_record.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommunityMember {
   String? uid;
@@ -7,10 +8,10 @@ class CommunityMember {
   String email = '';
   String phoneNumber = '';
   String occupation = '';
-  List<String> location = [];
   String gender = '';
   String photoUrl = '';
   String bio = '';
+  late GeoPoint location;
   List<CaseRecord> cases = [];
 
   CommunityMember({required this.uid});

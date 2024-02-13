@@ -28,7 +28,7 @@ class DatabaseCase {
       type: snapshot['type'] ?? '',
       progress: snapshot['progress'] ?? '',
       mainImage: snapshot['mainImage'] ?? '',
-      location: Utility.stringList(snapshot, 'photos'),
+      location: snapshot['location'],
       photos: Utility.stringList(snapshot, 'photos'),
       videos: Utility.stringList(snapshot, 'videos'),
       audios: Utility.stringList(snapshot, 'audios'),
@@ -93,15 +93,13 @@ class DatabaseCase {
     QuerySnapshot querySnapshot;
     if (pageKey != null) {
       querySnapshot = await caseCollection
-          .orderBy('dateCreated', descending: true)
+          .orderBy('dateCreated')
           .startAfterDocument(pageKey)
           .limit(limit)
           .get();
     } else {
-      querySnapshot = await caseCollection
-          .orderBy('dateCreated', descending: true)
-          .limit(limit)
-          .get();
+      querySnapshot =
+          await caseCollection.orderBy('dateCreated').limit(limit).get();
     }
 
     if (querySnapshot.docs.isNotEmpty) {

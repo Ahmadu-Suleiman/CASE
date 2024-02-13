@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _ProfileImageState extends State<ProfileImage> {
       height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: Utility.getProfileImage(photoUrl,60),
+          image: CachedNetworkImageProvider(photoUrl),
           fit: BoxFit.contain,
         ),
       ),

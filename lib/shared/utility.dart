@@ -51,18 +51,6 @@ class Utility {
     }
   }
 
-  static getProfileImage(String photoUrl, double size) {
-    return CachedNetworkImage(
-      imageUrl: photoUrl,
-      imageBuilder: (context, imageProvider) => CircleAvatar(
-        backgroundImage: imageProvider,
-        radius: size,
-      ),
-      placeholder: (context, url) => const Icon(Icons.person),
-      errorWidget: (context, url, error) => const Icon(Icons.error),
-    );
-  }
-
   static getFirstAndlastNam(CommunityMember member) =>
       '${member.firstName} ${member.lastName}';
 

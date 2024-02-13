@@ -1,5 +1,4 @@
 import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMember {
@@ -32,7 +31,7 @@ class DatabaseMember {
       email: snapshot['email'] ?? '',
       phoneNumber: snapshot['phoneNumber'] ?? '',
       occupation: snapshot['occupation'] ?? '',
-      location: Utility.stringList(snapshot, 'location'),
+      location: snapshot['location'],
       gender: snapshot['gender'] ?? '',
       photoUrl: snapshot['photoUrl'] ?? '',
       bio: snapshot['bio'] ?? '',

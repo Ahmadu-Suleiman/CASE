@@ -1,3 +1,4 @@
+import 'package:case_be_heard/custom_widgets/cached_image.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
@@ -85,7 +86,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           style: const TextStyle(color: Colors.black),
                         ),
                         currentAccountPicture:
-                            Utility.getProfileImage(member.photoUrl, 60),
+                            CachedAvatar(url: member.photoUrl, size: 60),
                       ),
                     ),
                     ListTile(
