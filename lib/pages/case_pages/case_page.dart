@@ -184,15 +184,11 @@ class _CasePageState extends State<CasePage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: caseRecord.audios.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return AudioWidget(
-                              audioPlayer: audioPlayer,
-                              path: caseRecord.audios[index]);
-                        },
-                      ),
+                      Column(
+                          children: caseRecord.audios
+                              .map((audio) => AudioWidget(
+                                  audioPlayer: audioPlayer, path: audio))
+                              .toList()),
                       const SizedBox(height: 20),
                       const Text(
                         'External links',
@@ -202,53 +198,25 @@ class _CasePageState extends State<CasePage> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: caseRecord.links.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return TextButton.icon(
-                            onPressed: () {
-                              Utility.openLink(
-                                  context, caseRecord.links[index]);
-                            },
-                            icon: const Icon(Icons.link),
-                            label: Text(
-                              caseRecord.links[index],
-                              style: const TextStyle(
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.blue,
-                                decorationThickness: 2.0,
-                                fontSize: 14,
-                                color: Colors.blue,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      const DefaultTabController(
-                        length: 3,
-                        child: Column(
-                          children: [
-                            TabBar(
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              tabs: [
-                                Tab(text: 'others'),
-                                Tab(text: 'relevant'),
-                                Tab(text: 'verified'),
-                              ],
-                            ),
-                            Expanded(
-                              child: TabBarView(
-                                children: [
-                                  Text('others'),
-                                  Text('relevant'),
-                                  Text('verified'),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      Column(
+                          children: caseRecord.links
+                              .map((link) => TextButton.icon(
+                                    onPressed: () {
+                                      Utility.openLink(context, link);
+                                    },
+                                    icon: const Icon(Icons.link),
+                                    label: Text(
+                                      link,
+                                      style: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        decorationColor: Colors.blue,
+                                        decorationThickness: 2.0,
+                                        fontSize: 14,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                  ))
+                              .toList()),
                     ],
                   ));
             } else {

@@ -7,7 +7,6 @@ import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:audioplayers/audioplayers.dart';
