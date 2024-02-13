@@ -263,7 +263,7 @@ class _CreateCaseState extends State<CreateCase> {
                       crossAxisCount: 3,
                       children: videos
                           .map((video) => Image.memory(
-                                video.videoThumbnail!,
+                                video.thumbnail!,
                                 fit: BoxFit.cover,
                                 width: 250,
                                 height: 250,

@@ -1,6 +1,6 @@
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/models/video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
@@ -76,9 +76,9 @@ class CaseRecord {
   }
 }
 
-class CaseRecordAndThumbnails {
+class CaseRecordAndVideos {
   CaseRecord caseRecord;
-  List<Uint8List?> thumbnails;
+  List<Video?> videos;
 
-  CaseRecordAndThumbnails({required this.caseRecord, required this.thumbnails});
+  CaseRecordAndVideos({required this.caseRecord, required this.videos});
 }

@@ -8,3 +8,4 @@ class Routes {
   static String routeCaseVideo = '/case_video';
   static String routeEditCase = '/edit_case';
 }
+ 

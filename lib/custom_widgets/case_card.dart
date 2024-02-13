@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:case_be_heard/custom_widgets/cached_image.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -50,8 +51,8 @@ class Case extends StatelessWidget {
                   children: [
                     Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Utility.getProfileImage(
-                            caseRecord.member.photoUrl, 30)),
+                        child: CachedAvatar(
+                            url: caseRecord.member.photoUrl, size: 30)),
                     const SizedBox(
                       height: 10,
                     ),
@@ -60,7 +61,7 @@ class Case extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          Utility.getFirstAndlastNam(caseRecord.member),
+                          Utility.getFirstAndlastName(caseRecord.member),
                           style: const TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.bold,

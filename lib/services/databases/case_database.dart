@@ -1,11 +1,12 @@
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/storage.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class DatabaseCase {
@@ -75,15 +76,17 @@ class DatabaseCase {
     await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
   }
 
-  static Future<CaseRecordAndThumbnails> getCaseRecordAndThumbnails(
+  static Future<CaseRecordAndVideos> getCaseRecordAndVideos(
       String uidCase) async {
     CaseRecord caseRecord = await getCaseRecord(uidCase);
-    List<Uint8List?> thumbnails = List.empty(growable: true);
+    List<Video?> videos = List.filled(caseRecord.videos.length, null);
     for (int i = 0; i < caseRecord.videos.length; i++) {
-      thumbnails[i] = await CaseHelper.getThumbnail(caseRecord.videos[i]);
+      String videoLink = caseRecord.videos[i];
+      videos.add(
+          Video(XFile(videoLink), await CaseHelper.getThumbnail(videoLink)));
     }
-    return CaseRecordAndThumbnails(
-        caseRecord: caseRecord, thumbnails: thumbnails);
+
+    return CaseRecordAndVideos(caseRecord: caseRecord, videos: videos);
   }
 
   static Future<void> fetchCaseRecords(
@@ -93,13 +96,15 @@ class DatabaseCase {
     QuerySnapshot querySnapshot;
     if (pageKey != null) {
       querySnapshot = await caseCollection
-          .orderBy('dateCreated')
+          .orderBy('dateCreated', descending: true)
           .startAfterDocument(pageKey)
           .limit(limit)
           .get();
     } else {
-      querySnapshot =
-          await caseCollection.orderBy('dateCreated').limit(limit).get();
+      querySnapshot = await caseCollection
+          .orderBy('dateCreated', descending: true)
+          .limit(limit)
+          .get();
     }
 
     if (querySnapshot.docs.isNotEmpty) {

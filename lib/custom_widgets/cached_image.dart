@@ -2,9 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CachedAvatar extends StatelessWidget {
-  late String url;
-  late double size;
-  CachedAvatar({super.key, url, size});
+  final String url;
+  final double size;
+
+  const CachedAvatar({super.key, required this.url, this.size = 30});
 
   @override
   Widget build(BuildContext context) {

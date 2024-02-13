@@ -77,7 +77,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           color: Colors.white,
                         ),
                         accountName: Text(
-                          Utility.getFirstAndlastNam(member),
+                          Utility.getFirstAndlastName(member),
                           style: const TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
