@@ -33,7 +33,7 @@ class _EditProfileState extends State<EditProfile> {
                       onTap: () {
                         Navigator.pushNamed(context, '/profile_image');
                       },
-                      child: Utility.getProfileImage(member.photoUrl)),
+                      child: Utility.getProfileImage(member.photoUrl, 60)),
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState != null &&

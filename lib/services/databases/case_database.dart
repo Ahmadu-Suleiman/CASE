@@ -91,16 +91,15 @@ class DatabaseCase {
       DocumentSnapshot? pageKey,
       required PagingController pagingController}) async {
     QuerySnapshot querySnapshot;
-    List<CaseRecord> caseRecords = [];
     if (pageKey != null) {
       querySnapshot = await caseCollection
-          .orderBy('timestamp', descending: true)
+          .orderBy('dateCreated', descending: true)
           .startAfterDocument(pageKey)
           .limit(limit)
           .get();
     } else {
       querySnapshot = await caseCollection
-          .orderBy('timestamp', descending: true)
+          .orderBy('dateCreated', descending: true)
           .limit(limit)
           .get();
     }

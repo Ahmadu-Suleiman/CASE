@@ -18,7 +18,7 @@ class _ProfileState extends State<Profile> {
       body: Material(
         child: Center(
           child: Column(children: [
-            Utility.getProfileImage(member.photoUrl),
+            Utility.getProfileImage(member.photoUrl,60),
             Text(
               '${member.firstName} ${member.lastName}',
               maxLines: 1,

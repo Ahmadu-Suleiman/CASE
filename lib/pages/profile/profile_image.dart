@@ -20,7 +20,7 @@ class _ProfileImageState extends State<ProfileImage> {
       height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: Utility.getProfileImage(photoUrl),
+          image: Utility.getProfileImage(photoUrl,60),
           fit: BoxFit.contain,
         ),
       ),

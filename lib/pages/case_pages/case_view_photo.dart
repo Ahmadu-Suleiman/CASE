@@ -1,4 +1,4 @@
-import 'package:case_be_heard/shared/utility.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 
 class CasePhotoWidget extends StatelessWidget {
@@ -13,7 +13,7 @@ class CasePhotoWidget extends StatelessWidget {
       height: double.infinity,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: Utility.getProfileImage(photoUrl),
+          image: CachedNetworkImageProvider(photoUrl),
           fit: BoxFit.contain,
         ),
       ),

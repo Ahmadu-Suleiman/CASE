@@ -49,13 +49,9 @@ class Case extends StatelessWidget {
                 Row(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        backgroundImage:
-                            Utility.getProfileImage(caseRecord.member.photoUrl),
-                        radius: 30,
-                      ),
-                    ),
+                        padding: const EdgeInsets.all(8.0),
+                        child: Utility.getProfileImage(
+                            caseRecord.member.photoUrl, 30)),
                     const SizedBox(
                       height: 10,
                     ),
@@ -132,8 +128,7 @@ class Case extends StatelessWidget {
                         width: double.infinity,
                         height: 250,
                         fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                            const CircularProgressIndicator(),
+                        placeholder: (context, url) => const Icon(Icons.image),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),
                       )),

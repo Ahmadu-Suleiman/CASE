@@ -13,17 +13,6 @@ import 'package:url_launcher/url_launcher.dart';
 class Utility {
   static late BuildContext _storedContext;
   static final ImagePicker _picker = ImagePicker();
-  static const defaultImage = AssetImage('assets/profile.png');
-
-  static List<String> texts = [
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-    'John Doe went missing three days ago. If you have any information or have seen him, please contact the nearest police station immediately.',
-  ];
 
   static Future<bool> checkPermission() async {
     var status = await Permission.storage.status;
@@ -62,12 +51,12 @@ class Utility {
     }
   }
 
-  static getProfileImage(String photoUrl) {
+  static getProfileImage(String photoUrl, double size) {
     return CachedNetworkImage(
       imageUrl: photoUrl,
       imageBuilder: (context, imageProvider) => CircleAvatar(
         backgroundImage: imageProvider,
-        radius: 60,
+        radius: size,
       ),
       placeholder: (context, url) => const Icon(Icons.person),
       errorWidget: (context, url, error) => const Icon(Icons.error),

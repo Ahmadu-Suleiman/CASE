@@ -20,28 +20,17 @@ class HomeWidget extends StatefulWidget {
 }
 
 class _HomeWidgetState extends State<HomeWidget> {
-  final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('yourCollection');
-  final PagingController<DocumentSnapshot, CaseRecord> _pagingController =
+  final PagingController<DocumentSnapshot?, CaseRecord> _pagingController =
       PagingController(firstPageKey: null);
-  final ScrollController _scrollController = ScrollController();
   int bottomNavIndex = 0;
 
   @override
   void initState() {
-    _scrollController.addListener(_scrollListener);
     _pagingController.addPageRequestListener((pageKey) {
       DatabaseCase.fetchCaseRecords(
           pagingController: _pagingController, limit: 10, pageKey: pageKey);
     });
     super.initState();
-  }
-
-  void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      _pagingController.nextPage();
-    }
   }
 
   @override
@@ -96,7 +85,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           style: const TextStyle(color: Colors.black),
                         ),
                         currentAccountPicture:
-                            Utility.getProfileImage(member.photoUrl),
+                            Utility.getProfileImage(member.photoUrl, 60),
                       ),
                     ),
                     ListTile(
@@ -169,20 +158,14 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
             ),
             body: RefreshIndicator(
-              onRefresh: () async {'https://www.phind.com/agent?cache=clsj9ssrc0017ju089wfcfeyi'
-                // Callback for refreshing the list
-                // Clear the existing list and fetch the latest data
-                setState(() => _caseRecords.clear());
-                await DatabaseCase.fetchCaseRecords().then((newRecords) {
-                  setState(() => _caseRecords.addAll(newRecords));print
-                });
+              onRefresh: () async {
+                _pagingController.refresh();
               },
-              child: PagedListView<DocumentSnapshot, CaseRecord>(
+              child: PagedListView<DocumentSnapshot?, CaseRecord>(
                 pagingController: _pagingController,
-                scrollController: _scrollController,
                 builderDelegate: PagedChildBuilderDelegate<CaseRecord>(
                   itemBuilder: (context, item, index) =>
-                      CaseCard(caseRecord: caseRecords[index]),
+                      CaseCard(caseRecord: item),
                 ),
               ),
             ),
@@ -218,7 +201,6 @@ class _HomeWidgetState extends State<HomeWidget> {
   @override
   void dispose() {
     _pagingController.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 }
