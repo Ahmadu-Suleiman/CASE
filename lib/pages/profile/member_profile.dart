@@ -22,109 +22,103 @@ class _ProfileState extends State<Profile> {
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             address = snapshot.data!;
-            return Scaffold(
-              body: Material(
-                child: Center(
-                  child: Column(children: [
-                    CachedAvatar(url: member.photoUrl, size: 60),
-                    Text(
-                      '${member.firstName} ${member.lastName}',
-                      maxLines: 1,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
+            return Center(
+              child: Column(children: [
+                CachedAvatar(url: member.photoUrl, size: 60),
+                Text(
+                  '${member.firstName} ${member.lastName}',
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                ElevatedButton(
+                  onPressed: () async {
+                    Navigator.pushNamed(context, '/edit_member_profile');
+                  },
+                  child: const Text('Update community member information'),
+                ),
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.email),
+                  label: Text(
+                    member.email,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue,
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        Navigator.pushNamed(context, '/edit_member_profile');
-                      },
-                      child: const Text('Update community member information'),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.phone),
+                  label: Text(
+                    member.phoneNumber,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue,
                     ),
-                    TextButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.email),
-                      label: Text(
-                        member.email,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                        ),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.work),
+                  label: Text(
+                    member.occupation,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+                TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(Icons.location_on),
+                  label: Text(
+                    address,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+                Text(
+                  member.bio,
+                  maxLines: 4,
+                ),
+                DefaultTabController(
+                  length: 3,
+                  child: Column(
+                    children: [
+                      const TabBar(
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        tabs: [
+                          Tab(text: 'Cases'),
+                          Tab(text: 'Petitions'),
+                          Tab(text: 'Media'),
+                        ],
                       ),
-                    ),
-                    TextButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.phone),
-                      label: Text(
-                        member.phoneNumber,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                    TextButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.work),
-                      label: Text(
-                        member.occupation,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                    TextButton.icon(
-                      onPressed: () {},
-                      icon: const Icon(Icons.location_on),
-                      label: Text(
-                        address,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue,
-                        ),
-                      ),
-                    ),
-                    Text(
-                      member.bio,
-                      maxLines: 4,
-                    ),
-                    DefaultTabController(
-                      length: 3,
-                      child: Scaffold(
-                        body: Column(
+                      Expanded(
+                        child: TabBarView(
                           children: [
-                            const TabBar(
-                              indicatorSize: TabBarIndicatorSize.tab,
-                              tabs: [
-                                Tab(text: 'Cases'),
-                                Tab(text: 'Petitions'),
-                                Tab(text: 'Media'),
-                              ],
+                            Text(
+                              member.bio,
                             ),
-                            Expanded(
-                              child: TabBarView(
-                                children: [
-                                  Text(
-                                    member.bio,
-                                  ),
-                                  Text(
-                                    member.bio,
-                                  ),
-                                  Text(
-                                    member.bio,
-                                  ),
-                                ],
-                              ),
+                            Text(
+                              member.bio,
+                            ),
+                            Text(
+                              member.bio,
                             ),
                           ],
                         ),
                       ),
-                    )
-                  ]),
-                ),
-              ),
+                    ],
+                  ),
+                )
+              ]),
             );
           } else {
             return const Loading();
