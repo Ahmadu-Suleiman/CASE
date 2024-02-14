@@ -62,7 +62,7 @@ class CaseRecord {
       'mainImage': mainImage,
       'location': location,
       'photos': photos,
-      'videos': videos.map((video) => video.videoLink),
+      'videos': videos.map((video) => video.videoUrl),
       'thumbnails': videos.map((video) => video.thumbnailUrl),
       'audios': audios,
       'links': links,

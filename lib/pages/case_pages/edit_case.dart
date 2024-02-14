@@ -29,10 +29,10 @@ class _EditCaseState extends State<EditCase> {
       shortDescription = '',
       detailedDescription = '',
       mainImagePath = '';
-  List<XFile> photos = List.empty(growable: true);
-  List<Video> videos = List.empty(growable: true);
-  List<String> audios = List.empty(growable: true);
-  List<String> links = List.empty(growable: true);
+  List<XFile> photos = [];
+  List<Video> videos = [];
+  List<String> audios = [];
+  List<String> links = [];
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +115,7 @@ class _EditCaseState extends State<EditCase> {
                                       },
                                       icon: const Icon(Icons.upload),
                                       label: const Text(
-                                        'Upload Case',
+                                        'Update Case',
                                         style: TextStyle(
                                           fontSize: 14,
                                           color: Colors.blue,

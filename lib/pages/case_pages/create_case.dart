@@ -29,10 +29,10 @@ class _CreateCaseState extends State<CreateCase> {
       shortDescription = '',
       detailedDescription = '',
       mainImagePath = '';
-  List<XFile> photos = List.empty(growable: true);
-  List<Video> videos = List.empty(growable: true);
-  List<String> audios = List.empty(growable: true);
-  List<String> links = List.empty(growable: true);
+  List<XFile> photos = [];
+  List<Video> videos = [];
+  List<String> audios = [];
+  List<String> links = [];
 
   @override
   Widget build(BuildContext context) {

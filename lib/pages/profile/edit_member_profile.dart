@@ -3,6 +3,7 @@ import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/location.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,9 +33,9 @@ class _EditProfileState extends State<EditProfile> {
             return isLoading
                 ? const Loading()
                 : Scaffold(
-                    body: Material(
+                    body: SafeArea(
                       child: Center(
-                        child: Column(children: [
+                        child: ListView(children: [
                           GestureDetector(
                               onTap: () {
                                 Navigator.pushNamed(context, '/profile_image');
@@ -48,6 +49,9 @@ class _EditProfileState extends State<EditProfile> {
                                 await DatabaseMember(
                                         uid: member.uid ?? user!.uid)
                                     .updateCommunityMemberData(member);
+                                // ignore: use_build_context_synchronously
+                                Utility.showSnackBar(
+                                    context, 'information updated');
                               }
                             },
                             child: const Text(

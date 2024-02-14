@@ -1,10 +1,11 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:uuid/uuid.dart';
 
 class StorageService {
+  static const Uuid uuid = Uuid();
   static final _storageRef = FirebaseStorage.instance.ref();
   static final _profileImagesRef = _storageRef.child("profileImages");
   static final _mainImageCaseRef = _storageRef.child("mainImageCase");
@@ -14,7 +15,7 @@ class StorageService {
   static final _thumbnailsCaseRef = _storageRef.child("thumbnailsCase");
 
   static Future<String> uploadProfileImage(String uid, File file) async {
-    String fileName = uid;
+    final fileName = uid;
     final imageRef = _profileImagesRef.child(fileName);
     await imageRef.putFile(file);
     return await imageRef.getDownloadURL();
@@ -22,7 +23,7 @@ class StorageService {
 
   static Future<String> uploadCaseRecordMainImage(
       String uidCase, String filePath) async {
-    final fileName = '$uidCase mainImage';
+    final fileName = uidCase;
     final mainImageRef = _mainImageCaseRef.child(fileName);
     await mainImageRef.putFile(File(filePath));
     return await mainImageRef.getDownloadURL();
@@ -30,68 +31,158 @@ class StorageService {
 
   static Future<List<String>> uploadCaseRecordPhotos(
       String uidCase, List<String> filePaths) async {
-    List<String> photoLinks = List.empty(growable: true);
+    List<String> photoUrls = [];
     for (int i = 0; i < filePaths.length; i++) {
       final file = File(filePaths[i]);
-      final fileName = '$uidCase photo $i';
-      final photoRef = _photosCaseRef.child(fileName);
+      final fileName = uuid.v4();
+      final photoRef = _photosCaseRef.child(uidCase).child(fileName);
       await photoRef.putFile(file);
-      final photoLink = await photoRef.getDownloadURL();
-      photoLinks.add(photoLink);
+      final photoUrl = await photoRef.getDownloadURL();
+      photoUrls.add(photoUrl);
     }
-    return photoLinks;
+    return photoUrls;
   }
 
   static Future<List<String>> uploadCaseRecordVideos(
       String uidCase, List<Video> videos) async {
-    List<String> videoLinks = List.empty(growable: true);
+    List<String> videoUrls = [];
     for (int i = 0; i < videos.length; i++) {
       final file = videos[i].file;
-      final fileName = '$uidCase video $i';
-      final videoRef = _videosCaseRef.child(fileName);
+      final fileName = uuid.v4();
+      final videoRef = _videosCaseRef.child(uidCase).child(fileName);
       await videoRef.putFile(file!);
-      String videoLink = await videoRef.getDownloadURL();
-      videoLinks.add(videoLink);
+      final videoUrl = await videoRef.getDownloadURL();
+      videoUrls.add(videoUrl);
     }
-    return videoLinks;
+    return videoUrls;
   }
 
   static Future<List<String>> uploadCaseRecordThumbnails(
       String uidCase, List<Video> videos) async {
-    List<String> thumbnailLinks = List.empty(growable: true);
+    List<String> thumbnailUrls = [];
     for (int i = 0; i < videos.length; i++) {
       final path = videos[i].file!.path;
-      final fileName = '$uidCase thumbnail $i';
-      Uint8List? thumbnail = await CaseHelper.getThumbnail(path);
-      final thumbnailRef = _thumbnailsCaseRef.child(fileName);
+      final fileName = uuid.v4();
+      final thumbnail = await CaseHelper.getThumbnail(path);
+      final thumbnailRef = _thumbnailsCaseRef.child(uidCase).child(fileName);
       await thumbnailRef.putData(thumbnail!);
-      final thumbnailLink = await thumbnailRef.getDownloadURL();
-      thumbnailLinks.add(thumbnailLink);
+      final thumbnailUrl = await thumbnailRef.getDownloadURL();
+      thumbnailUrls.add(thumbnailUrl);
     }
-    return thumbnailLinks;
+    return thumbnailUrls;
   }
 
-  static Future<List<String>> uploadCaseRecordAudios(
+  static Future<List<String>> updateCaseRecordPhotos(
       String uidCase, List<String> filePaths) async {
-    List<String> audioLinks = List.empty(growable: true);
+    final parent = _photosCaseRef.child(uidCase);
+    final originalUrls = await getAllDownloadUrlsInReference(parent, uidCase);
+    List<String> photoUrls = [];
     for (int i = 0; i < filePaths.length; i++) {
-      final file = File(filePaths[i]);
-      final fileName = '$uidCase audio $i';
-      final audioRef = _audiosCaseRef.child(fileName);
-      await audioRef.putFile(file);
-      final videoLink = await audioRef.getDownloadURL();
-      audioLinks.add(videoLink);
+      final urlPath = filePaths[i];
+
+      if (urlPath.startsWith('http')) {
+        photoUrls.add(urlPath);
+      } else {
+        final file = File(urlPath);
+        final fileName = uuid.v4();
+        final photoRef = parent.child(fileName);
+        await photoRef.putFile(file);
+        final photoUrl = await photoRef.getDownloadURL();
+        photoUrls.add(photoUrl);
+      }
     }
-    return audioLinks;
+    deleteNotCurrentUrls(originalUrls, photoUrls, parent, uidCase);
+    return photoUrls;
   }
 
-  static deleteCaseRecordItems(
-      Reference reference, String uidCaseRecord) async {
-    ListResult result = await reference.listAll();
-    for (Reference ref in result.items) {
-      if (ref.fullPath.startsWith(uidCaseRecord)) {
-        await ref.delete();
+  static Future<List<String>> updateCaseRecordVideos(
+      String uidCase, List<Video> videos) async {
+    final parent = _videosCaseRef.child(uidCase);
+    final originalUrls = await getAllDownloadUrlsInReference(parent, uidCase);
+    List<String> videoUrls = [];
+    for (int i = 0; i < videos.length; i++) {
+      final urlPath = videos[i].videoUrl ?? videos[i].file!.path;
+
+      if (urlPath.startsWith('http')) {
+        videoUrls.add(urlPath);
+      } else {
+        final file = videos[i].file;
+        final fileName = uuid.v4();
+        final videoRef = parent.child(fileName);
+        await videoRef.putFile(file!);
+        final videoUrl = await videoRef.getDownloadURL();
+        videoUrls.add(videoUrl);
       }
+    }
+    deleteNotCurrentUrls(originalUrls, videoUrls, parent, uidCase);
+    return videoUrls;
+  }
+
+  static Future<List<String>> updateCaseRecordThumbnails(
+      String uidCase, List<Video> videos) async {
+    final parent = _thumbnailsCaseRef.child(uidCase);
+    final originalUrls = await getAllDownloadUrlsInReference(parent, uidCase);
+    List<String> thumbnailUrls = [];
+    for (int i = 0; i < videos.length; i++) {
+      final urlPath = videos[i].thumbnailUrl;
+
+      if (urlPath != null && urlPath.startsWith('http')) {
+        thumbnailUrls.add(urlPath);
+      } else {
+        final path = videos[i].file!.path;
+        final fileName = uuid.v4();
+        final thumbnail = await CaseHelper.getThumbnail(path);
+        final thumbnailRef = parent.child(fileName);
+        await thumbnailRef.putData(thumbnail!);
+        final thumbnailUrl = await thumbnailRef.getDownloadURL();
+        thumbnailUrls.add(thumbnailUrl);
+      }
+    }
+    deleteNotCurrentUrls(originalUrls, thumbnailUrls, parent, uidCase);
+    return thumbnailUrls;
+  }
+
+  static Future<List<String>> updateCaseRecordAudios(
+      String uidCase, List<String> filePaths) async {
+    final parent = _audiosCaseRef.child(uidCase);
+    final originalUrls = await getAllDownloadUrlsInReference(parent, uidCase);
+    List<String> audioUrls = [];
+    for (int i = 0; i < filePaths.length; i++) {
+      final urlPath = filePaths[i];
+
+      if (urlPath.startsWith('http')) {
+        audioUrls.add(urlPath);
+      } else {
+        final file = File(filePaths[i]);
+        final fileName = uuid.v4();
+        final audioRef = parent.child(fileName);
+        await audioRef.putFile(file);
+        final videoUrl = await audioRef.getDownloadURL();
+        audioUrls.add(videoUrl);
+      }
+    }
+    deleteNotCurrentUrls(originalUrls, audioUrls, parent, uidCase);
+    return audioUrls;
+  }
+
+  static Future<List<String>> getAllDownloadUrlsInReference(
+      Reference reference, String uidCase) async {
+    final result = await reference.listAll();
+    final files = result.items;
+    final downloadUrls = <String>[];
+    for (final file in files) {
+      final url = await file.getDownloadURL();
+      downloadUrls.add(url);
+    }
+    return downloadUrls;
+  }
+
+  static deleteNotCurrentUrls(List<String> originalUrls,
+      List<String> currentUrls, Reference reference, String uidCase) async {
+    final notCurrentUrls =
+        originalUrls.where((url) => !currentUrls.contains(url)).toList();
+    for (var url in notCurrentUrls) {
+      await reference.child(url).delete();
     }
   }
 

@@ -85,7 +85,7 @@ class DatabaseCase {
       return Video.fromCase(videoLink, thumbnail);
     });
 
-    caseRecord.audios = await StorageService.uploadCaseRecordAudios(
+    caseRecord.audios = await StorageService.upla(
         caseRecord.uid, caseRecord.audios);
 
     await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
@@ -104,6 +104,43 @@ class DatabaseCase {
           .get();
     } else {
       querySnapshot = await caseCollection
+          .orderBy('dateCreated', descending: true)
+          .limit(limit)
+          .get();
+    }
+
+    if (querySnapshot.docs.isNotEmpty) {
+      List<Future<CaseRecord>> caseRecordFutures =
+          querySnapshot.docs.map(_caseRecordFromSnapshot).toList();
+      final caseRecordList = await Future.wait(caseRecordFutures);
+      final bool isLastPage = caseRecordList.length < 10;
+      final DocumentSnapshot? lastDoc =
+          isLastPage ? null : querySnapshot.docs.last;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(caseRecordList);
+      } else {
+        pagingController.appendPage(caseRecordList, lastDoc);
+      }
+    }
+  }
+
+  static Future<void> fetchCaseRecordsForMember(
+      {int limit = 10,
+      DocumentSnapshot? pageKey,
+      required PagingController pagingController,
+      required String caseId}) async {
+    QuerySnapshot querySnapshot;
+    if (pageKey != null) {
+      querySnapshot = await caseCollection
+          .where('id', isEqualTo: caseId)
+          .orderBy('dateCreated', descending: true)
+          .startAfterDocument(pageKey)
+          .limit(limit)
+          .get();
+    } else {
+      querySnapshot = await caseCollection
+          .where('id', isEqualTo: caseId)
           .orderBy('dateCreated', descending: true)
           .limit(limit)
           .get();

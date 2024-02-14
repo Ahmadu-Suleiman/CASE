@@ -166,7 +166,7 @@ class _CasePageState extends State<CasePage> {
                               (video) => GestureDetector(
                                 onTap: () => Navigator.pushNamed(
                                     context, Routes.routeCaseVideo,
-                                    arguments: video.videoLink),
+                                    arguments: video.videoUrl),
                                 child: Image.network(
                                   video
                                       .thumbnailUrl!, // Replace with your actual image URL
