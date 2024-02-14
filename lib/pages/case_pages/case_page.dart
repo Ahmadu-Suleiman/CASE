@@ -25,13 +25,11 @@ class _CasePageState extends State<CasePage> {
         ModalRoute.of(context)?.settings.arguments as String?;
     if (uidCase != null) {
       return FutureBuilder(
-          future: DatabaseCase.getCaseRecordAndVideos(uidCase),
-          builder: (BuildContext context,
-              AsyncSnapshot<CaseRecordAndVideos> snapshot) {
+          future: DatabaseCase.getCaseRecord(uidCase),
+          builder: (BuildContext context, AsyncSnapshot<CaseRecord> snapshot) {
             if (snapshot.hasData) {
-              CaseRecordAndVideos caseRecordAndVideos = snapshot.data!;
-              CaseRecord caseRecord = caseRecordAndVideos.caseRecord;
-              List<Video?> videos = caseRecordAndVideos.videos;
+              CaseRecord caseRecord = snapshot.data!;
+              List<Video> videos = caseRecord.videos;
               return Scaffold(
                   appBar: AppBar(
                     title: const Image(
@@ -164,9 +162,9 @@ class _CasePageState extends State<CasePage> {
                         crossAxisCount: 3,
                         children: videos
                             .map(
-                              (video) => Image.memory(
-                                video!
-                                    .thumbnail!, // Replace with your actual image URL
+                              (video) => Image.network(
+                                video
+                                    .thumbnailUrl!, // Replace with your actual image URL
                                 fit: BoxFit.cover,
                                 width: 250,
                                 height:

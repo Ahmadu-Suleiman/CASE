@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:image_picker/image_picker.dart';
-
 class Video {
-  XFile file;
-  late Uint8List? thumbnail;
+  File? file;
+  String? videoLink;
+  Uint8List? thumbnail;
+  String? thumbnailUrl;
 
   Video(this.file, this.thumbnail);
-  Video.onlyFile(this.file);
+  Video.fromCase(this.videoLink, this.thumbnailUrl);
 }

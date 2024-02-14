@@ -30,7 +30,7 @@ class _EditCaseState extends State<EditCase> {
       detailedDescription = '',
       mainImagePath = '';
   List<XFile> photos = List.empty(growable: true);
-  List<Video?> videos = List.empty(growable: true);
+  List<Video> videos = List.empty(growable: true);
   List<String> audios = List.empty(growable: true);
   List<String> links = List.empty(growable: true);
 
@@ -42,18 +42,16 @@ class _EditCaseState extends State<EditCase> {
         ModalRoute.of(context)?.settings.arguments as String?;
     if (uidCase != null) {
       return FutureBuilder(
-          future: DatabaseCase.getCaseRecordAndVideos(uidCase),
-          builder: (BuildContext context,
-              AsyncSnapshot<CaseRecordAndVideos> snapshot) {
+          future: DatabaseCase.getCaseRecord(uidCase),
+          builder: (BuildContext context, AsyncSnapshot<CaseRecord> snapshot) {
             if (snapshot.hasData) {
-              CaseRecordAndVideos caseRecordAndVideos = snapshot.data!;
-              CaseRecord caseRecord = caseRecordAndVideos.caseRecord;
+              CaseRecord caseRecord = snapshot.data!;
               title = caseRecord.title;
               shortDescription = caseRecord.shortDescription;
               detailedDescription = caseRecord.detailedDescription;
               mainImagePath = caseRecord.mainImage;
               photos = caseRecord.photos.map((path) => XFile(path)).toList();
-              videos = caseRecordAndVideos.videos;
+              videos = caseRecord.videos;
               audios = caseRecord.audios;
               links = caseRecord.links;
               return (member != null && !loading)
@@ -107,10 +105,7 @@ class _EditCaseState extends State<EditCase> {
                                                   photos: photos
                                                       .map((file) => file.path)
                                                       .toList(),
-                                                  videos: videos.nonNulls
-                                                      .map((video) =>
-                                                          video.file.path)
-                                                      .toList(),
+                                                  videos: videos,
                                                   audios: audios,
                                                   links: links);
                                           await DatabaseCase.uploadCaseRecord(
@@ -292,7 +287,7 @@ class _EditCaseState extends State<EditCase> {
                                 crossAxisCount: 3,
                                 children: videos
                                     .map((video) => Image.memory(
-                                          video!.thumbnail!,
+                                          video.thumbnail!,
                                           fit: BoxFit.cover,
                                           width: 250,
                                           height: 250,

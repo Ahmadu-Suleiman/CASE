@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:file_picker/file_picker.dart';
@@ -28,7 +30,9 @@ class CaseHelper {
 
     if (videoFile != null) {
       final thumbnailData = await getThumbnail(videoFile.path);
-      if (thumbnailData != null) updateVideos(Video(videoFile, thumbnailData));
+      if (thumbnailData != null) {
+        updateVideos(Video(File(videoFile.path), thumbnailData));
+      }
     }
   }
 
@@ -84,7 +88,7 @@ class CaseHelper {
       imageFormat: ImageFormat.JPEG,
       maxHeight: 250,
       maxWidth: 250,
-      quality: 25,
+      quality: 100,
     );
   }
 }

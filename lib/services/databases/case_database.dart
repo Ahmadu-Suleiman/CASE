@@ -3,10 +3,8 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/storage.dart';
-import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class DatabaseCase {
@@ -18,6 +16,14 @@ class DatabaseCase {
       DocumentSnapshot snapshot) async {
     CommunityMember member =
         await DatabaseMember(uid: snapshot['uidMember']).getCommunityMember();
+    List<String> videoLinks = Utility.stringList(snapshot, 'videos');
+    List<String> thumbnails = Utility.stringList(snapshot, 'thumbnails');
+    List<Video> videos = List.generate(videoLinks.length, (index) {
+      String videoLink = videoLinks[index];
+      String thumbnail = thumbnails[index];
+      return Video.fromCase(videoLink, thumbnail);
+    });
+
     return CaseRecord(
       uid: snapshot['uid'] ?? '',
       uidMember: snapshot['uidMember'] ?? '',
@@ -31,7 +37,7 @@ class DatabaseCase {
       mainImage: snapshot['mainImage'] ?? '',
       location: snapshot['location'],
       photos: Utility.stringList(snapshot, 'photos'),
-      videos: Utility.stringList(snapshot, 'videos'),
+      videos: videos,
       audios: Utility.stringList(snapshot, 'audios'),
       links: Utility.stringList(snapshot, 'links'),
     );
@@ -68,25 +74,21 @@ class DatabaseCase {
         caseRecord.uid, caseRecord.mainImage);
     caseRecord.photos = await StorageService.uploadCaseRecordPhotos(
         caseRecord.uid, caseRecord.photos);
-    caseRecord.videos = await StorageService.uploadCaseRecordVideos(
+    List<String> videoLinks = await StorageService.uploadCaseRecordVideos(
         caseRecord.uid, caseRecord.videos);
+    List<String> thumbnails = await StorageService.uploadCaseRecordThumbnails(
+        caseRecord.uid, caseRecord.videos);
+
+    caseRecord.videos = List.generate(videoLinks.length, (index) {
+      String videoLink = videoLinks[index];
+      String thumbnail = thumbnails[index];
+      return Video.fromCase(videoLink, thumbnail);
+    });
+
     caseRecord.audios = await StorageService.uploadCaseRecordAudios(
         caseRecord.uid, caseRecord.audios);
 
     await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
-  }
-
-  static Future<CaseRecordAndVideos> getCaseRecordAndVideos(
-      String uidCase) async {
-    CaseRecord caseRecord = await getCaseRecord(uidCase);
-    List<Video?> videos = List.filled(caseRecord.videos.length, null);
-    for (int i = 0; i < caseRecord.videos.length; i++) {
-      String videoLink = caseRecord.videos[i];
-      videos.add(
-          Video(XFile(videoLink), await CaseHelper.getThumbnail(videoLink)));
-    }
-
-    return CaseRecordAndVideos(caseRecord: caseRecord, videos: videos);
   }
 
   static Future<void> fetchCaseRecords(

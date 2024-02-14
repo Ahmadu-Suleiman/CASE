@@ -84,9 +84,7 @@ class _CreateCaseState extends State<CreateCase> {
                                     photos: photos
                                         .map((file) => file.path)
                                         .toList(),
-                                    videos: videos
-                                        .map((video) => video.file.path)
-                                        .toList(),
+                                    videos: videos,
                                     audios: audios,
                                     links: links);
                                 await DatabaseCase.uploadCaseRecord(caseRecord);

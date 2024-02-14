@@ -16,7 +16,8 @@ class CaseRecord {
       mainImage = '';
   late CommunityMember member;
   late GeoPoint location;
-  late List<String> photos, videos, audios, links = [];
+  late List<String> photos, audios, links;
+  late List<Video> videos;
 
   CaseRecord(
       {required this.uid,
@@ -61,7 +62,8 @@ class CaseRecord {
       'mainImage': mainImage,
       'location': location,
       'photos': photos,
-      'videos': videos,
+      'videos': videos.map((video) => video.videoLink),
+      'thumbnails': videos.map((video) => video.thumbnailUrl),
       'audios': audios,
       'links': links,
     };
@@ -74,11 +76,4 @@ class CaseRecord {
     String randomStr = const Uuid().v4();
     return '$timestamp-$randomStr';
   }
-}
-
-class CaseRecordAndVideos {
-  CaseRecord caseRecord;
-  List<Video?> videos;
-
-  CaseRecordAndVideos({required this.caseRecord, required this.videos});
 }
