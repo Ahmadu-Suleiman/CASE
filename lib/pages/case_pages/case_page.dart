@@ -6,6 +6,7 @@ import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
+import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 
@@ -162,13 +163,18 @@ class _CasePageState extends State<CasePage> {
                         crossAxisCount: 3,
                         children: videos
                             .map(
-                              (video) => Image.network(
-                                video
-                                    .thumbnailUrl!, // Replace with your actual image URL
-                                fit: BoxFit.cover,
-                                width: 250,
-                                height:
-                                    250, // Optional: Show an error icon if the image fails to load
+                              (video) => GestureDetector(
+                                onTap: () => Navigator.pushNamed(
+                                    context, Routes.routeCaseVideo,
+                                    arguments: video.videoLink),
+                                child: Image.network(
+                                  video
+                                      .thumbnailUrl!, // Replace with your actual image URL
+                                  fit: BoxFit.cover,
+                                  width: 250,
+                                  height:
+                                      250, // Optional: Show an error icon if the image fails to load
+                                ),
                               ),
                             )
                             .toList(),

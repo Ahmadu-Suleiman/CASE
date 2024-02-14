@@ -90,21 +90,21 @@ class _ProfileState extends State<Profile> {
                       member.bio,
                       maxLines: 4,
                     ),
-                    Expanded(
-                      child: DefaultTabController(
-                        length: 3,
-                        child: Scaffold(
-                          body: Column(
-                            children: [
-                              const TabBar(
-                                indicatorSize: TabBarIndicatorSize.tab,
-                                tabs: [
-                                  Tab(text: 'Cases'),
-                                  Tab(text: 'Petitions'),
-                                  Tab(text: 'Media'),
-                                ],
-                              ),
-                              TabBarView(
+                    DefaultTabController(
+                      length: 3,
+                      child: Scaffold(
+                        body: Column(
+                          children: [
+                            const TabBar(
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              tabs: [
+                                Tab(text: 'Cases'),
+                                Tab(text: 'Petitions'),
+                                Tab(text: 'Media'),
+                              ],
+                            ),
+                            Expanded(
+                              child: TabBarView(
                                 children: [
                                   Text(
                                     member.bio,
@@ -117,8 +117,8 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     )

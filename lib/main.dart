@@ -1,5 +1,6 @@
 import 'package:case_be_heard/pages/case_pages/case_page.dart';
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/pages/case_pages/case_play_video.dart';
 import 'package:case_be_heard/pages/case_pages/case_view_photo.dart';
 import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
@@ -43,7 +44,8 @@ class StartWidget extends StatelessWidget {
                 Routes.routeMemberProfile: (context) => const Profile(),
                 Routes.routeEditMemberProfile: (context) => const EditProfile(),
                 Routes.routeProfileImage: (context) => const ProfileImage(),
-                Routes.routeCasePhoto: (context) => const CasePhotoWidget(),
+                Routes.routeCasePhoto: (context) => const CasePhotoViewer(),
+                Routes.routeCaseVideo: (context) => const CaseVideoPlayer(),
               },
               theme: ThemeData(
                 focusColor: Style.secondaryColor,

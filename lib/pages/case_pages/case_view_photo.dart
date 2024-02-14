@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 
-class CasePhotoWidget extends StatelessWidget {
-  const CasePhotoWidget({super.key});
+class CasePhotoViewer extends StatelessWidget {
+  const CasePhotoViewer({super.key});
 
   @override
   Widget build(BuildContext context) {
