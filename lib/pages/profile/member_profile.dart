@@ -52,7 +52,7 @@ class _ProfileState extends State<Profile> {
                   ),
                   centerTitle: true,
                   actions: [
-                    IconButton.outlined(
+                    IconButton.filled(
                       onPressed: () async {
                         Navigator.pushNamed(context, '/edit_member_profile');
                       },

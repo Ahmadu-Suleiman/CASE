@@ -8,12 +8,7 @@ class CaseRecord {
   String uid = generateCaseId();
   Timestamp dateCreated = Timestamp.now();
   String uidMember;
-  String title = '',
-      shortDescription = '',
-      detailedDescription = '',
-      type,
-      progress,
-      mainImage = '';
+  String title = '', details = '', summary = '', type, progress, mainImage = '';
   late CommunityMember member;
   late GeoPoint location;
   late List<String> photos, audios, links;
@@ -25,8 +20,8 @@ class CaseRecord {
       required this.member,
       required this.dateCreated,
       required this.title,
-      required this.shortDescription,
-      required this.detailedDescription,
+      required this.details,
+      required this.summary,
       required this.type,
       required this.progress,
       required this.mainImage,
@@ -38,8 +33,8 @@ class CaseRecord {
   CaseRecord.forUpload(
       {required this.uidMember,
       required this.title,
-      required this.shortDescription,
-      required this.detailedDescription,
+      required this.details,
+      required this.summary,
       required this.type,
       required this.progress,
       required this.mainImage,
@@ -55,8 +50,8 @@ class CaseRecord {
       'uidMember': uidMember,
       'dateCreated': dateCreated,
       'title': title,
-      'shortDescription': shortDescription,
-      'detailedDescription': detailedDescription,
+      'details': details,
+      'summary': summary,
       'type': type,
       'progress': progress,
       'mainImage': mainImage,

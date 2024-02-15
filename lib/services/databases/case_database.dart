@@ -30,8 +30,8 @@ class DatabaseCase {
       dateCreated: snapshot['dateCreated'] ?? Timestamp.now(),
       member: member,
       title: snapshot['title'] ?? '',
-      shortDescription: snapshot['shortDescription'] ?? '',
-      detailedDescription: snapshot['detailedDescription'] ?? '',
+      summary: snapshot['summary'] ?? '',
+      details: snapshot['details'] ?? '',
       type: snapshot['type'] ?? '',
       progress: snapshot['progress'] ?? '',
       mainImage: snapshot['mainImage'] ?? '',
@@ -85,7 +85,29 @@ class DatabaseCase {
       return Video.fromCase(videoLink, thumbnail);
     });
 
-    caseRecord.audios = await StorageService.upla(
+    caseRecord.audios = await StorageService.uploadCaseRecordAudios(
+        caseRecord.uid, caseRecord.audios);
+
+    await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
+  }
+
+  static Future<void> updateCaseRecord(CaseRecord caseRecord) async {
+    caseRecord.mainImage = await StorageService.updateCaseRecordMainImage(
+        caseRecord.uid, caseRecord.mainImage);
+    caseRecord.photos = await StorageService.updateCaseRecordPhotos(
+        caseRecord.uid, caseRecord.photos);
+    List<String> videoLinks = await StorageService.updateCaseRecordVideos(
+        caseRecord.uid, caseRecord.videos);
+    List<String> thumbnails = await StorageService.updateCaseRecordThumbnails(
+        caseRecord.uid, caseRecord.videos);
+
+    caseRecord.videos = List.generate(videoLinks.length, (index) {
+      String videoLink = videoLinks[index];
+      String thumbnail = thumbnails[index];
+      return Video.fromCase(videoLink, thumbnail);
+    });
+
+    caseRecord.audios = await StorageService.updateCaseRecordAudios(
         caseRecord.uid, caseRecord.audios);
 
     await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());

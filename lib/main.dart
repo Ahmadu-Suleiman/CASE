@@ -15,11 +15,14 @@ import 'package:case_be_heard/shared/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Gemini.init(
+      apiKey: 'AIzaSyAurd8bwkqj7UaMlsByZ_4-rDBFTPCjMSk', enableDebugging: true);
   runApp(const StartWidget());
 }
 

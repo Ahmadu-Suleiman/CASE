@@ -5,11 +5,14 @@ import 'package:case_be_heard/shared/utility.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 
 class CaseHelper {
   static final ImagePicker _picker = ImagePicker();
+  static final gemini = Gemini.instance;
 
   static Future<void> addMainImage(Function(String) updateMainImage) async {
     XFile? image = await _picker.pickImage(
@@ -90,5 +93,49 @@ class CaseHelper {
       maxWidth: 250,
       quality: 100,
     );
+  }
+
+  static void showRecommendedSummary(BuildContext context, String title,
+      String details, String summary) async {
+    final capturedContext = context;
+    gemini.text('''Give me a maximum of three line summary of this my civil or 
+    criminal case with these details written by me.\n$title\n$details\nsummary\n$summary. 
+    Generate the three line summary as a single paragraph''').then((value) => {
+          showDialog(
+            context: capturedContext,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Recommended Summary'),
+                content: Text(
+                  value!.output ?? 'No sumary generated',
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Cancel'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('Copy'),
+                    onPressed: () {
+                      Clipboard.setData(
+                          ClipboardData(text: value.output ?? ''));
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          )
+        });
+  }
+
+  static Future<String> getCaseCategory(
+      String title, String description, String summary) async {
+    final result = await gemini
+        .text('''Give me the category of this civil or criminal case as a term.
+\n$title,\n$description\n "summary"\n$summary.''');
+    return result!.output ?? 'Unknown';
   }
 }

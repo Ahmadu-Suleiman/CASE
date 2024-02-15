@@ -72,6 +72,29 @@ class StorageService {
     return thumbnailUrls;
   }
 
+  static Future<List<String>> uploadCaseRecordAudios(
+      String uidCase, List<String> filePaths) async {
+    List<String> audioLinks = List.empty(growable: true);
+    for (int i = 0; i < filePaths.length; i++) {
+      final file = File(filePaths[i]);
+      final fileName = uuid.v4();
+      final audioRef = _audiosCaseRef.child(uidCase).child(fileName);
+      await audioRef.putFile(file);
+      final videoLink = await audioRef.getDownloadURL();
+      audioLinks.add(videoLink);
+    }
+    return audioLinks;
+  }
+
+  static Future<String> updateCaseRecordMainImage(
+      String uidCase, String urlPath) async {
+    if (urlPath.startsWith('http')) return urlPath;
+    final fileName = uidCase;
+    final mainImageRef = _mainImageCaseRef.child(fileName);
+    await mainImageRef.putFile(File(urlPath));
+    return await mainImageRef.getDownloadURL();
+  }
+
   static Future<List<String>> updateCaseRecordPhotos(
       String uidCase, List<String> filePaths) async {
     final parent = _photosCaseRef.child(uidCase);

@@ -25,10 +25,7 @@ class _CreateCaseState extends State<CreateCase> {
   bool addLink = false;
   bool loading = false;
 
-  String title = '',
-      shortDescription = '',
-      detailedDescription = '',
-      mainImagePath = '';
+  String title = '', summary = '', detailedDescription = '', mainImagePath = '';
   List<XFile> photos = [];
   List<Video> videos = [];
   List<String> audios = [];
@@ -61,23 +58,25 @@ class _CreateCaseState extends State<CreateCase> {
                               if (title.isEmpty) {
                                 Utility.showSnackBar(
                                     context, 'Please add title');
-                              } else if (shortDescription.isEmpty) {
+                              } else if (summary.isEmpty) {
                                 Utility.showSnackBar(
-                                    context, 'Please add short description');
+                                    context, 'Please add summary');
                               } else if (detailedDescription.isEmpty) {
                                 Utility.showSnackBar(
-                                    context, 'Please add detailed description');
+                                    context, 'Please add the details');
                               } else if (mainImagePath.isEmpty) {
                                 Utility.showSnackBar(
                                     context, 'Please add main image');
                               } else {
                                 setState(() => loading = true);
+                                String type = await CaseHelper.getCaseCategory(
+                                    title, detailedDescription, summary);
                                 CaseRecord caseRecord = CaseRecord.forUpload(
                                     uidMember: member.uid!,
                                     title: title,
-                                    shortDescription: shortDescription,
-                                    detailedDescription: detailedDescription,
-                                    type: 'Assault',
+                                    summary: summary,
+                                    details: detailedDescription,
+                                    type: type,
                                     progress: 'Pending',
                                     mainImage: mainImagePath,
                                     location: member.location,
@@ -118,7 +117,7 @@ class _CreateCaseState extends State<CreateCase> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(30.0),
+                              borderRadius: BorderRadius.circular(15.0),
                               child: mainImagePath.isNotEmpty
                                   ? Image.file(
                                       File(mainImagePath),
@@ -143,11 +142,36 @@ class _CreateCaseState extends State<CreateCase> {
                           ),
                           const SizedBox(height: 20),
                           TextFormField(
-                            initialValue: shortDescription,
-                            onChanged: (value) => shortDescription = value,
+                            initialValue: detailedDescription,
+                            onChanged: (value) => detailedDescription = value,
                             decoration: const InputDecoration(
-                              hintText: 'Short description',
+                              hintText: 'Detailed description',
                               border: OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                              ),
+                            ),
+                            minLines: 10,
+                            maxLines: null,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          TextFormField(
+                            initialValue: summary,
+                            onChanged: (value) => summary = value,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    CaseHelper.showRecommendedSummary(context,
+                                        title, detailedDescription, summary);
+                                  },
+                                  icon: const Icon(Icons.lightbulb_outline)),
+                              hintText: 'Summary',
+                              border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8),
                                 ),
@@ -160,24 +184,6 @@ class _CreateCaseState extends State<CreateCase> {
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                    TextFormField(
-                      initialValue: detailedDescription,
-                      onChanged: (value) => detailedDescription = value,
-                      decoration: const InputDecoration(
-                        hintText: 'Detailed description',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(8),
-                          ),
-                        ),
-                      ),
-                      minLines: 10,
-                      maxLines: null,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 20),

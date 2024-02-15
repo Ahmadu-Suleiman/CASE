@@ -89,7 +89,7 @@ class _CasePageState extends State<CasePage> {
                             const SizedBox(height: 20),
                             Text(
                               caseRecord
-                                  .shortDescription, // Use the shortDescription if it's not null, otherwise use 'Short description' as a placeholder
+                                  .summary, // Use the shortDescription if it's not null, otherwise use 'Short description' as a placeholder
                               maxLines:
                                   3, // Retain the maxLines property to limit the number of lines
                               overflow: TextOverflow
@@ -105,7 +105,7 @@ class _CasePageState extends State<CasePage> {
                       ),
                       Text(
                         caseRecord
-                            .detailedDescription, // Use the detailedDescription if it's not null, otherwise use 'Detailed description' as a placeholder
+                            .details, // Use the detailedDescription if it's not null, otherwise use 'Detailed description' as a placeholder
                         style: const TextStyle(
                           fontSize:
                               18, // Maintain the same font size as the original TextFormField

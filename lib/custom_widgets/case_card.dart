@@ -112,9 +112,9 @@ class Case extends StatelessWidget {
                     color: Colors.red,
                   ),
                 ),
-                const Text(
-                  'Type: Missing Person',
-                  style: TextStyle(
+                Text(
+                  'Type: ${caseRecord.type}',
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.red,
                   ),
@@ -149,7 +149,7 @@ class Case extends StatelessWidget {
                   height: 12,
                 ),
                 Text(
-                  caseRecord.shortDescription,
+                  caseRecord.summary,
                   maxLines: 3,
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18.0, color: Colors.black),
