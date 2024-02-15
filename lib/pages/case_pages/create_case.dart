@@ -132,8 +132,26 @@ class _CreateCaseState extends State<CreateCase> {
                           TextFormField(
                             initialValue: title,
                             onChanged: (value) => title = value,
-                            decoration:
-                                const InputDecoration(hintText: 'Case title'),
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    if (title.isNotEmpty ||
+                                        detailedDescription.isNotEmpty) {
+                                      CaseHelper.showRecommendedTitle(context,
+                                          title, detailedDescription, summary);
+                                    } else {
+                                      Utility.showSnackBar(context,
+                                          'Please add a title and some details first');
+                                    }
+                                  },
+                                  icon: const Icon(Icons.lightbulb_outline)),
+                              hintText: 'Case title',
+                              border: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ),
+                              ),
+                            ),
                             maxLines: 1,
                             style: const TextStyle(
                               fontSize: 18,
@@ -144,9 +162,24 @@ class _CreateCaseState extends State<CreateCase> {
                           TextFormField(
                             initialValue: detailedDescription,
                             onChanged: (value) => detailedDescription = value,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    if (title.isNotEmpty ||
+                                        detailedDescription.isNotEmpty) {
+                                      CaseHelper.showRecommendedDescription(
+                                          context,
+                                          title,
+                                          detailedDescription,
+                                          summary);
+                                    } else {
+                                      Utility.showSnackBar(context,
+                                          'Please add a title and some details first');
+                                    }
+                                  },
+                                  icon: const Icon(Icons.lightbulb_outline)),
                               hintText: 'Detailed description',
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
                                   Radius.circular(8),
                                 ),
@@ -220,20 +253,38 @@ class _CreateCaseState extends State<CreateCase> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    GridView.count(
-                      shrinkWrap: true,
-                      mainAxisSpacing: 4,
-                      crossAxisSpacing: 4,
+                    GridView.builder(
+                      shrinkWrap:
+                          true, // Use shrinkWrap to avoid unbounded height
                       physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 3,
-                      children: photos
-                          .map((image) => Image.file(
-                                File(image.path),
-                                fit: BoxFit.cover,
-                                width: 250,
-                                height: 250,
-                              ))
-                          .toList(),
+                      itemCount: photos.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount:
+                            3, // Adjust the number of columns as needed
+                      ),
+                      itemBuilder: (context, index) {
+                        return Stack(
+                          children: [
+                            Image.file(
+                              File(photos[index].path),
+                              fit: BoxFit.cover,
+                              width: 250,
+                              height: 250,
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: const Icon(Icons.remove_circle),
+                                color: Colors.red,
+                                onPressed: () =>
+                                    {setState(() => photos.removeAt(index))},
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     const SizedBox(height: 20),
                     const Text(
@@ -259,20 +310,38 @@ class _CreateCaseState extends State<CreateCase> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    GridView.count(
-                      shrinkWrap: true,
-                      mainAxisSpacing: 4,
-                      crossAxisSpacing: 4,
+                    GridView.builder(
+                      shrinkWrap:
+                          true, // Use shrinkWrap to avoid unbounded height
                       physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 3,
-                      children: videos
-                          .map((video) => Image.memory(
-                                video.thumbnail!,
-                                fit: BoxFit.cover,
-                                width: 250,
-                                height: 250,
-                              ))
-                          .toList(),
+                      itemCount: videos.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount:
+                            3, // Adjust the number of columns as needed
+                      ),
+                      itemBuilder: (context, index) {
+                        return Stack(
+                          children: [
+                            Image.memory(
+                              videos[index].thumbnail!,
+                              fit: BoxFit.cover,
+                              width: 250,
+                              height: 250,
+                            ),
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: IconButton(
+                                icon: const Icon(Icons.remove_circle),
+                                color: Colors.red,
+                                onPressed: () =>
+                                    {setState(() => videos.removeAt(index))},
+                              ),
+                            ),
+                          ],
+                        );
+                      },
                     ),
                     const SizedBox(height: 20),
                     const Text(

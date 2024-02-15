@@ -4,6 +4,7 @@ import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CaseCard extends StatefulWidget {
   final CaseRecord caseRecord;
@@ -47,6 +48,16 @@ class Case extends StatelessWidget {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Uploaded ${timeago.format(caseRecord.dateCreated.toDate())}',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                  ),
+                ),
                 Row(
                   children: [
                     Padding(

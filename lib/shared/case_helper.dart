@@ -1,9 +1,7 @@
 import 'dart:io';
-
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,6 +11,24 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 class CaseHelper {
   static final ImagePicker _picker = ImagePicker();
   static final gemini = Gemini.instance;
+  static final safetySettings = [
+    SafetySetting(
+      category: SafetyCategory.harassment,
+      threshold: SafetyThreshold.blockNone,
+    ),
+    SafetySetting(
+      category: SafetyCategory.hateSpeech,
+      threshold: SafetyThreshold.blockNone,
+    ),
+    SafetySetting(
+      category: SafetyCategory.dangerous,
+      threshold: SafetyThreshold.blockNone,
+    ),
+    SafetySetting(
+      category: SafetyCategory.sexuallyExplicit,
+      threshold: SafetyThreshold.blockNone,
+    )
+  ];
 
   static Future<void> addMainImage(Function(String) updateMainImage) async {
     XFile? image = await _picker.pickImage(
@@ -95,19 +111,59 @@ class CaseHelper {
     );
   }
 
-  static void showRecommendedSummary(BuildContext context, String title,
+  static void showRecommendedTitle(BuildContext context, String title,
       String details, String summary) async {
     final capturedContext = context;
-    gemini.text('''Give me a maximum of three line summary of this my civil or 
+    gemini.text(
+        '''Give me a one line title in less than 20 words of this my civil or 
+    criminal case with these details written by me.\n$title\n$details\nsummary\n$summary.''').then(
+        (value) => {
+              showDialog(
+                context: capturedContext,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Recommended Title'),
+                    content: Text(
+                      value?.output ??
+                          'No title generated. Please remove potential curse words',
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('Copy'),
+                        onPressed: () {
+                          Clipboard.setData(
+                              ClipboardData(text: value?.output ?? ''));
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              )
+            });
+  }
+
+  static void showRecommendedDescription(BuildContext context, String title,
+      String details, String summary) async {
+    final capturedContext = context;
+    gemini.text(
+        '''Give me a better detailed description in less than 150 words of this my civil or 
     criminal case with these details written by me.\n$title\n$details\nsummary\n$summary. 
-    Generate the three line summary as a single paragraph''').then((value) => {
+    Generate as paragraphs.''').then((value) => {
           showDialog(
             context: capturedContext,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: const Text('Recommended Summary'),
+                title: const Text('Recommended description'),
                 content: Text(
-                  value!.output ?? 'No sumary generated',
+                  value?.output ??
+                      'No description generated. Please remove potential curse words',
                 ),
                 actions: <Widget>[
                   TextButton(
@@ -120,7 +176,7 @@ class CaseHelper {
                     child: const Text('Copy'),
                     onPressed: () {
                       Clipboard.setData(
-                          ClipboardData(text: value.output ?? ''));
+                          ClipboardData(text: value?.output ?? ''));
                       Navigator.of(context).pop();
                     },
                   ),
@@ -129,6 +185,44 @@ class CaseHelper {
             },
           )
         });
+  }
+
+  static void showRecommendedSummary(BuildContext context, String title,
+      String details, String summary) async {
+    final capturedContext = context;
+    gemini.text(
+        '''Give me a maximum of three line summary in less than 40 words of this my civil or 
+    criminal case with these details written by me.\n$title\n$details\nsummary\n$summary.''').then(
+        (value) => {
+              showDialog(
+                context: capturedContext,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Recommended Summary'),
+                    content: Text(
+                      value?.output ??
+                          'No summary generated. Please remove potential curse words',
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        child: const Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('Copy'),
+                        onPressed: () {
+                          Clipboard.setData(
+                              ClipboardData(text: value?.output ?? ''));
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              )
+            });
   }
 
   static Future<String> getCaseCategory(

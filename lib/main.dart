@@ -10,6 +10,7 @@ import 'package:case_be_heard/pages/profile/profile_image.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
+import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +23,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   Gemini.init(
-      apiKey: 'AIzaSyAurd8bwkqj7UaMlsByZ_4-rDBFTPCjMSk', enableDebugging: true);
+      apiKey: 'AIzaSyAurd8bwkqj7UaMlsByZ_4-rDBFTPCjMSk',
+      safetySettings: CaseHelper.safetySettings,
+      enableDebugging: true);
   runApp(const StartWidget());
 }
 
