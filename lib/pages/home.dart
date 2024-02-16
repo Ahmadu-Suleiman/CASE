@@ -117,6 +117,19 @@ class _HomeWidgetState extends State<HomeWidget> {
                     ),
                     ListTile(
                       title: const Text(
+                        'Bookmarks',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      leading: const Icon(Icons.bookmark),
+                      onTap: () {
+                        // Update the state of the app
+                        // ...
+                        // Then close the drawer
+                        Navigator.pop(context);
+                      },
+                    ),
+                    ListTile(
+                      title: const Text(
                         'Communities',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),

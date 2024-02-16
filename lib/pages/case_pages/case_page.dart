@@ -4,7 +4,6 @@ import 'package:case_be_heard/custom_widgets/audio_widget.dart';
 import 'package:case_be_heard/custom_widgets/clickable_image.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/case_record.dart';
-import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -30,7 +29,6 @@ class _CasePageState extends State<CasePage> {
           builder: (BuildContext context, AsyncSnapshot<CaseRecord> snapshot) {
             if (snapshot.hasData) {
               CaseRecord caseRecord = snapshot.data!;
-              List<Video> videos = caseRecord.videos;
               return Scaffold(
                   appBar: AppBar(
                     title: const Image(
@@ -54,14 +52,6 @@ class _CasePageState extends State<CasePage> {
                       Center(
                         child: Column(
                           children: [
-                            const Text(
-                              'Create a new Case',
-                              style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: ClipRRect(
@@ -161,7 +151,7 @@ class _CasePageState extends State<CasePage> {
                         crossAxisSpacing: 4,
                         physics: const NeverScrollableScrollPhysics(),
                         crossAxisCount: 3,
-                        children: videos
+                        children: caseRecord.videos
                             .map(
                               (video) => GestureDetector(
                                 onTap: () => Navigator.pushNamed(

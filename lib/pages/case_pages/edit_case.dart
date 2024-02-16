@@ -8,7 +8,6 @@ import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 
@@ -20,16 +19,48 @@ class EditCase extends StatefulWidget {
 }
 
 class _EditCaseState extends State<EditCase> {
-   final audioPlayer = AudioPlayer();
+  final audioPlayer = AudioPlayer();
   final linkController = TextEditingController();
+  final titleController = TextEditingController();
+  final detailController = TextEditingController();
+  final summaryController = TextEditingController();
   bool addLink = false;
   bool loading = false;
 
-  String title = '', summary = '', detailedDescription = '', mainImagePath = '';
-  List<XFile> photos = [];
+  String title = '', summary = '', details = '', mainImagePath = '';
+  List<String> photos = [];
   List<Video> videos = [];
   List<String> audios = [];
   List<String> links = [];
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Access ModalRoute here, after the context is available
+    final String? uidCase =
+        ModalRoute.of(context)?.settings.arguments as String?;
+    if (uidCase != null) {
+      _loadCaseRecord(uidCase);
+    }
+  }
+
+  Future<void> _loadCaseRecord(String uidCase) async {
+    CaseRecord caseRecord = await DatabaseCase.getCaseRecord(uidCase);
+    setState(() {
+      title = caseRecord.title;
+      summary = caseRecord.summary;
+      details = caseRecord.details;
+      mainImagePath = caseRecord.mainImage;
+      photos = caseRecord.photos;
+      videos = caseRecord.videos;
+      audios = caseRecord.audios;
+      links = caseRecord.links;
+
+      titleController.text = title;
+      detailController.text = details;
+      summaryController.text = summary;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +77,7 @@ class _EditCaseState extends State<EditCase> {
                       child: Column(
                         children: [
                           const Text(
-                            'Create a new Case',
+                            'Edit Case',
                             style: TextStyle(
                               fontSize: 35,
                               fontWeight: FontWeight.bold,
@@ -61,7 +92,7 @@ class _EditCaseState extends State<EditCase> {
                               } else if (summary.isEmpty) {
                                 Utility.showSnackBar(
                                     context, 'Please add summary');
-                              } else if (detailedDescription.isEmpty) {
+                              } else if (details.isEmpty) {
                                 Utility.showSnackBar(
                                     context, 'Please add the details');
                               } else if (mainImagePath.isEmpty) {
@@ -70,29 +101,27 @@ class _EditCaseState extends State<EditCase> {
                               } else {
                                 setState(() => loading = true);
                                 String type = await CaseHelper.getCaseCategory(
-                                    title, detailedDescription, summary);
+                                    title, details, summary);
                                 CaseRecord caseRecord = CaseRecord.forUpload(
                                     uidMember: member.uid!,
                                     title: title,
                                     summary: summary,
-                                    details: detailedDescription,
+                                    details: details,
                                     type: type,
                                     progress: 'Pending',
                                     mainImage: mainImagePath,
                                     location: member.location,
-                                    photos: photos
-                                        .map((file) => file.path)
-                                        .toList(),
+                                    photos: photos,
                                     videos: videos,
                                     audios: audios,
                                     links: links);
-                                await DatabaseCase.uploadCaseRecord(caseRecord);
+                                await DatabaseCase.updateCaseRecord(caseRecord);
                                 if (mounted) Navigator.pop(context);
                               }
                             },
                             icon: const Icon(Icons.upload),
                             label: const Text(
-                              'Upload Case',
+                              'Update Case',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.blue,
@@ -118,27 +147,34 @@ class _EditCaseState extends State<EditCase> {
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
-                              child: mainImagePath.isNotEmpty
-                                  ? Image.file(
-                                      File(mainImagePath),
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 250,
-                                    )
-                                  : Container(),
+                              child: mainImagePath.isEmpty
+                                  ? Container()
+                                  : mainImagePath.startsWith('http')
+                                      ? Image.network(
+                                          mainImagePath,
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: 250,
+                                        )
+                                      : Image.file(
+                                          File(mainImagePath),
+                                          fit: BoxFit.cover,
+                                          width: double.infinity,
+                                          height: 250,
+                                        ),
                             ),
                           ),
                           const SizedBox(height: 20),
                           TextFormField(
-                            initialValue: title,
+                            controller: titleController,
                             onChanged: (value) => title = value,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                   onPressed: () {
                                     if (title.isNotEmpty ||
-                                        detailedDescription.isNotEmpty) {
-                                      CaseHelper.showRecommendedTitle(context,
-                                          title, detailedDescription, summary);
+                                        details.isNotEmpty) {
+                                      CaseHelper.showRecommendedTitle(
+                                          context, title, details, summary);
                                     } else {
                                       Utility.showSnackBar(context,
                                           'Please add a title and some details first');
@@ -160,18 +196,15 @@ class _EditCaseState extends State<EditCase> {
                           ),
                           const SizedBox(height: 20),
                           TextFormField(
-                            initialValue: detailedDescription,
-                            onChanged: (value) => detailedDescription = value,
+                            controller: detailController,
+                            onChanged: (value) => details = value,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                   onPressed: () {
                                     if (title.isNotEmpty ||
-                                        detailedDescription.isNotEmpty) {
+                                        details.isNotEmpty) {
                                       CaseHelper.showRecommendedDescription(
-                                          context,
-                                          title,
-                                          detailedDescription,
-                                          summary);
+                                          context, title, details, summary);
                                     } else {
                                       Utility.showSnackBar(context,
                                           'Please add a title and some details first');
@@ -194,13 +227,13 @@ class _EditCaseState extends State<EditCase> {
                           ),
                           const SizedBox(height: 20),
                           TextFormField(
-                            initialValue: summary,
+                            controller: summaryController,
                             onChanged: (value) => summary = value,
                             decoration: InputDecoration(
                               suffixIcon: IconButton(
                                   onPressed: () {
-                                    CaseHelper.showRecommendedSummary(context,
-                                        title, detailedDescription, summary);
+                                    CaseHelper.showRecommendedSummary(
+                                        context, title, details, summary);
                                   },
                                   icon: const Icon(Icons.lightbulb_outline)),
                               hintText: 'Summary',
@@ -266,12 +299,19 @@ class _EditCaseState extends State<EditCase> {
                       itemBuilder: (context, index) {
                         return Stack(
                           children: [
-                            Image.file(
-                              File(photos[index].path),
-                              fit: BoxFit.cover,
-                              width: 250,
-                              height: 250,
-                            ),
+                            (photos[index].startsWith('http'))
+                                ? Image.network(
+                                    photos[index],
+                                    fit: BoxFit.cover,
+                                    width: 250,
+                                    height: 250,
+                                  )
+                                : Image.file(
+                                    File(photos[index]),
+                                    fit: BoxFit.cover,
+                                    width: 250,
+                                    height: 250,
+                                  ),
                             Positioned(
                               top: 0,
                               right: 0,
@@ -323,12 +363,21 @@ class _EditCaseState extends State<EditCase> {
                       itemBuilder: (context, index) {
                         return Stack(
                           children: [
-                            Image.memory(
-                              videos[index].thumbnail!,
-                              fit: BoxFit.cover,
-                              width: 250,
-                              height: 250,
-                            ),
+                            (videos[index].thumbnailUrl != null)
+                                ? Image.network(
+                                    videos[index]
+                                        .thumbnailUrl!, // Replace with your actual image URL
+                                    fit: BoxFit.cover,
+                                    width: 250,
+                                    height:
+                                        250, // Optional: Show an error icon if the image fails to load
+                                  )
+                                : Image.memory(
+                                    videos[index].thumbnail!,
+                                    fit: BoxFit.cover,
+                                    width: 250,
+                                    height: 250,
+                                  ),
                             Positioned(
                               top: 0,
                               right: 0,

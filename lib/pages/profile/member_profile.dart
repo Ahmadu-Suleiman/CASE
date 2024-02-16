@@ -93,9 +93,9 @@ class _ProfileState extends State<Profile> {
                       flex: 1, // Adjust this value to allocate space for TabBar
                       child: TabBar(
                         tabs: [
-                          Tab(text: 'Cases'),
+                          Tab(text: 'Pending Cases'),
+                          Tab(text: 'Solved Cases'),
                           Tab(text: 'Petitions'),
-                          Tab(text: 'Bookmarks'),
                         ],
                       ),
                     ),

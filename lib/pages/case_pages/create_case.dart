@@ -8,7 +8,6 @@ import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +25,7 @@ class _CreateCaseState extends State<CreateCase> {
   bool loading = false;
 
   String title = '', summary = '', detailedDescription = '', mainImagePath = '';
-  List<XFile> photos = [];
+  List<String> photos = [];
   List<Video> videos = [];
   List<String> audios = [];
   List<String> links = [];
@@ -80,9 +79,7 @@ class _CreateCaseState extends State<CreateCase> {
                                     progress: 'Pending',
                                     mainImage: mainImagePath,
                                     location: member.location,
-                                    photos: photos
-                                        .map((file) => file.path)
-                                        .toList(),
+                                    photos: photos.map((path) => path).toList(),
                                     videos: videos,
                                     audios: audios,
                                     links: links);
@@ -267,7 +264,7 @@ class _CreateCaseState extends State<CreateCase> {
                         return Stack(
                           children: [
                             Image.file(
-                              File(photos[index].path),
+                              File(photos[index]),
                               fit: BoxFit.cover,
                               width: 250,
                               height: 250,

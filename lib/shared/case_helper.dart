@@ -37,9 +37,10 @@ class CaseHelper {
     if (image != null) updateMainImage(image.path);
   }
 
-  static Future<void> addPhotos(Function(List<XFile>) updatePhotos) async {
+  static Future<void> addPhotos(Function(List<String>) updatePhotos) async {
     List<XFile> photoList = await _picker.pickMultiImage();
-    if (photoList.isNotEmpty) updatePhotos(photoList);
+    if (photoList.isNotEmpty)
+      updatePhotos(photoList.map((file) => file.path).toList());
   }
 
   static Future<void> addVideo(Function(Video) updateVideos) async {
