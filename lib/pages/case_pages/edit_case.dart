@@ -28,6 +28,8 @@ class _EditCaseState extends State<EditCase> {
   bool loading = false;
 
   late CaseRecord caseRecord;
+  String? uidCase;
+  String progress = CaseHelper.dropdownItems[0];
   String title = '', summary = '', details = '', mainImagePath = '';
   List<String> photos = [];
   List<Video> videos = [];
@@ -38,16 +40,14 @@ class _EditCaseState extends State<EditCase> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Access ModalRoute here, after the context is available
-    final String? uidCase =
-        ModalRoute.of(context)?.settings.arguments as String?;
-    if (uidCase != null) {
-      _loadCaseRecord(uidCase);
-    }
+    uidCase = ModalRoute.of(context)?.settings.arguments as String?;
+    _loadCaseRecord(uidCase!);
   }
 
   Future<void> _loadCaseRecord(String uidCase) async {
-    CaseRecord caseRecord = await DatabaseCase.getCaseRecord(uidCase);
+    caseRecord = await DatabaseCase.getCaseRecord(uidCase);
     setState(() {
+      progress = caseRecord.progress;
       title = caseRecord.title;
       summary = caseRecord.summary;
       details = caseRecord.details;
@@ -79,7 +79,7 @@ class _EditCaseState extends State<EditCase> {
                 TextButton(
                   child: const Text('Cancel'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(false);
                   },
                 ),
                 TextButton(
@@ -139,13 +139,14 @@ class _EditCaseState extends State<EditCase> {
                                 setState(() => loading = true);
                                 String type = await CaseHelper.getCaseCategory(
                                     title, details, summary);
-                                CaseRecord caseRecord = CaseRecord.forUpload(
+                                CaseRecord caseRecord = CaseRecord.forUpdate(
+                                    uid: uidCase!,
                                     uidMember: member.uid!,
                                     title: title,
                                     summary: summary,
                                     details: details,
                                     type: type,
-                                    progress: 'Pending',
+                                    progress: progress,
                                     mainImage: mainImagePath,
                                     location: member.location,
                                     photos: photos,
@@ -170,6 +171,7 @@ class _EditCaseState extends State<EditCase> {
                               final delete =
                                   await showDeleteCaseDialog(context);
                               if (delete) {
+                                setState(() => loading = true);
                                 await DatabaseCase.deleteCaseRecord(caseRecord);
                                 if (mounted) Navigator.pop(context);
                               }
@@ -182,6 +184,21 @@ class _EditCaseState extends State<EditCase> {
                                 color: Colors.blue,
                               ),
                             ),
+                          ),
+                          DropdownButton<String>(
+                            value: progress,
+                            items: CaseHelper.dropdownItems
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                progress = newValue!;
+                              });
+                            },
                           ),
                           TextButton.icon(
                             onPressed: () async {
@@ -298,7 +315,7 @@ class _EditCaseState extends State<EditCase> {
                                 ),
                               ),
                             ),
-                            maxLines: 3,
+                            maxLines: 4,
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black,

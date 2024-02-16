@@ -116,9 +116,9 @@ class Case extends StatelessWidget {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
-                  'Progress: Investigation pending',
-                  style: TextStyle(
+                Text(
+                  'Progress: ${caseRecord.progress}',
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.red,
                   ),
@@ -148,7 +148,7 @@ class Case extends StatelessWidget {
                 Center(
                   child: Text(
                     caseRecord.title,
-                    maxLines: 3,
+                    maxLines: 4,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                         fontSize: 25.0,
