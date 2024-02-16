@@ -29,6 +29,7 @@ class _EditCaseState extends State<EditCase> {
 
   late CaseRecord caseRecord;
   String? uidCase;
+  String progress = CaseHelper.dropdownItems[0];
   String title = '', summary = '', details = '', mainImagePath = '';
   List<String> photos = [];
   List<Video> videos = [];
@@ -46,6 +47,7 @@ class _EditCaseState extends State<EditCase> {
   Future<void> _loadCaseRecord(String uidCase) async {
     caseRecord = await DatabaseCase.getCaseRecord(uidCase);
     setState(() {
+      progress = caseRecord.progress;
       title = caseRecord.title;
       summary = caseRecord.summary;
       details = caseRecord.details;
@@ -144,7 +146,7 @@ class _EditCaseState extends State<EditCase> {
                                     summary: summary,
                                     details: details,
                                     type: type,
-                                    progress: 'Pending',
+                                    progress: progress,
                                     mainImage: mainImagePath,
                                     location: member.location,
                                     photos: photos,
@@ -182,6 +184,21 @@ class _EditCaseState extends State<EditCase> {
                                 color: Colors.blue,
                               ),
                             ),
+                          ),
+                          DropdownButton<String>(
+                            value: progress,
+                            items: CaseHelper.dropdownItems
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                progress = newValue!;
+                              });
+                            },
                           ),
                           TextButton.icon(
                             onPressed: () async {
@@ -298,7 +315,7 @@ class _EditCaseState extends State<EditCase> {
                                 ),
                               ),
                             ),
-                            maxLines: 3,
+                            maxLines: 4,
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black,

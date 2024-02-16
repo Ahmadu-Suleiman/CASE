@@ -23,6 +23,7 @@ class _CreateCaseState extends State<CreateCase> {
   final linkController = TextEditingController();
   bool addLink = false;
   bool loading = false;
+  String progress = CaseHelper.dropdownItems[0];
 
   String title = '', summary = '', detailedDescription = '', mainImagePath = '';
   List<String> photos = [];
@@ -52,6 +53,22 @@ class _CreateCaseState extends State<CreateCase> {
                             ),
                           ),
                           const SizedBox(height: 20),
+                          DropdownButton<String>(
+                            value: progress,
+                            items: CaseHelper.dropdownItems
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                progress = newValue!;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 20),
                           TextButton.icon(
                             onPressed: () async {
                               if (title.isEmpty) {
@@ -76,7 +93,7 @@ class _CreateCaseState extends State<CreateCase> {
                                     summary: summary,
                                     details: detailedDescription,
                                     type: type,
-                                    progress: 'Pending',
+                                    progress: progress,
                                     mainImage: mainImagePath,
                                     location: member.location,
                                     photos: photos.map((path) => path).toList(),
@@ -207,7 +224,7 @@ class _CreateCaseState extends State<CreateCase> {
                                 ),
                               ),
                             ),
-                            maxLines: 3,
+                            maxLines: 4,
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black,

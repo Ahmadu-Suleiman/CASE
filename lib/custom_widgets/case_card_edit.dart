@@ -6,10 +6,12 @@ import 'package:timeago/timeago.dart' as timeago;
 
 class CaseCardEdit extends StatefulWidget {
   final CaseRecord caseRecord;
+  final Function update;
 
   const CaseCardEdit({
     super.key,
     required this.caseRecord,
+    required this.update,
   });
 
   @override
@@ -19,7 +21,7 @@ class CaseCardEdit extends StatefulWidget {
 class _CaseCardEditState extends State<CaseCardEdit> {
   @override
   Widget build(BuildContext context) {
-    return Case(caseRecord: widget.caseRecord);
+    return Case(caseRecord: widget.caseRecord, update: widget.update);
   }
 }
 
@@ -27,16 +29,19 @@ class Case extends StatelessWidget {
   const Case({
     super.key,
     required this.caseRecord,
+    required this.update,
   });
 
   final CaseRecord caseRecord;
+  final Function update;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, Routes.routeEditCase,
-            arguments: caseRecord.uid);
+                arguments: caseRecord.uid)
+            .then((value) => update());
       },
       child: Card(
         color: Colors.white,
@@ -56,9 +61,9 @@ class Case extends StatelessWidget {
                     ),
                   ),
                 ),
-                const Text(
-                  'Progress: Investigation pending',
-                  style: TextStyle(
+                 Text(
+                  'Progress: ${caseRecord.progress}',
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.red,
                   ),
@@ -101,7 +106,7 @@ class Case extends StatelessWidget {
                 ),
                 Text(
                   caseRecord.summary,
-                  maxLines: 3,
+                  maxLines: 4,
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18.0, color: Colors.black),
                 ),

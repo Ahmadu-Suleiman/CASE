@@ -220,7 +220,11 @@ class StorageService {
     await _mainImageCaseRef.child(uidCase).delete();
     for (final parent in parents) {
       final caseRef = parent.child(uidCase);
-      await caseRef.delete();
+      try {
+        await caseRef.delete();
+      } on Exception {
+        // some media files were not uploaded in the reference to delete
+      }
     }
   }
 

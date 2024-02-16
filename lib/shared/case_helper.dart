@@ -29,6 +29,11 @@ class CaseHelper {
       threshold: SafetyThreshold.blockNone,
     )
   ];
+  static final dropdownItems = [
+    'Investigation pending',
+    'Investigation ongoing',
+    'Case solved'
+  ];
 
   static Future<void> addMainImage(Function(String) updateMainImage) async {
     XFile? image = await _picker.pickImage(
@@ -193,7 +198,7 @@ class CaseHelper {
       String details, String summary) async {
     final capturedContext = context;
     gemini.text(
-        '''Give me a maximum of three line summary in less than 40 words of this my civil or 
+        '''Give me a maximum of three line summary as a single paragraph in less than 25 words of this my civil or 
     criminal case with these details written by me.\n$title\n$details\nsummary\n$summary.''').then(
         (value) => {
               showDialog(
@@ -229,8 +234,8 @@ class CaseHelper {
 
   static Future<String> getCaseCategory(
       String title, String description, String summary) async {
-    final result = await gemini
-        .text('''Give me the category of this civil or criminal case as a term.
+    final result = await gemini.text(
+        '''Give me the category of this civil or criminal case as a one term.
 \n$title,\n$description\n "summary"\n$summary.''');
     return result!.output ?? 'Unknown';
   }
