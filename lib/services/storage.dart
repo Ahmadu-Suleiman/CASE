@@ -114,7 +114,7 @@ class StorageService {
         photoUrls.add(photoUrl);
       }
     }
-    deleteNotCurrentUrls(originalUrls, photoUrls, parent, uidCase);
+    _deleteNotCurrentUrls(originalUrls, photoUrls, parent, uidCase);
     return photoUrls;
   }
 
@@ -137,7 +137,7 @@ class StorageService {
         videoUrls.add(videoUrl);
       }
     }
-    deleteNotCurrentUrls(originalUrls, videoUrls, parent, uidCase);
+    _deleteNotCurrentUrls(originalUrls, videoUrls, parent, uidCase);
     return videoUrls;
   }
 
@@ -161,7 +161,7 @@ class StorageService {
         thumbnailUrls.add(thumbnailUrl);
       }
     }
-    deleteNotCurrentUrls(originalUrls, thumbnailUrls, parent, uidCase);
+    _deleteNotCurrentUrls(originalUrls, thumbnailUrls, parent, uidCase);
     return thumbnailUrls;
   }
 
@@ -184,7 +184,7 @@ class StorageService {
         audioUrls.add(videoUrl);
       }
     }
-    deleteNotCurrentUrls(originalUrls, audioUrls, parent, uidCase);
+    _deleteNotCurrentUrls(originalUrls, audioUrls, parent, uidCase);
     return audioUrls;
   }
 
@@ -200,12 +200,27 @@ class StorageService {
     return downloadUrls;
   }
 
-  static deleteNotCurrentUrls(List<String> originalUrls,
+  static _deleteNotCurrentUrls(List<String> originalUrls,
       List<String> currentUrls, Reference reference, String uidCase) async {
     final notCurrentUrls =
         originalUrls.where((url) => !currentUrls.contains(url)).toList();
     for (var url in notCurrentUrls) {
       await reference.child(url).delete();
+    }
+  }
+
+  static deleteCaseRefernces(String uidCase) async {
+    List<Reference> parents = [
+      _mainImageCaseRef,
+      _photosCaseRef,
+      _videosCaseRef,
+      _thumbnailsCaseRef,
+      _audiosCaseRef
+    ];
+
+    for (final parent in parents) {
+      final caseRef = parent.child(uidCase);
+      await caseRef.delete();
     }
   }
 

@@ -18,21 +18,37 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
-class _ProfileState extends State<Profile> {
+class _ProfileState extends State<Profile> with WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, CaseRecord> _pagingController =
       PagingController(firstPageKey: null);
   int bottomNavIndex = 0;
+  String address = '';
 
   @override
   void initState() {
     _pagingController.addPageRequestListener((pageKey) {
+      WidgetsBinding.instance.addObserver(this);
       DatabaseCase.fetchCaseRecords(
           pagingController: _pagingController, limit: 10, pageKey: pageKey);
     });
     super.initState();
   }
 
-  String address = '';
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      // The app has come back to the foreground, refresh the PagedListView
+      _pagingController.refresh();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     CommunityMember member = Provider.of<CommunityMember>(context);

@@ -27,6 +27,7 @@ class _EditCaseState extends State<EditCase> {
   bool addLink = false;
   bool loading = false;
 
+  late CaseRecord caseRecord;
   String title = '', summary = '', details = '', mainImagePath = '';
   List<String> photos = [];
   List<Video> videos = [];
@@ -60,6 +61,42 @@ class _EditCaseState extends State<EditCase> {
       detailController.text = details;
       summaryController.text = summary;
     });
+  }
+
+  Future<bool> showDeleteCaseDialog(BuildContext context) async {
+    bool isDeleted = false;
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Case Deletion'),
+              content: const Text(
+                'Are you sure you want to delete this case?',
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Delete'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (result != null) isDeleted = result;
+    return isDeleted;
   }
 
   @override
@@ -122,6 +159,24 @@ class _EditCaseState extends State<EditCase> {
                             icon: const Icon(Icons.upload),
                             label: const Text(
                               'Update Case',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                          TextButton.icon(
+                            onPressed: () async {
+                              final delete =
+                                  await showDeleteCaseDialog(context);
+                              if (delete) {
+                                await DatabaseCase.deleteCaseRecord(caseRecord);
+                                if (mounted) Navigator.pop(context);
+                              }
+                            },
+                            icon: const Icon(Icons.upload),
+                            label: const Text(
+                              'Delete Case',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Colors.blue,

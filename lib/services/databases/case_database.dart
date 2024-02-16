@@ -69,50 +69,6 @@ class DatabaseCase {
     return await _caseRecordFromSnapshot(docSnapshot);
   }
 
-  static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
-    caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
-        caseRecord.uid, caseRecord.mainImage);
-    caseRecord.photos = await StorageService.uploadCaseRecordPhotos(
-        caseRecord.uid, caseRecord.photos);
-    List<String> videoLinks = await StorageService.uploadCaseRecordVideos(
-        caseRecord.uid, caseRecord.videos);
-    List<String> thumbnails = await StorageService.uploadCaseRecordThumbnails(
-        caseRecord.uid, caseRecord.videos);
-
-    caseRecord.videos = List.generate(videoLinks.length, (index) {
-      String videoLink = videoLinks[index];
-      String thumbnail = thumbnails[index];
-      return Video.fromCase(videoLink, thumbnail);
-    });
-
-    caseRecord.audios = await StorageService.uploadCaseRecordAudios(
-        caseRecord.uid, caseRecord.audios);
-
-    await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
-  }
-
-  static Future<void> updateCaseRecord(CaseRecord caseRecord) async {
-    caseRecord.mainImage = await StorageService.updateCaseRecordMainImage(
-        caseRecord.uid, caseRecord.mainImage);
-    caseRecord.photos = await StorageService.updateCaseRecordPhotos(
-        caseRecord.uid, caseRecord.photos);
-    List<String> videoLinks = await StorageService.updateCaseRecordVideos(
-        caseRecord.uid, caseRecord.videos);
-    List<String> thumbnails = await StorageService.updateCaseRecordThumbnails(
-        caseRecord.uid, caseRecord.videos);
-
-    caseRecord.videos = List.generate(videoLinks.length, (index) {
-      String videoLink = videoLinks[index];
-      String thumbnail = thumbnails[index];
-      return Video.fromCase(videoLink, thumbnail);
-    });
-
-    caseRecord.audios = await StorageService.updateCaseRecordAudios(
-        caseRecord.uid, caseRecord.audios);
-
-    await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
-  }
-
   static Future<void> fetchCaseRecords(
       {int limit = 10,
       DocumentSnapshot? pageKey,
@@ -182,5 +138,56 @@ class DatabaseCase {
         pagingController.appendPage(caseRecordList, lastDoc);
       }
     }
+  }
+
+  static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
+    caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
+        caseRecord.uid, caseRecord.mainImage);
+    caseRecord.photos = await StorageService.uploadCaseRecordPhotos(
+        caseRecord.uid, caseRecord.photos);
+    List<String> videoLinks = await StorageService.uploadCaseRecordVideos(
+        caseRecord.uid, caseRecord.videos);
+    List<String> thumbnails = await StorageService.uploadCaseRecordThumbnails(
+        caseRecord.uid, caseRecord.videos);
+
+    caseRecord.videos = List.generate(videoLinks.length, (index) {
+      String videoLink = videoLinks[index];
+      String thumbnail = thumbnails[index];
+      return Video.fromCase(videoLink, thumbnail);
+    });
+
+    caseRecord.audios = await StorageService.uploadCaseRecordAudios(
+        caseRecord.uid, caseRecord.audios);
+
+    await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
+  }
+
+  static Future<void> updateCaseRecord(CaseRecord caseRecord) async {
+    caseRecord.mainImage = await StorageService.updateCaseRecordMainImage(
+        caseRecord.uid, caseRecord.mainImage);
+    caseRecord.photos = await StorageService.updateCaseRecordPhotos(
+        caseRecord.uid, caseRecord.photos);
+    List<String> videoLinks = await StorageService.updateCaseRecordVideos(
+        caseRecord.uid, caseRecord.videos);
+    List<String> thumbnails = await StorageService.updateCaseRecordThumbnails(
+        caseRecord.uid, caseRecord.videos);
+
+    caseRecord.videos = List.generate(videoLinks.length, (index) {
+      String videoLink = videoLinks[index];
+      String thumbnail = thumbnails[index];
+      return Video.fromCase(videoLink, thumbnail);
+    });
+
+    caseRecord.audios = await StorageService.updateCaseRecordAudios(
+        caseRecord.uid, caseRecord.audios);
+
+    await caseCollection
+        .doc(caseRecord.uid)
+        .set(caseRecord.toMap(), SetOptions(merge: true));
+  }
+
+  static Future<void> deleteCaseRecord(CaseRecord caseRecord) async {
+    await StorageService.deleteCaseRefernces(caseRecord.uid);
+    await caseCollection.doc(caseRecord.uid).delete();
   }
 }
