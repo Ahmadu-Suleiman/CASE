@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class CaseRecord {
-  String uid = generateCaseId();
+  late String uid;
   Timestamp dateCreated = Timestamp.now();
   String uidMember;
   String title = '', details = '', summary = '', type, progress, mainImage = '';
@@ -32,6 +32,20 @@ class CaseRecord {
       required this.links});
   CaseRecord.forUpload(
       {required this.uidMember,
+      required this.title,
+      required this.details,
+      required this.summary,
+      required this.type,
+      required this.progress,
+      required this.mainImage,
+      required this.location,
+      required this.photos,
+      required this.videos,
+      required this.audios,
+      required this.links});
+  CaseRecord.forUpdate(
+      {required this.uid,
+      required this.uidMember,
       required this.title,
       required this.details,
       required this.summary,

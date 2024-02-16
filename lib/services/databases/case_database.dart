@@ -141,6 +141,7 @@ class DatabaseCase {
   }
 
   static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
+    caseRecord.uid = CaseRecord.generateCaseId();
     caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
         caseRecord.uid, caseRecord.mainImage);
     caseRecord.photos = await StorageService.uploadCaseRecordPhotos(
@@ -181,9 +182,7 @@ class DatabaseCase {
     caseRecord.audios = await StorageService.updateCaseRecordAudios(
         caseRecord.uid, caseRecord.audios);
 
-    await caseCollection
-        .doc(caseRecord.uid)
-        .set(caseRecord.toMap(), SetOptions(merge: true));
+    await caseCollection.doc(caseRecord.uid).update(caseRecord.toMap());
   }
 
   static Future<void> deleteCaseRecord(CaseRecord caseRecord) async {

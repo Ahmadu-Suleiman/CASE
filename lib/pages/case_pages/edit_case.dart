@@ -28,6 +28,7 @@ class _EditCaseState extends State<EditCase> {
   bool loading = false;
 
   late CaseRecord caseRecord;
+  String? uidCase;
   String title = '', summary = '', details = '', mainImagePath = '';
   List<String> photos = [];
   List<Video> videos = [];
@@ -38,15 +39,12 @@ class _EditCaseState extends State<EditCase> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Access ModalRoute here, after the context is available
-    final String? uidCase =
-        ModalRoute.of(context)?.settings.arguments as String?;
-    if (uidCase != null) {
-      _loadCaseRecord(uidCase);
-    }
+    uidCase = ModalRoute.of(context)?.settings.arguments as String?;
+    _loadCaseRecord(uidCase!);
   }
 
   Future<void> _loadCaseRecord(String uidCase) async {
-    CaseRecord caseRecord = await DatabaseCase.getCaseRecord(uidCase);
+    caseRecord = await DatabaseCase.getCaseRecord(uidCase);
     setState(() {
       title = caseRecord.title;
       summary = caseRecord.summary;
@@ -79,7 +77,7 @@ class _EditCaseState extends State<EditCase> {
                 TextButton(
                   child: const Text('Cancel'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(false);
                   },
                 ),
                 TextButton(
@@ -139,7 +137,8 @@ class _EditCaseState extends State<EditCase> {
                                 setState(() => loading = true);
                                 String type = await CaseHelper.getCaseCategory(
                                     title, details, summary);
-                                CaseRecord caseRecord = CaseRecord.forUpload(
+                                CaseRecord caseRecord = CaseRecord.forUpdate(
+                                    uid: uidCase!,
                                     uidMember: member.uid!,
                                     title: title,
                                     summary: summary,
@@ -170,6 +169,7 @@ class _EditCaseState extends State<EditCase> {
                               final delete =
                                   await showDeleteCaseDialog(context);
                               if (delete) {
+                                setState(() => loading = true);
                                 await DatabaseCase.deleteCaseRecord(caseRecord);
                                 if (mounted) Navigator.pop(context);
                               }
