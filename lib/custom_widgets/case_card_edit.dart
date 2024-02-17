@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class CaseCardEdit extends StatefulWidget {
@@ -39,8 +40,8 @@ class Case extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, Routes.routeEditCase,
-                arguments: caseRecord.uid)
+        context
+            .push('${Routes.editCase}/${caseRecord.uid}')
             .then((value) => update());
       },
       child: Card(
@@ -61,7 +62,7 @@ class Case extends StatelessWidget {
                     ),
                   ),
                 ),
-                 Text(
+                Text(
                   'Progress: ${caseRecord.progress}',
                   style: const TextStyle(
                     fontSize: 14,

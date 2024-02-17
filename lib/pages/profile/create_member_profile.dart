@@ -27,7 +27,7 @@ class _CreateProfileState extends State<CreateProfile> {
         : Scaffold(
             body: Material(
               child: Center(
-                child: Column(children: [
+                child: ListView(children: [
                   ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState != null &&

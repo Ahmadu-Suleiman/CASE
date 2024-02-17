@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:case_be_heard/custom_widgets/case_card.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -70,8 +71,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                   padding: const EdgeInsets.only(left: 5),
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(
-                          context, Routes.routeMemberProfile),
+                      onTap: () => context.go(Routes.memberProfile),
                       child: UserAccountsDrawerHeader(
                         decoration: const BoxDecoration(
                           color: Colors.white,
@@ -184,8 +184,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, Routes.routeCreateCase),
+              onPressed: () => context.go(Routes.createCase),
               shape: const CircleBorder(),
               splashColor: Style.secondaryColor,
               child: Icon(

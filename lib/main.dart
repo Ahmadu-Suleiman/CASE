@@ -1,23 +1,9 @@
-import 'package:case_be_heard/pages/case_pages/case_page.dart';
-import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/pages/case_pages/case_play_video.dart';
-import 'package:case_be_heard/pages/case_pages/case_view_photo.dart';
-import 'package:case_be_heard/pages/case_pages/create_case.dart';
-import 'package:case_be_heard/pages/case_pages/edit_case.dart';
-import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
-import 'package:case_be_heard/pages/profile/member_profile.dart';
-import 'package:case_be_heard/pages/profile/profile_image.dart';
-import 'package:case_be_heard/services/auth.dart';
-import 'package:case_be_heard/pages/wrapper.dart';
-import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
-import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,49 +12,30 @@ void main() async {
       apiKey: 'AIzaSyAurd8bwkqj7UaMlsByZ_4-rDBFTPCjMSk',
       safetySettings: CaseHelper.safetySettings,
       enableDebugging: true);
-  runApp(const StartWidget());
+  runApp(const CaseApp());
 }
 
-class StartWidget extends StatelessWidget {
-  const StartWidget({
+class CaseApp extends StatelessWidget {
+  const CaseApp({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<User?>.value(
-      initialData: null,
-      value: AuthService().communityMember,
-      builder: (context, child) {
-        return StreamProvider<CommunityMember?>.value(
-            initialData: null,
-            value: DatabaseMember(uid: Provider.of<User?>(context)?.uid).member,
-            child: MaterialApp(
-              home: const Wrapper(),
-              routes: {
-                Routes.routeCreateCase: (context) => const CreateCase(),
-                Routes.routeEditCase: (context) => const EditCase(),
-                Routes.routeCasePage: (context) => const CasePage(),
-                Routes.routeMemberProfile: (context) => const Profile(),
-                Routes.routeEditMemberProfile: (context) => const EditProfile(),
-                Routes.routeProfileImage: (context) => const ProfileImage(),
-                Routes.routeCasePhoto: (context) => const CasePhotoViewer(),
-                Routes.routeCaseVideo: (context) => const CaseVideoPlayer(),
-              },
-              theme: ThemeData(
-                focusColor: Style.secondaryColor,
-                hoverColor: Style.secondaryColor,
-                primaryColor: Style.primaryColor,
-                iconTheme: const IconThemeData(
-                  color: Colors.black, // Set the global color for icons
-                ),
-                colorScheme: ColorScheme.fromSwatch(
-                  backgroundColor: Colors.white,
-                  accentColor: Style.primaryColor,
-                ),
-              ),
-            ));
-      },
+    return MaterialApp.router(
+      routerConfig: Routes.router,
+      theme: ThemeData(
+        focusColor: Style.secondaryColor,
+        hoverColor: Style.secondaryColor,
+        primaryColor: Style.primaryColor,
+        iconTheme: const IconThemeData(
+          color: Colors.black, // Set the global color for icons
+        ),
+        colorScheme: ColorScheme.fromSwatch(
+          backgroundColor: Colors.white,
+          accentColor: Style.primaryColor,
+        ),
+      ),
     );
   }
 }

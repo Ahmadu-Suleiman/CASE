@@ -6,7 +6,6 @@ import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/location.dart';
-import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

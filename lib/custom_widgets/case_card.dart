@@ -4,6 +4,7 @@ import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class CaseCard extends StatefulWidget {
@@ -36,10 +37,7 @@ class Case extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, Routes.routeCasePage,
-            arguments: caseRecord.uid);
-      },
+      onTap: () => context.push('${Routes.casePage}/${caseRecord.uid}'),
       child: Card(
         color: Colors.white,
         margin: const EdgeInsets.all(10),

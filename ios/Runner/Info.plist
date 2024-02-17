@@ -48,10 +48,10 @@
           <key>CFBundleTypeRole</key>
           <string>Editor</string>
           <key>CFBundleURLName</key>
-          <string>gdsckasu</string>
+          <string>casebeheard.com</string>
           <key>CFBundleURLSchemes</key>
           <array>
-              <string>casebeheard</string>
+              <string>gdsckasu</string>
           </array>
     	</dict>
 	</array>

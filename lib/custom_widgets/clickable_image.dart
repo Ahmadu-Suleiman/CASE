@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ClickableImage extends StatelessWidget {
   final String imageUrl;
@@ -9,10 +10,7 @@ class ClickableImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.pushNamed(context, Routes.routeCasePhoto,
-            arguments: imageUrl);
-      },
+      onTap: () => context.push('${Routes.casePhoto}/$imageUrl'),
       child: CachedNetworkImage(
         imageUrl: imageUrl, // Replace with your actual image URL
         fit: BoxFit.cover,

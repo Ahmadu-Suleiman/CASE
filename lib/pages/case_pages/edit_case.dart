@@ -12,7 +12,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 
 class EditCase extends StatefulWidget {
-  const EditCase({super.key});
+  final String caseId;
+  const EditCase({super.key, required this.caseId});
 
   @override
   State<EditCase> createState() => _EditCaseState();
@@ -37,10 +38,10 @@ class _EditCaseState extends State<EditCase> {
   List<String> links = [];
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Access ModalRoute here, after the context is available
-    uidCase = ModalRoute.of(context)?.settings.arguments as String?;
+  void initState() {
+    super.initState();
+    // You can access the caseId here if needed
+    uidCase = widget.caseId;
     _loadCaseRecord(uidCase!);
   }
 
