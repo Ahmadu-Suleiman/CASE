@@ -10,19 +10,20 @@ class CachedAvatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CachedNetworkImage(
-      imageUrl: url,
-      imageBuilder: (context, imageProvider) => CircleAvatar(
-        backgroundImage: imageProvider,
-        radius: size,
-      ),
-      placeholder: (context, url) => Icon(
-        Icons.image,
-        size: size,
-      ),
-      errorWidget: (context, url, error) => Icon(
-        Icons.image,
-        size: size,
-      ),
-    );
+        imageUrl: url,
+        imageBuilder: (context, imageProvider) => Center(
+              child: CircleAvatar(
+                backgroundImage: imageProvider,
+                radius: size,
+              ),
+            ),
+        placeholder: (context, url) => Icon(
+              Icons.image,
+              size: size,
+            ),
+        errorWidget: (context, url, error) => Icon(
+              Icons.image,
+              size: size,
+            ));
   }
 }

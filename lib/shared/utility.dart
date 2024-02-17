@@ -9,7 +9,6 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Utility {
-  static late BuildContext _storedContext;
   static final ImagePicker _picker = ImagePicker();
 
   static Future<bool> checkPermission() async {
@@ -24,20 +23,14 @@ class Utility {
 
   static void openLink(BuildContext context, String url) async {
     if (!await launchUrl(Uri.parse(url))) {
-      // ignore: use_build_context_synchronously
-      showSnackBar(_storedContext, 'Could not open link');
+      if (context.mounted) {
+        showSnackBar(context, 'Could not open link');
+      }
     }
   }
 
   static void showSnackBar(BuildContext context, String text) {
-    _storedContext = context;
-    if (_storedContext.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(text),
-        ),
-      );
-    }
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
   }
 
   static bool isValidUrl(String url) {

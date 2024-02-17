@@ -28,35 +28,28 @@ class CaseApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User?>.value(
-      value: AuthService().communityMember,
-      initialData: null,
-      child: Consumer<User?>(
-        builder: (context, user, child) {
+        value: AuthService().communityMember,
+        initialData: null,
+        child: Consumer<User?>(builder: (context, user, child) {
           return StreamProvider<CommunityMember?>.value(
-            value: DatabaseMember(uid: user?.uid).member,
-            initialData: null,
-            child: Consumer<CommunityMember?>(
-              builder: (context, communityMember, child) {
+              value: DatabaseMember(uid: user?.uid).member,
+              initialData: null,
+              child: Consumer<CommunityMember?>(
+                  builder: (context, communityMember, child) {
                 return MaterialApp.router(
-                  routerConfig: Routes.router,
-                  theme: ThemeData(
-                    focusColor: Style.secondaryColor,
-                    hoverColor: Style.secondaryColor,
-                    primaryColor: Style.primaryColor,
-                    iconTheme: const IconThemeData(
-                      color: Colors.black, // Set the global color for icons
-                    ),
-                    colorScheme: ColorScheme.fromSwatch(
-                      backgroundColor: Colors.white,
-                      accentColor: Style.primaryColor,
-                    ),
-                  ),
-                );
-              },
-            ),
-          );
-        },
-      ),
-    );
+                    routerConfig: Routes.router,
+                    theme: ThemeData(
+                        focusColor: Style.secondaryColor,
+                        hoverColor: Style.secondaryColor,
+                        primaryColor: Style.primaryColor,
+                        iconTheme: const IconThemeData(
+                          color: Colors.black, // Set the global color for icons
+                        ),
+                        colorScheme: ColorScheme.fromSwatch(
+                          backgroundColor: Colors.white,
+                          accentColor: Style.primaryColor,
+                        )));
+              }));
+        }));
   }
 }

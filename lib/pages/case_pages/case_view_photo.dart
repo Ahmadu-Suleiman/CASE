@@ -8,14 +8,12 @@ class CasePhotoViewer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+            image: DecorationImage(
           image: CachedNetworkImageProvider(photoUrl),
           fit: BoxFit.contain,
-        ),
-      ),
-    );
+        )));
   }
 }

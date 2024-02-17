@@ -10,24 +10,18 @@ class AudioWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          IconButton(
-            icon: const Icon(Icons.play_arrow),
-            onPressed: () {
-              audioPlayer.play(DeviceFileSource(path));
-            },
-          ),
-          IconButton(
-            icon: const Icon(Icons.pause),
-            onPressed: () {
-              audioPlayer.source.toString();
-              audioPlayer.play(DeviceFileSource(audioPlayer.source.toString()));
-            },
-          )
-        ],
-      ),
-    );
+        child: Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+      IconButton(
+          icon: const Icon(Icons.play_arrow),
+          onPressed: () {
+            audioPlayer.play(DeviceFileSource(path));
+          }),
+      IconButton(
+          icon: const Icon(Icons.pause),
+          onPressed: () {
+            audioPlayer.source.toString();
+            audioPlayer.play(DeviceFileSource(audioPlayer.source.toString()));
+          })
+    ]));
   }
 }

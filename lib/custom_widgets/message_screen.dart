@@ -7,10 +7,6 @@ class MesssageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [icon, Text(message)],
-      ),
-    );
+    return Center(child: Column(children: [icon, Text(message)]));
   }
 }

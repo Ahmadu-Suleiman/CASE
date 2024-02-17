@@ -17,30 +17,24 @@ class _ProfileImageState extends State<ProfileImage> {
     CommunityMember member = context.watch<CommunityMember>();
     String? photoUrl = member.photoUrl;
     return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: BoxDecoration(
-        image: DecorationImage(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+            image: DecorationImage(
           image: CachedNetworkImageProvider(photoUrl),
           fit: BoxFit.contain,
-        ),
-      ),
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: TextButton.icon(
-          onPressed: () async {
-            Utility.pickandUpdateProfileImage(member);
-          },
-          icon: const Icon(Icons.image),
-          label: const Text(
-            'Change image',
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.blue,
-            ),
-          ),
-        ),
-      ),
-    );
+        )),
+        child: Align(
+            alignment: Alignment.bottomCenter,
+            child: TextButton.icon(
+                onPressed: () async {
+                  Utility.pickandUpdateProfileImage(member);
+                },
+                icon: const Icon(Icons.image),
+                label: const Text('Change image',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.blue,
+                    )))));
   }
 }

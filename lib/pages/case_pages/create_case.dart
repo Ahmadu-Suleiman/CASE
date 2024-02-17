@@ -103,7 +103,10 @@ class _CreateCaseState extends State<CreateCase> {
                                     audios: audios,
                                     links: links);
                                 await DatabaseCase.uploadCaseRecord(caseRecord);
-                                if (mounted) Navigator.pop(context);
+                                if (context.mounted) {
+                                  CaseHelper.showNextSteps(context, title,
+                                      detailedDescription, summary);
+                                }
                               }
                             },
                             icon: const Icon(Icons.upload),

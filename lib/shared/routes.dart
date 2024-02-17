@@ -3,6 +3,7 @@ import 'package:case_be_heard/pages/case_pages/case_play_video.dart';
 import 'package:case_be_heard/pages/case_pages/case_view_photo.dart';
 import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/case_pages/edit_case.dart';
+import 'package:case_be_heard/pages/case_pages/next_steps_case.dart';
 import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/pages/profile/profile_image.dart';
@@ -19,73 +20,68 @@ class Routes {
   static const String profileImage = '/profile-image';
   static const String casePhoto = '/case-photo';
   static const String caseVideo = '/case-video';
+  static const String nextSteps = '/next-steps';
 
-  static final router = GoRouter(
-    initialLocation: Routes.wrapper,
-    routes: [
-      GoRoute(
-        name: 'wrapper',
-        path: Routes.wrapper,
-        builder: (context, state) => const Wrapper(),
-      ),
-      GoRoute(
-        name: 'createCase',
-        path: Routes.createCase,
-        builder: (context, state) => const CreateCase(),
-      ),
-      GoRoute(
+  static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
+    GoRoute(
+      name: 'wrapper',
+      path: Routes.wrapper,
+      builder: (context, state) => const Wrapper(),
+    ),
+    GoRoute(
+      name: 'createCase',
+      path: Routes.createCase,
+      builder: (context, state) => const CreateCase(),
+    ),
+    GoRoute(
         name: 'editCase',
         path: '${Routes.editCase}/:caseId',
         builder: (context, state) {
           final caseId = state.pathParameters['caseId'];
           return EditCase(caseId: caseId!);
-        },
-      ),
-      GoRoute(
+        }),
+    GoRoute(
         name: 'casePage',
         path: '${Routes.casePage}/:caseId',
         builder: (context, state) {
           final caseId = state.pathParameters['caseId'];
-          return CasePage(
-            caseId: caseId!,
-          );
-        },
-      ),
-      GoRoute(
-        name: 'memberProfile',
-        path: Routes.memberProfile,
-        builder: (context, state) => const Profile(),
-      ),
-      GoRoute(
-        name: 'editMemberProfile',
-        path: Routes.editMemberProfile,
-        builder: (context, state) => const EditProfile(),
-      ),
-      GoRoute(
-        name: 'profileImage',
-        path: Routes.profileImage,
-        builder: (context, state) => const ProfileImage(),
-      ),
-      GoRoute(
+          return CasePage(caseId: caseId!);
+        }),
+    GoRoute(
+      name: 'memberProfile',
+      path: Routes.memberProfile,
+      builder: (context, state) => const Profile(),
+    ),
+    GoRoute(
+      name: 'editMemberProfile',
+      path: Routes.editMemberProfile,
+      builder: (context, state) => const EditProfile(),
+    ),
+    GoRoute(
+      name: 'profileImage',
+      path: Routes.profileImage,
+      builder: (context, state) => const ProfileImage(),
+    ),
+    GoRoute(
         name: 'casePhoto',
         path: '${Routes.casePhoto}/:photoUrl',
         builder: (context, state) {
           final photoUrl = state.pathParameters['photoUrl'];
-          return CasePhotoViewer(
-            photoUrl: photoUrl!,
-          );
-        },
-      ),
-      GoRoute(
+          return CasePhotoViewer(photoUrl: photoUrl!);
+        }),
+    GoRoute(
         name: 'caseVideo',
         path: '${Routes.caseVideo}/:videoUrl',
         builder: (context, state) {
           final videoUrl = state.pathParameters['videoUrl'];
-          return CaseVideoPlayer(
-            videoUrl: videoUrl!,
-          );
-        },
-      ),
-    ],
-  );
+          return CaseVideoPlayer(videoUrl: videoUrl!);
+        }),
+    GoRoute(
+        name: 'nextSteps',
+        path: '${Routes.nextSteps}/:steps',
+        builder: (context, state) {
+          final steps = state.pathParameters['steps'];
+          return NextSteps(nextSteps: steps!);
+        })
+  ]);
 }

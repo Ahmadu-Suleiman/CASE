@@ -36,137 +36,122 @@ class _EditProfileState extends State<EditProfile> {
                 ? const Loading()
                 : Scaffold(
                     body: SafeArea(
-                      child: Center(
-                        child: ListView(children: [
-                          GestureDetector(
-                              onTap: () {
-                                context.go(Routes.profileImage);
+                        child: Center(
+                            child: ListView(children: [
+                    GestureDetector(
+                        onTap: () {
+                          context.go(Routes.profileImage);
+                        },
+                        child: CachedAvatar(url: member.photoUrl, size: 60)),
+                    ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState != null &&
+                              _formKey.currentState!.validate()) {
+                            await DatabaseMember(uid: member.uid ?? user.uid)
+                                .updateCommunityMemberData(member);
+                            if (context.mounted) {
+                              Utility.showSnackBar(
+                                  context, 'information updated');
+                            }
+                          }
+                        },
+                        child:
+                            const Text('Update community member information')),
+                    Form(
+                        key: _formKey,
+                        child: Column(children: [
+                          TextFormField(
+                              validator: (val) =>
+                                  val!.isEmpty ? 'Supply a value' : null,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'First name',
+                              ),
+                              initialValue: member.firstName,
+                              onChanged: (value) {
+                                member.firstName = value;
+                              }),
+                          TextFormField(
+                              validator: (val) =>
+                                  val!.isEmpty ? 'Supply a value' : null,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Last name',
+                              ),
+                              initialValue: member.lastName,
+                              onChanged: (value) {
+                                member.lastName = value;
+                              }),
+                          TextFormField(
+                              validator: (val) =>
+                                  val!.isEmpty ? 'Supply a value' : null,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Email',
+                              ),
+                              initialValue: member.email,
+                              onChanged: (value) {
+                                member.email = value;
+                              }),
+                          TextFormField(
+                              validator: (val) =>
+                                  val!.isEmpty ? 'Supply a value' : null,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Phone number',
+                              ),
+                              initialValue: member.phoneNumber,
+                              onChanged: (value) {
+                                member.phoneNumber = value;
+                              }),
+                          TextFormField(
+                              validator: (val) =>
+                                  val!.isEmpty ? 'Supply a value' : null,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Occupation',
+                              ),
+                              initialValue: member.occupation,
+                              onChanged: (value) {
+                                member.occupation = value;
+                              }),
+                          TextButton.icon(
+                              onPressed: () async {
+                                setState(() => isLoading = true);
+                                member.location =
+                                    await LocationService.getCurrentLocation(
+                                        context);
+                                if (context.mounted) {
+                                  address =
+                                      await LocationService.getLocationAddress(
+                                          context: context, member.location);
+                                }
+                                setState(() => isLoading = false);
                               },
-                              child:
-                                  CachedAvatar(url: member.photoUrl, size: 60)),
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState != null &&
-                                  _formKey.currentState!.validate()) {
-                                await DatabaseMember(
-                                        uid: member.uid ?? user.uid)
-                                    .updateCommunityMemberData(member);
-                                // ignore: use_build_context_synchronously
-                                Utility.showSnackBar(
-                                    context, 'information updated');
-                              }
-                            },
-                            child: const Text(
-                                'Update community member information'),
-                          ),
-                          Form(
-                              key: _formKey,
-                              child: Column(
-                                children: [
-                                  TextFormField(
-                                      validator: (val) => val!.isEmpty
-                                          ? 'Supply a value'
-                                          : null,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'First name',
-                                      ),
-                                      initialValue: member.firstName,
-                                      onChanged: (value) {
-                                        member.firstName = value;
-                                      }),
-                                  TextFormField(
-                                      validator: (val) => val!.isEmpty
-                                          ? 'Supply a value'
-                                          : null,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Last name',
-                                      ),
-                                      initialValue: member.lastName,
-                                      onChanged: (value) {
-                                        member.lastName = value;
-                                      }),
-                                  TextFormField(
-                                      validator: (val) => val!.isEmpty
-                                          ? 'Supply a value'
-                                          : null,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Email',
-                                      ),
-                                      initialValue: member.email,
-                                      onChanged: (value) {
-                                        member.email = value;
-                                      }),
-                                  TextFormField(
-                                      validator: (val) => val!.isEmpty
-                                          ? 'Supply a value'
-                                          : null,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Phone number',
-                                      ),
-                                      initialValue: member.phoneNumber,
-                                      onChanged: (value) {
-                                        member.phoneNumber = value;
-                                      }),
-                                  TextFormField(
-                                      validator: (val) => val!.isEmpty
-                                          ? 'Supply a value'
-                                          : null,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Occupation',
-                                      ),
-                                      initialValue: member.occupation,
-                                      onChanged: (value) {
-                                        member.occupation = value;
-                                      }),
-                                  TextButton.icon(
-                                    onPressed: () async {
-                                      setState(() => isLoading = true);
-                                      member.location = await LocationService
-                                          .getCurrentLocation(context);
-                                      if (context.mounted) {
-                                        address = await LocationService
-                                            .getLocationAddress(
-                                                context: context,
-                                                member.location);
-                                      }
-                                      setState(() => isLoading = false);
-                                    },
-                                    icon: const Icon(Icons.location_on),
-                                    label: Text(
-                                      address.isEmpty
-                                          ? 'Choose your location'
-                                          : address,
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.blue,
-                                      ),
-                                    ),
-                                  ),
-                                  TextFormField(
-                                      validator: (val) => val!.isEmpty
-                                          ? 'Supply a value'
-                                          : null,
-                                      minLines: 4,
-                                      maxLines: null,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Bio',
-                                      ),
-                                      initialValue: member.bio,
-                                      onChanged: (value) {
-                                        member.bio = value;
-                                      }),
-                                ],
-                              )),
-                        ]),
-                      ),
-                    ),
-                  );
+                              icon: const Icon(Icons.location_on),
+                              label: Text(
+                                  address.isEmpty
+                                      ? 'Choose your location'
+                                      : address,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.blue,
+                                  ))),
+                          TextFormField(
+                              validator: (val) =>
+                                  val!.isEmpty ? 'Supply a value' : null,
+                              minLines: 4,
+                              maxLines: null,
+                              decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Bio',
+                              ),
+                              initialValue: member.bio,
+                              onChanged: (value) {
+                                member.bio = value;
+                              })
+                        ]))
+                  ]))));
           } else {
             return const Loading();
           }

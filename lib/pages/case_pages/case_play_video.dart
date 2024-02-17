@@ -49,9 +49,7 @@ class _CaseVideoPlayerState extends State<CaseVideoPlayer> {
               });
             },
             child: AspectRatio(
-              aspectRatio: _controller!.value.aspectRatio,
-              child: VideoPlayer(_controller!),
-            ),
-          );
+                aspectRatio: _controller!.value.aspectRatio,
+                child: VideoPlayer(_controller!)));
   }
 }
