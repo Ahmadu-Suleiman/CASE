@@ -14,7 +14,7 @@ class ProfileImage extends StatefulWidget {
 class _ProfileImageState extends State<ProfileImage> {
   @override
   Widget build(BuildContext context) {
-    CommunityMember member = Provider.of<CommunityMember>(context);
+    CommunityMember member = context.watch<CommunityMember>();
     String? photoUrl = member.photoUrl;
     return Container(
       width: double.infinity,

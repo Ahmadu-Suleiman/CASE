@@ -21,7 +21,7 @@ class _CreateProfileState extends State<CreateProfile> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = Provider.of<User?>(context);
+    User? user = context.watch<User?>();
     return isLoading
         ? const Loading()
         : Scaffold(

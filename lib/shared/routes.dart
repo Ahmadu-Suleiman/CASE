@@ -19,7 +19,7 @@ class Routes {
   static const String profileImage = '/profile-image';
   static const String casePhoto = '/case-photo';
   static const String caseVideo = '/case-video';
-  // Define the GoRouter configuration
+
   static final router = GoRouter(
     initialLocation: Routes.wrapper,
     routes: [
@@ -68,13 +68,23 @@ class Routes {
       ),
       GoRoute(
         name: 'casePhoto',
-        path: Routes.casePhoto,
-        builder: (context, state) => const CasePhotoViewer(),
+        path: '${Routes.casePhoto}/:photoUrl',
+        builder: (context, state) {
+          final photoUrl = state.pathParameters['photoUrl'];
+          return CasePhotoViewer(
+            photoUrl: photoUrl!,
+          );
+        },
       ),
       GoRoute(
         name: 'caseVideo',
-        path: Routes.caseVideo,
-        builder: (context, state) => const CaseVideoPlayer(),
+        path: '${Routes.caseVideo}/:videoUrl',
+        builder: (context, state) {
+          final videoUrl = state.pathParameters['videoUrl'];
+          return CaseVideoPlayer(
+            videoUrl: videoUrl!,
+          );
+        },
       ),
     ],
   );

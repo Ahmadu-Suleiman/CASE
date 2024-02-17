@@ -10,9 +10,10 @@ class ClickableImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.push('${Routes.casePhoto}/$imageUrl'),
+      onTap: () =>
+          context.push('${Routes.casePhoto}/${Uri.encodeComponent(imageUrl)}'),
       child: CachedNetworkImage(
-        imageUrl: imageUrl, // Replace with your actual image URL
+        imageUrl: imageUrl,
         fit: BoxFit.cover,
         width: 250,
         height: 250,

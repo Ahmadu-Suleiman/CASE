@@ -4,11 +4,13 @@ import 'package:case_be_heard/custom_widgets/audio_widget.dart';
 import 'package:case_be_heard/custom_widgets/clickable_image.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 
 class CasePage extends StatefulWidget {
   final String caseId;
@@ -19,15 +21,29 @@ class CasePage extends StatefulWidget {
 }
 
 class _CasePageState extends State<CasePage> {
-  final audioPlayer = AudioPlayer();
+  final _audioPlayer = AudioPlayer();
+  final _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    CommunityMember member = context.watch<CommunityMember>();
     return FutureBuilder(
         future: DatabaseCase.getCaseRecord(widget.caseId),
         builder: (BuildContext context, AsyncSnapshot<CaseRecord> snapshot) {
           if (snapshot.hasData) {
             CaseRecord caseRecord = snapshot.data!;
+            _scrollController.addListener(() {
+              if (_scrollController.position.pixels ==
+                  _scrollController.position.maxScrollExtent) {
+                DatabaseCase.addCaseRead(member.uid!, caseRecord);
+              }
+            });
             return Scaffold(
                 appBar: AppBar(
                   title: const Image(
@@ -47,19 +63,24 @@ class _CasePageState extends State<CasePage> {
                   ],
                 ),
                 body: ListView(
+                  controller: _scrollController,
                   children: [
                     Center(
                       child: Column(
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(30.0),
-                              child: CachedNetworkImage(
-                                imageUrl: caseRecord.mainImage,
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: 250,
+                            child: GestureDetector(
+                              onTap: () => context.push(
+                                  '${Routes.casePhoto}/${Uri.encodeComponent(caseRecord.mainImage)}'),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(30.0),
+                                child: CachedNetworkImage(
+                                  imageUrl: caseRecord.mainImage,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: 250,
+                                ),
                               ),
                             ),
                           ),
@@ -153,8 +174,8 @@ class _CasePageState extends State<CasePage> {
                       children: caseRecord.videos
                           .map(
                             (video) => GestureDetector(
-                              onTap: () => context
-                                  .go('${Routes.caseVideo}/${video.videoUrl}'),
+                              onTap: () => context.push(
+                                  '${Routes.caseVideo}/${Uri.encodeComponent(video.videoUrl!)}'),
                               child: Image.network(
                                 video
                                     .thumbnailUrl!, // Replace with your actual image URL
@@ -179,7 +200,7 @@ class _CasePageState extends State<CasePage> {
                     Column(
                         children: caseRecord.audios
                             .map((audio) => AudioWidget(
-                                audioPlayer: audioPlayer, path: audio))
+                                audioPlayer: _audioPlayer, path: audio))
                             .toList()),
                     const SizedBox(height: 20),
                     const Text(

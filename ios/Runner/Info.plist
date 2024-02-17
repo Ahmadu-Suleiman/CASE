@@ -42,6 +42,8 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 	<key>CFBundleURLTypes</key>
 	<array>
     	<dict>
@@ -51,10 +53,12 @@
           <string>casebeheard.com</string>
           <key>CFBundleURLSchemes</key>
           <array>
-              <string>gdsckasu</string>
+              <string>appscheme</string>
           </array>
     	</dict>
 	</array>
+	<key>FlutterDeepLinkingEnabled</key>
+	<true/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>

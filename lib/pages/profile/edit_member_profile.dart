@@ -3,9 +3,11 @@ import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/location.dart';
+import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
@@ -23,8 +25,8 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    User? user = Provider.of<User?>(context);
-    member = Provider.of<CommunityMember?>(context) ?? member;
+    User user = context.watch<User>();
+    member = context.watch<CommunityMember>();
     return FutureBuilder(
         future: LocationService.getLocationAddress(member.location),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -38,7 +40,7 @@ class _EditProfileState extends State<EditProfile> {
                         child: ListView(children: [
                           GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, '/profile_image');
+                                context.go(Routes.profileImage);
                               },
                               child:
                                   CachedAvatar(url: member.photoUrl, size: 60)),
@@ -47,7 +49,7 @@ class _EditProfileState extends State<EditProfile> {
                               if (_formKey.currentState != null &&
                                   _formKey.currentState!.validate()) {
                                 await DatabaseMember(
-                                        uid: member.uid ?? user!.uid)
+                                        uid: member.uid ?? user.uid)
                                     .updateCommunityMemberData(member);
                                 // ignore: use_build_context_synchronously
                                 Utility.showSnackBar(

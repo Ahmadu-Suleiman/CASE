@@ -6,8 +6,10 @@ import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/location.dart';
+import 'package:case_be_heard/shared/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
@@ -51,7 +53,7 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    CommunityMember member = Provider.of<CommunityMember>(context);
+    CommunityMember member = context.watch<CommunityMember>();
     return FutureBuilder(
         future: LocationService.getLocationAddress(member.location),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
@@ -70,7 +72,7 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                   actions: [
                     IconButton.filled(
                       onPressed: () async {
-                        Navigator.pushNamed(context, '/edit_member_profile');
+                        context.go(Routes.editMemberProfile);
                       },
                       icon: const Icon(Icons.edit),
                     )
@@ -134,6 +136,10 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                                   update: () {
                                     _pagingController.refresh();
                                   },
+                                ),
+                                noItemsFoundIndicatorBuilder: (context) =>
+                                    const Center(
+                                  child: Text('No items found'),
                                 ),
                               ),
                             ),

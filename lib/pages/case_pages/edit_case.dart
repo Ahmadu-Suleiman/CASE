@@ -64,46 +64,10 @@ class _EditCaseState extends State<EditCase> {
     });
   }
 
-  Future<bool> showDeleteCaseDialog(BuildContext context) async {
-    bool isDeleted = false;
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-            return AlertDialog(
-              title: const Text('Case Deletion'),
-              content: const Text(
-                'Are you sure you want to delete this case?',
-              ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                ),
-                TextButton(
-                  child: const Text('Delete'),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-
-    if (result != null) isDeleted = result;
-    return isDeleted;
-  }
-
   @override
   Widget build(BuildContext context) {
-    CommunityMember? member = Provider.of<CommunityMember?>(context);
-    return (member != null && !loading)
+    CommunityMember member = context.watch<CommunityMember>();
+    return (!loading)
         ? Scaffold(
             resizeToAvoidBottomInset: true,
             body: Material(
@@ -170,7 +134,8 @@ class _EditCaseState extends State<EditCase> {
                           TextButton.icon(
                             onPressed: () async {
                               final delete =
-                                  await showDeleteCaseDialog(context);
+                                  await CaseHelper.showDeleteCaseDialog(
+                                      context);
                               if (delete) {
                                 setState(() => loading = true);
                                 await DatabaseCase.deleteCaseRecord(caseRecord);
@@ -316,7 +281,7 @@ class _EditCaseState extends State<EditCase> {
                                 ),
                               ),
                             ),
-                            maxLines: 4,
+                            maxLines: 6,
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black,

@@ -6,9 +6,10 @@ import 'package:uuid/uuid.dart';
 
 class CaseRecord {
   late String uid;
-  Timestamp dateCreated = Timestamp.now();
+  late Timestamp dateCreated;
   String uidMember;
   String title = '', details = '', summary = '', type, progress, mainImage = '';
+  late List<String> views, reads;
   late CommunityMember member;
   late GeoPoint location;
   late List<String> photos, audios, links;
@@ -24,6 +25,8 @@ class CaseRecord {
       required this.summary,
       required this.type,
       required this.progress,
+      required this.views,
+      required this.reads,
       required this.mainImage,
       required this.location,
       required this.photos,
@@ -32,6 +35,7 @@ class CaseRecord {
       required this.links});
   CaseRecord.forUpload(
       {required this.uidMember,
+      required this.dateCreated,
       required this.title,
       required this.details,
       required this.summary,
@@ -68,6 +72,8 @@ class CaseRecord {
       'summary': summary,
       'type': type,
       'progress': progress,
+      'views': views,
+      'reads': reads,
       'mainImage': mainImage,
       'location': location,
       'photos': photos,

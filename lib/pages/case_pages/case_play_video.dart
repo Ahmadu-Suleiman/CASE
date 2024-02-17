@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class CaseVideoPlayer extends StatefulWidget {
-  const CaseVideoPlayer({super.key});
+  final String videoUrl;
+  const CaseVideoPlayer({super.key, required this.videoUrl});
 
   @override
   State<CaseVideoPlayer> createState() => _CaseVideoPlayerState();
@@ -12,12 +13,11 @@ class _CaseVideoPlayerState extends State<CaseVideoPlayer> {
   VideoPlayerController? _controller;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    final String? videoUrl =
-        ModalRoute.of(context)?.settings.arguments as String?;
-    if (videoUrl != null && _controller == null) {
-      _controller = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+  void initState() {
+    super.initState();
+    if (_controller == null) {
+      _controller =
+          VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
       _controller!.addListener(() {
         setState(() {});
       });

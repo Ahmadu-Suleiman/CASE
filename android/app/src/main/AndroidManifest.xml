@@ -65,7 +65,8 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="gdsckasu" android:host="casebeheard.com"/>
+                <data android:scheme="http" android:host="casebeheard.com"/>
+                <data android:scheme="https" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
@@ -73,5 +74,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+            android:name="flutter_deeplinking_enabled"
+            android:value="true" />    
     </application>
 </manifest>

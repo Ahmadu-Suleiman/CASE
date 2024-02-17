@@ -239,4 +239,40 @@ class CaseHelper {
 \n$title,\n$description\n "summary"\n$summary.''');
     return result!.output ?? 'Unknown';
   }
+
+  static Future<bool> showDeleteCaseDialog(BuildContext context) async {
+    bool isDeleted = false;
+    final result = await showDialog<bool>(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return AlertDialog(
+              title: const Text('Case Deletion'),
+              content: const Text(
+                'Are you sure you want to delete this case?',
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                ),
+                TextButton(
+                  child: const Text('Delete'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    if (result != null) isDeleted = result;
+    return isDeleted;
+  }
 }

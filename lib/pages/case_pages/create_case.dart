@@ -7,6 +7,7 @@ import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
@@ -33,8 +34,8 @@ class _CreateCaseState extends State<CreateCase> {
 
   @override
   Widget build(BuildContext context) {
-    CommunityMember? member = Provider.of<CommunityMember?>(context);
-    return (member != null && !loading)
+    CommunityMember member = context.watch<CommunityMember>();
+    return (!loading)
         ? Scaffold(
             resizeToAvoidBottomInset: true,
             body: Material(
@@ -89,6 +90,7 @@ class _CreateCaseState extends State<CreateCase> {
                                     title, detailedDescription, summary);
                                 CaseRecord caseRecord = CaseRecord.forUpload(
                                     uidMember: member.uid!,
+                                    dateCreated: Timestamp.now(),
                                     title: title,
                                     summary: summary,
                                     details: detailedDescription,
@@ -224,7 +226,7 @@ class _CreateCaseState extends State<CreateCase> {
                                 ),
                               ),
                             ),
-                            maxLines: 4,
+                            maxLines: 6,
                             style: const TextStyle(
                               fontSize: 18,
                               color: Colors.black,

@@ -34,6 +34,8 @@ class DatabaseCase {
       details: snapshot['details'] ?? '',
       type: snapshot['type'] ?? '',
       progress: snapshot['progress'] ?? '',
+      views: Utility.stringList(snapshot, 'views'),
+      reads: Utility.stringList(snapshot, 'reads'),
       mainImage: snapshot['mainImage'] ?? '',
       location: snapshot['location'],
       photos: Utility.stringList(snapshot, 'photos'),
@@ -189,4 +191,92 @@ class DatabaseCase {
     await StorageService.deleteCaseRefernces(caseRecord.uid);
     await caseCollection.doc(caseRecord.uid).delete();
   }
+
+  static Future<void> addCaseView(
+      String memberId, CaseRecord caseRecord) async {
+    String caseId = caseRecord.uid;
+    // Create a reference to the post and its views subcollection
+    CollectionReference viewsRef =
+        caseCollection.doc(caseId).collection('views');
+
+    // Check if the user has already viewed the post
+    DocumentSnapshot viewDoc = await viewsRef.doc(memberId).get();
+    if (!viewDoc.exists) {
+      // If the user hasn't viewed the post, add a document to the views subcollection
+      await viewsRef.doc(memberId).set({'viewed': Timestamp.now()});
+
+      // Optionally, update the post document to include the user's ID in the views array
+      await caseCollection.doc(caseId).update({
+        'views': FieldValue.arrayUnion([memberId])
+      });
+    }
+  }
+
+  static Future<void> addCaseRead(
+      String memberId, CaseRecord caseRecord) async {
+    String caseId = caseRecord.uid;
+    // Create a reference to the post and its views subcollection
+    CollectionReference readsRef =
+        caseCollection.doc(caseId).collection('reads');
+
+    // Check if the user has already viewed the post
+    DocumentSnapshot viewDoc = await readsRef.doc(memberId).get();
+    if (!viewDoc.exists) {
+      // If the user hasn't viewed the post, add a document to the views subcollection
+      await readsRef.doc(memberId).set({'read': Timestamp.now()});
+
+      // Optionally, update the post document to include the user's ID in the views array
+      await caseCollection.doc(caseId).update({
+        'reads': FieldValue.arrayUnion([memberId])
+      });
+    }
+  }
+
+  Future<List<String>> getAllViewIds(String caseId) async {
+    // Create a reference to the views subcollection
+    CollectionReference viewsRef =
+        caseCollection.doc(caseId).collection('views');
+
+    // Retrieve all documents in the views subcollection
+    QuerySnapshot querySnapshot = await viewsRef.get();
+
+    // Extract the IDs from the documents and return them as a list
+    return querySnapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  Future<List<String>> getAllReadIds(String caseId) async {
+    // Create a reference to the views subcollection
+    CollectionReference viewsRef =
+        caseCollection.doc(caseId).collection('reads');
+
+    // Retrieve all documents in the views subcollection
+    QuerySnapshot querySnapshot = await viewsRef.get();
+
+    // Extract the IDs from the documents and return them as a list
+    return querySnapshot.docs.map((doc) => doc.id).toList();
+  }
+
+  // static Future<int> getReadCount(String caseId) async {
+  //   // Create a reference to the views subcollection
+  //   CollectionReference readsRef =
+  //       caseCollection.doc(caseId).collection('reads');
+
+  //   // Retrieve all documents in the views subcollection
+  //   QuerySnapshot querySnapshot = await readsRef.get();
+
+  //   // Return the count of documents
+  //   return querySnapshot.docs.length;
+  // }
+
+  // static Future<int> getViewCount(String caseId) async {
+  //   // Create a reference to the views subcollection
+  //   CollectionReference viewsRef =
+  //       caseCollection.doc(caseId).collection('views');
+
+  //   // Retrieve all documents in the views subcollection
+  //   QuerySnapshot querySnapshot = await viewsRef.get();
+
+  //   // Return the count of documents
+  //   return querySnapshot.docs.length;
+  // }
 }

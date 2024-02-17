@@ -122,9 +122,9 @@ class Case extends StatelessWidget {
                         TextButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.remove_red_eye),
-                          label: const Text(
-                            '148',
-                            style: TextStyle(
+                          label: Text(
+                            caseRecord.views.length.toString(),
+                            style: const TextStyle(
                               fontSize: 14,
                               color: Colors.blue,
                             ),
@@ -133,9 +133,9 @@ class Case extends StatelessWidget {
                         TextButton.icon(
                           onPressed: () {},
                           icon: const Icon(Icons.mark_chat_read),
-                          label: const Text(
-                            '65',
-                            style: TextStyle(
+                          label: Text(
+                            caseRecord.reads.length.toString(),
+                            style: const TextStyle(
                               fontSize: 14,
                               color: Colors.blue,
                             ),
