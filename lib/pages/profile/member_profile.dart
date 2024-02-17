@@ -1,11 +1,13 @@
 import 'package:case_be_heard/custom_widgets/cached_image.dart';
 import 'package:case_be_heard/custom_widgets/case_card_edit.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
+import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/custom_widgets/text_icon.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/location.dart';
+import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -21,24 +23,51 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> with WidgetsBindingObserver {
-  final PagingController<DocumentSnapshot?, CaseRecord> _pagingController =
-      PagingController(firstPageKey: null);
+  final PagingController<DocumentSnapshot?, CaseRecord>
+      _pagingControllerPending = PagingController(firstPageKey: null);
+  final PagingController<DocumentSnapshot?, CaseRecord>
+      _pagingControllerOngoing = PagingController(firstPageKey: null);
+  final PagingController<DocumentSnapshot?, CaseRecord>
+      _pagingControllerSolved = PagingController(firstPageKey: null);
   int bottomNavIndex = 0;
   String address = '';
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
+    _pagingControllerPending.addPageRequestListener((pageKey) {
       WidgetsBinding.instance.addObserver(this);
       DatabaseCase.fetchCaseRecords(
-          pagingController: _pagingController, limit: 10, pageKey: pageKey);
+          pagingController: _pagingControllerPending,
+          limit: 10,
+          pageKey: pageKey,
+          progress: CaseHelper.investigationPending);
+    });
+
+    _pagingControllerOngoing.addPageRequestListener((pageKey) {
+      WidgetsBinding.instance.addObserver(this);
+      DatabaseCase.fetchCaseRecords(
+          pagingController: _pagingControllerOngoing,
+          limit: 10,
+          pageKey: pageKey,
+          progress: CaseHelper.investigationOngoing);
+    });
+
+    _pagingControllerSolved.addPageRequestListener((pageKey) {
+      WidgetsBinding.instance.addObserver(this);
+      DatabaseCase.fetchCaseRecords(
+          pagingController: _pagingControllerSolved,
+          limit: 10,
+          pageKey: pageKey,
+          progress: CaseHelper.caseSolved);
     });
     super.initState();
   }
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    _pagingControllerPending.dispose();
+    _pagingControllerOngoing.dispose();
+    _pagingControllerSolved.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -47,7 +76,9 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       // The app has come back to the foreground, refresh the PagedListView
-      _pagingController.refresh();
+      _pagingControllerPending.refresh();
+      _pagingControllerOngoing.refresh();
+      _pagingControllerSolved.refresh();
     }
   }
 
@@ -111,9 +142,9 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                       flex: 1, // Adjust this value to allocate space for TabBar
                       child: TabBar(
                         tabs: [
-                          Tab(text: 'Pending Cases'),
+                          Tab(text: 'Pending'),
+                          Tab(text: 'Ongoing'),
                           Tab(text: 'Solved Cases'),
-                          Tab(text: 'Petitions'),
                         ],
                       ),
                     ),
@@ -124,28 +155,91 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                         children: <Widget>[
                           RefreshIndicator(
                             onRefresh: () async {
-                              _pagingController.refresh();
+                              _pagingControllerPending.refresh();
                             },
                             child: PagedListView<DocumentSnapshot?, CaseRecord>(
-                              pagingController: _pagingController,
+                              //for investigation pending
+                              pagingController: _pagingControllerPending,
                               builderDelegate:
                                   PagedChildBuilderDelegate<CaseRecord>(
                                 itemBuilder: (context, item, index) =>
                                     CaseCardEdit(
                                   caseRecord: item,
                                   update: () {
-                                    _pagingController.refresh();
+                                    _pagingControllerPending.refresh();
                                   },
                                 ),
-                                noItemsFoundIndicatorBuilder: (context) =>
-                                    const Center(
-                                  child: Text('No items found'),
+                                noItemsFoundIndicatorBuilder: (_) =>
+                                    const MesssageScreen(
+                                  message: 'No cases found',
+                                  icon: Icon(Icons.search_off),
+                                ),
+                                noMoreItemsIndicatorBuilder: (_) =>
+                                    const MesssageScreen(
+                                  message: 'No more cases found',
+                                  icon: Icon(Icons.search_off),
                                 ),
                               ),
                             ),
                           ),
-                          Center(child: Text('Content   2')),
-                          Center(child: Text('Content   3')),
+                          RefreshIndicator(
+                            onRefresh: () async {
+                              _pagingControllerOngoing.refresh();
+                            },
+                            child: PagedListView<DocumentSnapshot?, CaseRecord>(
+                              // for investigation ongoing
+                              pagingController: _pagingControllerOngoing,
+                              builderDelegate:
+                                  PagedChildBuilderDelegate<CaseRecord>(
+                                itemBuilder: (context, item, index) =>
+                                    CaseCardEdit(
+                                  caseRecord: item,
+                                  update: () {
+                                    _pagingControllerOngoing.refresh();
+                                  },
+                                ),
+                                noItemsFoundIndicatorBuilder: (_) =>
+                                    const MesssageScreen(
+                                  message: 'No cases found',
+                                  icon: Icon(Icons.search_off),
+                                ),
+                                noMoreItemsIndicatorBuilder: (_) =>
+                                    const MesssageScreen(
+                                  message: 'No more cases found',
+                                  icon: Icon(Icons.search_off),
+                                ),
+                              ),
+                            ),
+                          ),
+                          RefreshIndicator(
+                            onRefresh: () async {
+                              _pagingControllerSolved.refresh();
+                            },
+                            child: PagedListView<DocumentSnapshot?, CaseRecord>(
+                              // for case solved
+                              pagingController: _pagingControllerSolved,
+                              builderDelegate:
+                                  PagedChildBuilderDelegate<CaseRecord>(
+                                itemBuilder: (context, item, index) =>
+                                    CaseCardEdit(
+                                  caseRecord: item,
+                                  update: () {
+                                    _pagingControllerSolved.refresh();
+                                  },
+                                ),
+                                noItemsFoundIndicatorBuilder: (_) =>
+                                    const MesssageScreen(
+                                  message: 'No cases found',
+                                  icon: Icon(Icons.search_off),
+                                ),
+                                noMoreItemsIndicatorBuilder: (_) =>
+                                    const MesssageScreen(
+                                  message: 'No more cases found',
+                                  icon: Icon(Icons.search_off),
+                                ),
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ),

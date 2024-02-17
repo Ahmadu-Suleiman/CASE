@@ -24,7 +24,7 @@ class _CreateCaseState extends State<CreateCase> {
   final linkController = TextEditingController();
   bool addLink = false;
   bool loading = false;
-  String progress = CaseHelper.dropdownItems[0];
+  String progress = CaseHelper.investigationPending;
 
   String title = '', summary = '', detailedDescription = '', mainImagePath = '';
   List<String> photos = [];

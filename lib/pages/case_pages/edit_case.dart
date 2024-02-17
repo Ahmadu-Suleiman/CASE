@@ -30,7 +30,7 @@ class _EditCaseState extends State<EditCase> {
 
   late CaseRecord caseRecord;
   String? uidCase;
-  String progress = CaseHelper.dropdownItems[0];
+  String progress = CaseHelper.investigationPending;
   String title = '', summary = '', details = '', mainImagePath = '';
   List<String> photos = [];
   List<Video> videos = [];
@@ -40,7 +40,6 @@ class _EditCaseState extends State<EditCase> {
   @override
   void initState() {
     super.initState();
-    // You can access the caseId here if needed
     uidCase = widget.caseId;
     _loadCaseRecord(uidCase!);
   }

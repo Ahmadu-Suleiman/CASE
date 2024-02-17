@@ -1,4 +1,5 @@
 import 'package:case_be_heard/custom_widgets/cached_image.dart';
+import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
@@ -186,8 +187,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                   }
                 },
                 child: CaseCard(caseRecord: caseRecord)),
-            noItemsFoundIndicatorBuilder: (context) => const Center(
-              child: Text('No items found'),
+            noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
+              message: 'No cases found',
+              icon: Icon(Icons.search_off),
+            ),
+            noMoreItemsIndicatorBuilder: (_) => const MesssageScreen(
+              message: 'No more cases found',
+              icon: Icon(Icons.search_off),
             ),
           ),
         ),

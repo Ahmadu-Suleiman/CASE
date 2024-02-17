@@ -74,19 +74,19 @@ class DatabaseCase {
   static Future<void> fetchCaseRecords(
       {int limit = 10,
       DocumentSnapshot? pageKey,
-      required PagingController pagingController}) async {
+      required PagingController pagingController,
+      String? progress}) async {
     QuerySnapshot querySnapshot;
+    Query query = caseCollection.orderBy('dateCreated', descending: true);
+    if (progress != null) {
+      query = query.where('progress', isEqualTo: progress);
+    }
+
     if (pageKey != null) {
-      querySnapshot = await caseCollection
-          .orderBy('dateCreated', descending: true)
-          .startAfterDocument(pageKey)
-          .limit(limit)
-          .get();
+      querySnapshot =
+          await query.startAfterDocument(pageKey).limit(limit).get();
     } else {
-      querySnapshot = await caseCollection
-          .orderBy('dateCreated', descending: true)
-          .limit(limit)
-          .get();
+      querySnapshot = await query.limit(limit).get();
     }
 
     if (querySnapshot.docs.isNotEmpty) {
@@ -144,6 +144,9 @@ class DatabaseCase {
 
   static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
     caseRecord.uid = CaseRecord.generateCaseId();
+    caseRecord.dateCreated = Timestamp.now();
+    caseRecord.views = [];
+    caseRecord.reads = [];
     caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
         caseRecord.uid, caseRecord.mainImage);
     caseRecord.photos = await StorageService.uploadCaseRecordPhotos(

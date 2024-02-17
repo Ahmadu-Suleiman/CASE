@@ -6,7 +6,7 @@ import 'package:uuid/uuid.dart';
 
 class CaseRecord {
   late String uid;
-  late Timestamp dateCreated;
+  Timestamp dateCreated = Timestamp.now();
   String uidMember;
   String title = '', details = '', summary = '', type, progress, mainImage = '';
   late List<String> views, reads;
@@ -72,8 +72,6 @@ class CaseRecord {
       'summary': summary,
       'type': type,
       'progress': progress,
-      'views': views,
-      'reads': reads,
       'mainImage': mainImage,
       'location': location,
       'photos': photos,

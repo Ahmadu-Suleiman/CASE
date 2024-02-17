@@ -33,7 +33,7 @@ class CaseApp extends StatelessWidget {
       child: Consumer<User?>(
         builder: (context, user, child) {
           return StreamProvider<CommunityMember?>.value(
-            value: DatabaseMember(uid: user!.uid).member,
+            value: DatabaseMember(uid: user?.uid).member,
             initialData: null,
             child: Consumer<CommunityMember?>(
               builder: (context, communityMember, child) {

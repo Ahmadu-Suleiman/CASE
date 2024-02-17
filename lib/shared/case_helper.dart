@@ -29,10 +29,15 @@ class CaseHelper {
       threshold: SafetyThreshold.blockNone,
     )
   ];
+
+  static const investigationPending = 'Investigation pending';
+  static const investigationOngoing = 'Investigation ongoing';
+  static const caseSolved = 'Case solved';
+
   static final dropdownItems = [
-    'Investigation pending',
-    'Investigation ongoing',
-    'Case solved'
+    investigationPending,
+    investigationOngoing,
+    caseSolved,
   ];
 
   static Future<void> addMainImage(Function(String) updateMainImage) async {

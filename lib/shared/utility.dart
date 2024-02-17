@@ -66,6 +66,15 @@ class Utility {
     return null;
   }
 
-  static List<String> stringList(DocumentSnapshot snapshot, String field) =>
-      snapshot[field]?.whereType<String>().toList() ?? [];
+  static List<String> stringList(DocumentSnapshot snapshot, String field) {
+    Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>?;
+    // Check if the data is not null and contains the field
+    if (data != null && data.containsKey(field) && data[field] is List) {
+      // The field exists and is a list, you can safely filter its elements
+      var fieldValue = data[field] as List;
+      return fieldValue.whereType<String>().toList();
+    }
+    // If the snapshot does not exist, the data is null, or the field is not a list, return an empty list
+    return [];
+  }
 }
