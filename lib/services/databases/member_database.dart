@@ -57,4 +57,13 @@ class DatabaseMember {
     return _communityMemberFromSnapshot(
         await communityMemberCollection.doc(uid).get());
   }
+
+  Future<List<CommunityMember>> getCommunityMembers(
+      List<String> memberIds) async {
+    return await Future.wait(memberIds.map((memberId) =>
+        communityMemberCollection
+            .doc(memberId)
+            .get()
+            .then(_communityMemberFromSnapshot)));
+  }
 }

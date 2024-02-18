@@ -38,11 +38,10 @@ class _EditProfileState extends State<EditProfile> {
                     body: SafeArea(
                         child: Center(
                             child: ListView(children: [
-                    GestureDetector(
-                        onTap: () {
-                          context.go(Routes.profileImage);
-                        },
-                        child: CachedAvatar(url: member.photoUrl, size: 60)),
+                    CachedAvatar(
+                        url: member.photoUrl,
+                        size: 60,
+                        onPressed: () => context.push(Routes.profileImage)),
                     ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState != null &&

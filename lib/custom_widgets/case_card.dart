@@ -61,7 +61,11 @@ class Case extends StatelessWidget {
                           Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: CachedAvatar(
-                                  url: caseRecord.member.photoUrl, size: 30)),
+                                url: caseRecord.member.photoUrl,
+                                size: 30,
+                                onPressed: () => context.push(
+                                    '${Routes.memberProfileOthers}/${caseRecord.uidMember}'),
+                              )),
                           const SizedBox(
                             height: 10,
                           ),

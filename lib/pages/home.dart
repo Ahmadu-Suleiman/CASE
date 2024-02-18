@@ -68,25 +68,25 @@ class _HomeWidgetState extends State<HomeWidget> {
                 child: ListView(
                     padding: const EdgeInsets.only(left: 6),
                     children: <Widget>[
-                      GestureDetector(
-                          onTap: () => context.push(Routes.memberProfile),
-                          child: UserAccountsDrawerHeader(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                            ),
-                            accountName: Text(
-                              Utility.getFirstAndlastName(member),
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            accountEmail: Text(
-                              member.email,
-                              style: const TextStyle(color: Colors.black),
-                            ),
-                            currentAccountPicture:
-                                CachedAvatar(url: member.photoUrl, size: 60),
-                          )),
+                      UserAccountsDrawerHeader(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                        ),
+                        accountName: Text(
+                          Utility.getFirstAndlastName(member),
+                          style: const TextStyle(
+                              color: Colors.black, fontWeight: FontWeight.bold),
+                        ),
+                        accountEmail: Text(
+                          member.email,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                        currentAccountPicture: CachedAvatar(
+                            url: member.photoUrl,
+                            size: 80,
+                            onPressed: () =>
+                                context.push(Routes.memberProfile)),
+                      ),
                       ListTile(
                         title: const Text(
                           'Case catalog',

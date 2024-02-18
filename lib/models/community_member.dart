@@ -11,7 +11,6 @@ class CommunityMember {
   String gender = '';
   String photoUrl = '';
   String bio = '';
-  String directContact = '';
   bool verified = false;
   late GeoPoint location;
   List<CaseRecord> cases = [];

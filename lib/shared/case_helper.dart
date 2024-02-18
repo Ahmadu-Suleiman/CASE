@@ -93,13 +93,13 @@ class CaseHelper {
 
   static void showRecommendedTitle(BuildContext context, String title,
       String details, String summary) async {
-    final capturedContext = context;
+    Utility.showSnackBar(context, 'Generating title, please wait');
     _gemini.text('''Generate a concise one-line title (20 words or less) for my 
     legal case based on the provided details in first person:
     "$title" - "$details" - Summary: "$summary". Do not include asterisks for 
-    formating and do not include titles or headings''').then((value) => {
+    formating and do not include titles or headings.''').then((value) => {
           showDialog(
-              context: capturedContext,
+              context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
                     title: const Text('Recommended Title'),
@@ -126,7 +126,7 @@ class CaseHelper {
 
   static void showRecommendedDescription(BuildContext context, String title,
       String details, String summary) async {
-    final capturedContext = context;
+    Utility.showSnackBar(context, 'Generating description, please wait');
     _gemini.text('''Provide a comprehensive and succinct description 
     (under 150 words) for my legal case using the details I provided:
     Title: "$title"
@@ -134,10 +134,10 @@ class CaseHelper {
     Summary: "$summary"
 
     Please generate the description in coherent first person paragraphs. Do not
-    use asterisks for formating and do not include titles or headings''').then(
+    use asterisks for formating and do not include titles or headings.''').then(
         (value) => {
               showDialog(
-                  context: capturedContext,
+                  context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
                         title: const Text('Recommended description'),
@@ -165,16 +165,16 @@ class CaseHelper {
 
   static void showRecommendedSummary(BuildContext context, String title,
       String details, String summary) async {
-    final capturedContext = context;
+    Utility.showSnackBar(context, 'Generating summary, please wait');
     _gemini.text('''Generate a concise three-line summary (less than 25 words) 
     as a single paragraph for my legal case in first person:
     Title: "$title"
     Details: "$details"
     Summary: "$summary".
-    Do not use asterisks for formating and do not include titles or headings''').then(
+    Do not use asterisks for formating and do not include titles or headings.''').then(
         (value) => {
               showDialog(
-                  context: capturedContext,
+                  context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
                         title: const Text('Recommended Summary'),
@@ -206,7 +206,7 @@ class CaseHelper {
               Title: "$title"
               Description: "$description"
               Summary: "$summary". Generate the category as a single term. 
-              Do not include asterisks for formating''');
+              Do not include asterisks for formating.''');
     return result!.output ?? 'Unknown';
   }
 
@@ -216,7 +216,7 @@ class CaseHelper {
     next steps for my legal case, considering the details provided:
     Title: "$title"
     Description: "$description"
-    Summary: "$summary". Do not include asterisks for formating''');
+    Summary: "$summary". Do not include asterisks for formating.''');
     return result!.output ?? 'Unknown';
   }
 
@@ -297,4 +297,6 @@ class CaseHelper {
               ]);
         });
   }
+
+  // static showReadList()
 }

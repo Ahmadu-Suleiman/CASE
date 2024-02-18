@@ -1,25 +1,23 @@
 import 'package:case_be_heard/custom_widgets/cached_image.dart';
+import 'package:case_be_heard/models/comment.dart';
+import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/shared/case_values.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:case_be_heard/shared/routes.dart';
+import 'package:case_be_heard/shared/utility.dart';
+import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 
 class CommentWidget extends StatelessWidget {
-  final String authorName;
-  final String profilePictureUrl;
-  final String commentText;
-  final String commentType;
-  final Timestamp commentDate;
+  final CommunityMember author;
+  final Comment comment;
   final bool isCaseRecordCreator;
   final Function(String) onChangeCategory;
 
   const CommentWidget({
     super.key,
-    required this.authorName,
-    required this.profilePictureUrl,
-    required this.commentText,
-    required this.commentType,
-    required this.commentDate,
+    required this.author,
+    required this.comment,
     required this.isCaseRecordCreator,
     required this.onChangeCategory,
   });
@@ -32,7 +30,13 @@ class CommentWidget extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: Column(children: [
               Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                CachedAvatar(url: profilePictureUrl, size: 20),
+                CachedAvatar(
+                  url: author.photoUrl,
+                  size: 20,
+                  onPressed: () {
+                    context.push('${Routes.memberProfileOthers}/${author.uid}');
+                  },
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                     child: Column(
@@ -41,16 +45,16 @@ class CommentWidget extends StatelessWidget {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(authorName),
+                            Text(Utility.getFirstAndlastName(author)),
                             Text(
-                                'Uploaded ${timeago.format(commentDate.toDate())}')
+                                'Uploaded ${timeago.format(comment.dateCreated.toDate())}')
                           ]),
-                      Text(commentText)
+                      Text(comment.commentText)
                     ])),
               ]),
               if (isCaseRecordCreator)
                 DropdownButton<String>(
-                    value: commentType,
+                    value: comment.commentType,
                     items: CaseValues.dropdownItemsCommentsType
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(

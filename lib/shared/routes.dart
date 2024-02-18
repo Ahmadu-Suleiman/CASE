@@ -6,6 +6,7 @@ import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps_case.dart';
 import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
+import 'package:case_be_heard/pages/profile/member_profile_others.dart';
 import 'package:case_be_heard/pages/profile/profile_image.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +17,7 @@ class Routes {
   static const String editCase = '/edit-case';
   static const String casePage = '/case-page';
   static const String memberProfile = '/member-profile';
+  static const String memberProfileOthers = '/member-profile-others';
   static const String editMemberProfile = '/edit-member-profile';
   static const String profileImage = '/profile-image';
   static const String casePhoto = '/case-photo';
@@ -52,6 +54,13 @@ class Routes {
       path: Routes.memberProfile,
       builder: (context, state) => const Profile(),
     ),
+    GoRoute(
+        name: 'memberProfileOthers',
+        path: '${Routes.memberProfileOthers}/:memberId',
+        builder: (context, state) {
+          final memberId = state.pathParameters['memberId'];
+          return ProfileOthers(memberId: memberId!);
+        }),
     GoRoute(
       name: 'editMemberProfile',
       path: Routes.editMemberProfile,

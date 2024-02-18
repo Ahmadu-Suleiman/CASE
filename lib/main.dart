@@ -37,18 +37,32 @@ class CaseApp extends StatelessWidget {
               child: Consumer<CommunityMember?>(
                   builder: (context, communityMember, child) {
                 return MaterialApp.router(
-                    routerConfig: Routes.router,
-                    theme: ThemeData(
-                        focusColor: Style.secondaryColor,
-                        hoverColor: Style.secondaryColor,
-                        primaryColor: Style.primaryColor,
-                        iconTheme: const IconThemeData(
-                          color: Colors.black, // Set the global color for icons
-                        ),
-                        colorScheme: ColorScheme.fromSwatch(
-                          backgroundColor: Colors.white,
-                          accentColor: Style.primaryColor,
-                        )));
+                  routerConfig: Routes.router,
+                  theme: ThemeData(
+                      focusColor: Style.secondaryColor,
+                      hoverColor: Style.secondaryColor,
+                      primaryColor: Style.primaryColor,
+                      iconTheme: const IconThemeData(
+                        color: Colors.black, // Set the global color for icons
+                      ),
+                      colorScheme: ColorScheme.light(
+                        background: Colors.white,
+                        primary: Style.primaryColor,
+                        secondary: Style.secondaryColor,
+                      )),
+                  darkTheme: ThemeData(
+                      focusColor: Style.secondaryColor,
+                      hoverColor: Style.secondaryColor,
+                      primaryColor: Style.primaryColor,
+                      iconTheme: const IconThemeData(
+                        color: Colors.black, // Set the global color for icons
+                      ),
+                      colorScheme: ColorScheme.dark(
+                        background: Style.colorDark,
+                        secondary: Style.secondaryColor,
+                      )),
+                  themeMode: ThemeMode.system,
+                );
               }));
         }));
   }

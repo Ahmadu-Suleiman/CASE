@@ -27,7 +27,6 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
       PagingController(firstPageKey: null);
 
   String progress = CaseValues.investigationPending;
-  int bottomNavIndex = 0;
   String address = '';
 
   @override
@@ -89,7 +88,11 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                     child: CustomScrollView(slivers: [
                       SliverToBoxAdapter(
                           child: Column(children: <Widget>[
-                        CachedAvatar(url: member.photoUrl, size: 60),
+                        CachedAvatar(
+                            url: member.photoUrl,
+                            size: 60,
+                            onPressed: () => context.push(
+                                '${Routes.casePhoto}/${member.photoUrl}')),
                         Text(
                           '${member.firstName} ${member.lastName}',
                           maxLines: 1,

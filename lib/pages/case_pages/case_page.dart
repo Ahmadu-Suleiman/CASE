@@ -273,14 +273,8 @@ class _CasePageState extends State<CasePage> {
                                               () => setState(() {}));
                                         },
                                         child: CommentWidget(
-                                            authorName:
-                                                Utility.getFirstAndlastName(
-                                                    comment.author),
-                                            profilePictureUrl:
-                                                comment.author.photoUrl,
-                                            commentText: comment.commentText,
-                                            commentDate: comment.dateCreated,
-                                            commentType: comment.commentType,
+                                            author: member,
+                                            comment: comment,
                                             isCaseRecordCreator:
                                                 isCaseRecordCreator,
                                             onChangeCategory:
