@@ -16,6 +16,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class CasePage extends StatefulWidget {
   final String caseId;
@@ -257,16 +258,22 @@ class _CasePageState extends State<CasePage> {
                               if (comments.isEmpty) {
                                 return const Text('No comments');
                               }
-                              return Column(
-                                  children: comments.map((comment) {
-                                return CommentWidget(
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: comments.length,
+                                itemBuilder: (context, index) {
+                                  Comment comment = comments[index];
+                                  return CommentWidget(
                                     authorName: Utility.getFirstAndlastName(
                                         comment.author),
                                     profilePictureUrl: comment.author.photoUrl,
                                     commentText: comment.commentText,
                                     commentDate:
-                                        comment.dateCreated.toString());
-                              }).toList());
+                                        'Uploaded ${timeago.format(comment.dateCreated.toDate())}',
+                                  );
+                                },
+                              );
                             }
                             return const Text('No comments');
                           }),
