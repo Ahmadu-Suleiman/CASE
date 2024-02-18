@@ -11,21 +11,22 @@ class CommunityMember {
   String gender = '';
   String photoUrl = '';
   String bio = '';
+  String directContact = '';
+  bool verified = false;
   late GeoPoint location;
   List<CaseRecord> cases = [];
 
-  CommunityMember({required this.uid});
   CommunityMember.empty();
-  CommunityMember.full({
-    required this.uid,
-    required this.firstName,
-    required this.lastName,
-    required this.email,
-    required this.phoneNumber,
-    required this.occupation,
-    required this.location,
-    required this.gender,
-    required this.photoUrl,
-    required this.bio,
-  });
+  CommunityMember({required this.uid});
+  CommunityMember.full(
+      {required this.uid,
+      required this.firstName,
+      required this.lastName,
+      required this.email,
+      required this.phoneNumber,
+      required this.occupation,
+      required this.location,
+      required this.gender,
+      required this.photoUrl,
+      required this.bio});
 }

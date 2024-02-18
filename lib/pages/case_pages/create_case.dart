@@ -6,6 +6,7 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
+import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class _CreateCaseState extends State<CreateCase> {
   final linkController = TextEditingController();
   bool addLink = false;
   bool loading = false;
-  String progress = CaseHelper.investigationPending;
+  String progress = CaseValues.investigationPending;
 
   String title = '', summary = '', detailedDescription = '', mainImagePath = '';
   List<String> photos = [];
@@ -56,7 +57,7 @@ class _CreateCaseState extends State<CreateCase> {
                           const SizedBox(height: 20),
                           DropdownButton<String>(
                             value: progress,
-                            items: CaseHelper.dropdownItems
+                            items: CaseValues.dropdownItems
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,

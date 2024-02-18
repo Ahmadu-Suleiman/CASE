@@ -7,7 +7,7 @@ import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/location.dart';
-import 'package:case_be_heard/shared/case_helper.dart';
+import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +40,7 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
           pagingController: _pagingControllerPending,
           limit: 10,
           pageKey: pageKey,
-          progress: CaseHelper.investigationPending);
+          progress: CaseValues.investigationPending);
     });
 
     _pagingControllerOngoing.addPageRequestListener((pageKey) {
@@ -49,7 +49,7 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
           pagingController: _pagingControllerOngoing,
           limit: 10,
           pageKey: pageKey,
-          progress: CaseHelper.investigationOngoing);
+          progress: CaseValues.investigationOngoing);
     });
 
     _pagingControllerSolved.addPageRequestListener((pageKey) {
@@ -58,7 +58,7 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
           pagingController: _pagingControllerSolved,
           limit: 10,
           pageKey: pageKey,
-          progress: CaseHelper.caseSolved);
+          progress: CaseValues.caseSolved);
     });
     super.initState();
   }

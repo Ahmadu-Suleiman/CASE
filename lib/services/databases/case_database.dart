@@ -258,28 +258,4 @@ class DatabaseCase {
     // Extract the IDs from the documents and return them as a list
     return querySnapshot.docs.map((doc) => doc.id).toList();
   }
-
-  // static Future<int> getReadCount(String caseId) async {
-  //   // Create a reference to the views subcollection
-  //   CollectionReference readsRef =
-  //       caseCollection.doc(caseId).collection('reads');
-
-  //   // Retrieve all documents in the views subcollection
-  //   QuerySnapshot querySnapshot = await readsRef.get();
-
-  //   // Return the count of documents
-  //   return querySnapshot.docs.length;
-  // }
-
-  // static Future<int> getViewCount(String caseId) async {
-  //   // Create a reference to the views subcollection
-  //   CollectionReference viewsRef =
-  //       caseCollection.doc(caseId).collection('views');
-
-  //   // Retrieve all documents in the views subcollection
-  //   QuerySnapshot querySnapshot = await viewsRef.get();
-
-  //   // Return the count of documents
-  //   return querySnapshot.docs.length;
-  // }
 }

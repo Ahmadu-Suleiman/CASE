@@ -6,6 +6,7 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
+import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
@@ -30,7 +31,7 @@ class _EditCaseState extends State<EditCase> {
 
   late CaseRecord caseRecord;
   String? uidCase;
-  String progress = CaseHelper.investigationPending;
+  String progress = CaseValues.investigationPending;
   String title = '', summary = '', details = '', mainImagePath = '';
   List<String> photos = [];
   List<Video> videos = [];
@@ -147,7 +148,7 @@ class _EditCaseState extends State<EditCase> {
                                 ))),
                         DropdownButton<String>(
                             value: progress,
-                            items: CaseHelper.dropdownItems
+                            items: CaseValues.dropdownItems
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,

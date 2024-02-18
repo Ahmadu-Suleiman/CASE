@@ -2,12 +2,17 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/custom_widgets/audio_widget.dart';
 import 'package:case_be_heard/custom_widgets/clickable_image.dart';
+import 'package:case_be_heard/custom_widgets/comment_widget.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/models/comment.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
+import 'package:case_be_heard/services/databases/comments_database.dart';
+import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +28,7 @@ class CasePage extends StatefulWidget {
 class _CasePageState extends State<CasePage> {
   final _audioPlayer = AudioPlayer();
   final _scrollController = ScrollController();
+  final _commentController = TextEditingController();
 
   @override
   void dispose() {
@@ -195,13 +201,65 @@ class _CasePageState extends State<CasePage> {
                               icon: const Icon(Icons.link),
                               label: Text(link,
                                   style: const TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    decorationColor: Colors.blue,
-                                    decorationThickness: 2.0,
-                                    fontSize: 14,
-                                    color: Colors.blue,
-                                  ))))
-                          .toList())
+                                      decoration: TextDecoration.underline,
+                                      decorationColor: Colors.blue,
+                                      decorationThickness: 2.0,
+                                      fontSize: 14,
+                                      color: Colors.blue))))
+                          .toList()),
+                  StreamBuilder<List<Comment>>(
+                      stream: DatabaseComments.getComments(caseRecord.uid),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<List<Comment>> snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong');
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        }
+                        if (snapshot.hasData) {
+                          List<Comment> comments =
+                              snapshot.data as List<Comment>;
+                          return ListView.builder(
+                              itemCount: comments.length,
+                              itemBuilder: (context, index) {
+                                Comment comment = comments[index];
+                                return CommentWidget(
+                                    authorName: Utility.getFirstAndlastName(
+                                        comment.author),
+                                    profilePictureUrl: comment.author.photoUrl,
+                                    commentText: comment.commentText,
+                                    commentDate:
+                                        comment.dateCreated.toString());
+                              });
+                        }
+                        return const CircularProgressIndicator();
+                      }),
+                  TextField(
+                    controller: _commentController,
+                    decoration: InputDecoration(
+                      hintText: 'Write a comment...',
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.send),
+                        onPressed: () async {
+                          String text = _commentController.text;
+                          if (text.isNotEmpty) {
+                            Comment comment = Comment.forUpload(
+                              caseRecordId: caseRecord.uid,
+                              commentText: text,
+                              authorId: member.uid!,
+                              commentType: CaseValues.notVerfiedID,
+                              dateCreated: Timestamp.now(),
+                            );
+                            DatabaseComments.addComment(
+                                context, caseRecord.uid, comment);
+                          }
+                        },
+                      ),
+                    ),
+                  ),
                 ]));
           } else {
             return const Loading();

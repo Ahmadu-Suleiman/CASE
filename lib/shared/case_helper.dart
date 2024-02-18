@@ -12,35 +12,7 @@ import 'package:flutter_gemini/flutter_gemini.dart';
 
 class CaseHelper {
   static final ImagePicker _picker = ImagePicker();
-  static final gemini = Gemini.instance;
-  static final safetySettings = [
-    SafetySetting(
-      category: SafetyCategory.harassment,
-      threshold: SafetyThreshold.blockNone,
-    ),
-    SafetySetting(
-      category: SafetyCategory.hateSpeech,
-      threshold: SafetyThreshold.blockNone,
-    ),
-    SafetySetting(
-      category: SafetyCategory.dangerous,
-      threshold: SafetyThreshold.blockNone,
-    ),
-    SafetySetting(
-      category: SafetyCategory.sexuallyExplicit,
-      threshold: SafetyThreshold.blockNone,
-    )
-  ];
-
-  static const investigationPending = 'Investigation pending';
-  static const investigationOngoing = 'Investigation ongoing';
-  static const caseSolved = 'Case solved';
-
-  static final dropdownItems = [
-    investigationPending,
-    investigationOngoing,
-    caseSolved,
-  ];
+  static final _gemini = Gemini.instance;
 
   static Future<void> addMainImage(Function(String) updateMainImage) async {
     XFile? image = await _picker.pickImage(
@@ -120,7 +92,7 @@ class CaseHelper {
   static void showRecommendedTitle(BuildContext context, String title,
       String details, String summary) async {
     final capturedContext = context;
-    gemini.text('''Generate a concise one-line title (20 words or less) for my 
+    _gemini.text('''Generate a concise one-line title (20 words or less) for my 
     legal case based on the provided details in first person:
     "$title" - "$details" - Summary: "$summary". Do not include asterisks for 
     formating and do not include titles or headings''').then((value) => {
@@ -153,7 +125,7 @@ class CaseHelper {
   static void showRecommendedDescription(BuildContext context, String title,
       String details, String summary) async {
     final capturedContext = context;
-    gemini.text('''Provide a comprehensive and succinct description 
+    _gemini.text('''Provide a comprehensive and succinct description 
     (under 150 words) for my legal case using the details I provided:
     Title: "$title"
     Details: "$details"
@@ -192,7 +164,7 @@ class CaseHelper {
   static void showRecommendedSummary(BuildContext context, String title,
       String details, String summary) async {
     final capturedContext = context;
-    gemini.text('''Generate a concise three-line summary (less than 25 words) 
+    _gemini.text('''Generate a concise three-line summary (less than 25 words) 
     as a single paragraph for my legal case in first person:
     Title: "$title"
     Details: "$details"
@@ -209,11 +181,10 @@ class CaseHelper {
                         ),
                         actions: <Widget>[
                           TextButton(
-                            child: const Text('Cancel'),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
+                              child: const Text('Cancel'),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              }),
                           TextButton(
                               child: const Text('Copy'),
                               onPressed: () {
@@ -229,7 +200,7 @@ class CaseHelper {
   static Future<String> getCaseCategory(
       String title, String description, String summary) async {
     final result =
-        await gemini.text('''Determine the legal category for this case:
+        await _gemini.text('''Determine the legal category for this case:
               Title: "$title"
               Description: "$description"
               Summary: "$summary". Generate the category as a single term. 
@@ -239,7 +210,7 @@ class CaseHelper {
 
   static Future<String> getNextSteps(
       String title, String description, String summary) async {
-    final result = await gemini.text('''Provide guidance on the recommended 
+    final result = await _gemini.text('''Provide guidance on the recommended 
     next steps for my legal case, considering the details provided:
     Title: "$title"
     Description: "$description"
