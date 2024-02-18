@@ -3,6 +3,7 @@ import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Comment {
+  late String commentId;
   String commentText;
   String authorId;
   String caseRecordId;
@@ -11,7 +12,8 @@ class Comment {
   late CommunityMember author;
 
   Comment(
-      {required this.commentText,
+      {required this.commentId,
+      required this.commentText,
       required this.authorId,
       required this.caseRecordId,
       required this.commentType,
@@ -35,11 +37,12 @@ class Comment {
     };
   }
 
-  static Future<Comment> fromMap(Map<String, dynamic> map) async {
+  static Future<Comment> fromMap(Map<String, dynamic> map,String commentId) async {
     String authorId = map['authorId'];
     CommunityMember member =
         await DatabaseMember(uid: authorId).getCommunityMember();
     return Comment(
+        commentId: map['commentId'],
         commentText: map['commentText'],
         authorId: authorId,
         caseRecordId: map['caseRecordId'],

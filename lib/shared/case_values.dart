@@ -12,7 +12,13 @@ class CaseValues {
   static const verifiedID = 'Identity verified';
   static const notVerfiedID = 'Identity not verified';
 
-  static final dropdownItems = [
+  static final dropdownItemsCommentsType = [
+    commentVerified,
+    commentUseful,
+    commentOthers,
+  ];
+
+  static final dropdownItemsProgress = [
     investigationPending,
     investigationOngoing,
     caseSolved,

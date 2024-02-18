@@ -25,7 +25,7 @@ class DatabaseCase {
     });
 
     return CaseRecord(
-      uid: snapshot['uid'] ?? '',
+      uid: snapshot.id,
       uidMember: snapshot['uidMember'] ?? '',
       dateCreated: snapshot['dateCreated'] ?? Timestamp.now(),
       member: member,
@@ -143,7 +143,6 @@ class DatabaseCase {
   }
 
   static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
-    caseRecord.uid = CaseRecord.generateCaseId();
     caseRecord.dateCreated = Timestamp.now();
     caseRecord.views = [];
     caseRecord.reads = [];

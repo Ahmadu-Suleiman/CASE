@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:case_be_heard/models/comment.dart';
 import 'package:case_be_heard/models/video.dart';
+import 'package:case_be_heard/services/databases/comments_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:file_picker/file_picker.dart';
@@ -256,5 +258,43 @@ class CaseHelper {
 
     if (result != null) isDeleted = result;
     return isDeleted;
+  }
+
+  static editOrDeleteCommentAsOwner(
+      BuildContext context, Comment comment, Function() update) {
+    final commentController = TextEditingController();
+    commentController.text = comment.commentText;
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: const Text('Comment'),
+              content: TextField(
+                autofocus: true,
+                minLines: 4,
+                maxLines: null,
+                controller: commentController,
+              ),
+              actions: <Widget>[
+                TextButton(
+                    child: const Text('Delete Comment'),
+                    onPressed: () {
+                      DatabaseComments.deleteComment(context, comment);
+                      Navigator.of(context).pop();
+                      update();
+                    }),
+                TextButton(
+                    child: const Text('Edit Comment'),
+                    onPressed: () {
+                      String text = commentController.text;
+                      if (text.isNotEmpty) {
+                        comment.commentText = text.trim();
+                        DatabaseComments.updateComment(context, comment);
+                        Navigator.of(context).pop();
+                        update();
+                      }
+                    }),
+              ]);
+        });
   }
 }

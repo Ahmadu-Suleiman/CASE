@@ -148,7 +148,7 @@ class _EditCaseState extends State<EditCase> {
                                 ))),
                         DropdownButton<String>(
                             value: progress,
-                            items: CaseValues.dropdownItems
+                            items: CaseValues.dropdownItemsProgress
                                 .map<DropdownMenuItem<String>>((String value) {
                               return DropdownMenuItem<String>(
                                 value: value,

@@ -1,8 +1,6 @@
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart';
-import 'package:uuid/uuid.dart';
 
 class CaseRecord {
   late String uid;
@@ -64,7 +62,6 @@ class CaseRecord {
 
   Map<String, dynamic> toMap() {
     return {
-      'uid': uid,
       'uidMember': uidMember,
       'dateCreated': dateCreated,
       'title': title,
@@ -80,13 +77,5 @@ class CaseRecord {
       'audios': audios,
       'links': links,
     };
-  }
-
-  static String generateCaseId() {
-    DateTime now = DateTime.now();
-    String timestamp = DateFormat('yyyyMMddHHmmss').format(now);
-
-    String randomStr = const Uuid().v4();
-    return '$timestamp-$randomStr';
   }
 }

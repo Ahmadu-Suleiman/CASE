@@ -7,18 +7,25 @@ class DatabaseComments {
   static final CollectionReference commentsCollection =
       FirebaseFirestore.instance.collection('caseComments');
 
-  static Future<void> addComment(
-      BuildContext context, String caseRecordId, Comment comment) async {
+  static Future<void> addComment(BuildContext context, Comment comment) async {
     commentsCollection.add({...comment.toMap()}).then(
         (_) => Utility.showSnackBar(context, 'comment added'));
   }
 
-  static Future<void> deleteComment(
-      BuildContext context, String commentId) async {
+  static Future<void> updateComment(
+      BuildContext context, Comment updatedComment) async {
     return commentsCollection
-        .doc(commentId)
+        .doc(updatedComment.commentId)
+        .update(updatedComment.toMap())
+        .then((_) => Utility.showSnackBar(context, 'comment updated'));
+  }
+
+  static Future<void> deleteComment(
+      BuildContext context, Comment comment) async {
+    return commentsCollection
+        .doc(comment.commentId)
         .delete()
-        .then((_) => Utility.showSnackBar(context, 'comment added'));
+        .then((_) => Utility.showSnackBar(context, 'comment deleted'));
   }
 
   static Stream<List<Comment>> getComments(
@@ -30,7 +37,8 @@ class DatabaseComments {
         .snapshots()
         .asyncMap((snapshots) async {
       List<Future<Comment>> commentFutures = snapshots.docs
-          .map((doc) => Comment.fromMap(doc.data() as Map<String, dynamic>))
+          .map((doc) =>
+              Comment.fromMap(doc.data() as Map<String, dynamic>, doc.id))
           .toList();
       List<Comment> comments = await Future.wait(commentFutures);
       return comments;

@@ -9,6 +9,7 @@ import 'package:case_be_heard/models/comment.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/databases/comments_database.dart';
+import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -16,7 +17,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 class CasePage extends StatefulWidget {
   final String caseId;
@@ -213,6 +213,7 @@ class _CasePageState extends State<CasePage> {
                                           color: Colors.blue))))
                               .toList()),
                       SegmentedButton<String>(
+                        showSelectedIcon: false,
                         style: ButtonStyle(
                           shape:
                               MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -238,10 +239,7 @@ class _CasePageState extends State<CasePage> {
                         ],
                         selected: <String>{commentsType},
                         onSelectionChanged: (Set<String> newSelection) {
-                          setState(() {
-                            commentsType = newSelection.first;
-                            Utility.showSnackBar(context, commentsType);
-                          });
+                          setState(() => commentsType = newSelection.first);
                         },
                       ),
                       StreamBuilder<List<Comment>>(
@@ -258,27 +256,45 @@ class _CasePageState extends State<CasePage> {
                               if (comments.isEmpty) {
                                 return const Text('No comments');
                               }
+
+                              bool isCaseRecordCreator =
+                                  member.uid == caseRecord.uid;
                               return ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: comments.length,
-                                itemBuilder: (context, index) {
-                                  Comment comment = comments[index];
-                                  return CommentWidget(
-                                    authorName: Utility.getFirstAndlastName(
-                                        comment.author),
-                                    profilePictureUrl: comment.author.photoUrl,
-                                    commentText: comment.commentText,
-                                    commentDate:
-                                        'Uploaded ${timeago.format(comment.dateCreated.toDate())}',
-                                  );
-                                },
-                              );
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: comments.length,
+                                  itemBuilder: (context, index) {
+                                    Comment comment = comments[index];
+                                    return GestureDetector(
+                                        onLongPress: CaseHelper
+                                            .editOrDeleteCommentAsOwner(context,
+                                                comment, () => setState(() {})),
+                                        child: CommentWidget(
+                                            authorName:
+                                                Utility.getFirstAndlastName(
+                                                    comment.author),
+                                            profilePictureUrl:
+                                                comment.author.photoUrl,
+                                            commentText: comment.commentText,
+                                            commentDate: comment.dateCreated,
+                                            commentType: comment.commentType,
+                                            isCaseRecordCreator:
+                                                isCaseRecordCreator,
+                                            onChangeCategory:
+                                                (commentType) async {
+                                              await DatabaseComments
+                                                  .updateComment(
+                                                      context, comment);
+                                              setState(() {});
+                                            }));
+                                  });
                             }
                             return const Text('No comments');
                           }),
                       TextField(
                           autofocus: true,
+                          minLines: 4,
+                          maxLines: null,
                           controller: _commentController,
                           decoration: InputDecoration(
                               hintText: 'Write a comment...',
@@ -287,6 +303,7 @@ class _CasePageState extends State<CasePage> {
                                   onPressed: () async {
                                     String text = _commentController.text;
                                     if (text.isNotEmpty) {
+                                      _commentController.text = '';
                                       Comment comment = Comment.forUpload(
                                         caseRecordId: caseRecord.uid,
                                         commentText: text,
@@ -295,7 +312,7 @@ class _CasePageState extends State<CasePage> {
                                         dateCreated: Timestamp.now(),
                                       );
                                       DatabaseComments.addComment(
-                                          context, caseRecord.uid, comment);
+                                          context, comment);
                                     }
                                   })))
                     ]));
