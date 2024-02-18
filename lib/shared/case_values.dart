@@ -5,6 +5,10 @@ class CaseValues {
   static const investigationOngoing = 'Investigation ongoing';
   static const caseSolved = 'Case solved';
 
+  static const commentVerified = 'verified';
+  static const commentUseful = 'useful';
+  static const commentOthers = 'others';
+
   static const verifiedID = 'Identity verified';
   static const notVerfiedID = 'Identity not verified';
 

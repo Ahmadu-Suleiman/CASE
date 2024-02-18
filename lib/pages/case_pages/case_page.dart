@@ -26,6 +26,7 @@ class CasePage extends StatefulWidget {
 }
 
 class _CasePageState extends State<CasePage> {
+  String commentsType = CaseValues.commentVerified;
   final _audioPlayer = AudioPlayer();
   final _scrollController = ScrollController();
   final _commentController = TextEditingController();
@@ -68,164 +69,196 @@ class _CasePageState extends State<CasePage> {
                     ),
                   ],
                 ),
-                body: ListView(controller: _scrollController, children: [
-                  Center(
-                      child: Column(children: [
-                    Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: GestureDetector(
-                            onTap: () => context.push(
-                                '${Routes.casePhoto}/${Uri.encodeComponent(caseRecord.mainImage)}'),
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(30.0),
-                                child: CachedNetworkImage(
-                                  imageUrl: caseRecord.mainImage,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: 250,
-                                )))),
-                    const SizedBox(height: 20),
-                    Text(
+                body: ListView(
+                    padding: const EdgeInsets.all(8),
+                    controller: _scrollController,
+                    children: [
+                      Center(
+                          child: Column(children: [
+                        Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: GestureDetector(
+                                onTap: () => context.push(
+                                    '${Routes.casePhoto}/${Uri.encodeComponent(caseRecord.mainImage)}'),
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    child: CachedNetworkImage(
+                                      imageUrl: caseRecord.mainImage,
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: 250,
+                                    )))),
+                        const SizedBox(height: 20),
+                        Text(
+                            caseRecord
+                                .title, // Use the title if it's not null, otherwise use 'Case title' as a placeholder
+                            maxLines: 1,
+                            overflow: TextOverflow
+                                .ellipsis, // To handle long text that might exceed one line
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            )),
+                        const SizedBox(height: 20),
+                        Text(
+                            caseRecord
+                                .summary, // Use the shortDescription if it's not null, otherwise use 'Short description' as a placeholder
+                            maxLines:
+                                3, // Retain the maxLines property to limit the number of lines
+                            overflow: TextOverflow
+                                .ellipsis, // Handle text that might exceed three lines
+                            style: const TextStyle(
+                              fontSize:
+                                  18, // Maintain the same font size as the original TextFormField
+                              color: Colors.black,
+                            ))
+                      ])),
+                      Text(
                         caseRecord
-                            .title, // Use the title if it's not null, otherwise use 'Case title' as a placeholder
-                        maxLines: 1,
-                        overflow: TextOverflow
-                            .ellipsis, // To handle long text that might exceed one line
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                        )),
-                    const SizedBox(height: 20),
-                    Text(
-                        caseRecord
-                            .summary, // Use the shortDescription if it's not null, otherwise use 'Short description' as a placeholder
-                        maxLines:
-                            3, // Retain the maxLines property to limit the number of lines
-                        overflow: TextOverflow
-                            .ellipsis, // Handle text that might exceed three lines
+                            .details, // Use the detailedDescription if it's not null, otherwise use 'Detailed description' as a placeholder
                         style: const TextStyle(
                           fontSize:
                               18, // Maintain the same font size as the original TextFormField
                           color: Colors.black,
-                        ))
-                  ])),
-                  Text(
-                    caseRecord
-                        .details, // Use the detailedDescription if it's not null, otherwise use 'Detailed description' as a placeholder
-                    style: const TextStyle(
-                      fontSize:
-                          18, // Maintain the same font size as the original TextFormField
-                      color: Colors.black,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Center(
-                      child: Text('Media',
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      const Center(
+                          child: Text('Media',
+                              style: TextStyle(
+                                fontSize: 35,
+                                fontWeight: FontWeight.bold,
+                              ))),
+                      const SizedBox(height: 20),
+                      const Text('Photos',
                           style: TextStyle(
-                            fontSize: 35,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold,
-                          ))),
-                  const SizedBox(height: 20),
-                  const Text('Photos',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  //photos here
-                  const SizedBox(height: 20),
-                  GridView.count(
-                    shrinkWrap: true,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: 3,
-                    children: caseRecord.photos
-                        .map(
-                          (photo) => ClickableImage(
-                            imageUrl: photo,
+                          )),
+                      //photos here
+                      const SizedBox(height: 20),
+                      GridView.count(
+                        shrinkWrap: true,
+                        mainAxisSpacing: 4,
+                        crossAxisSpacing: 4,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        children: caseRecord.photos
+                            .map(
+                              (photo) => ClickableImage(
+                                imageUrl: photo,
+                              ),
+                            )
+                            .toList(),
+                      ),
+                      const SizedBox(height: 20),
+                      const Text('Videos',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      const SizedBox(height: 20),
+                      GridView.count(
+                          shrinkWrap: true,
+                          mainAxisSpacing: 4,
+                          crossAxisSpacing: 4,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount: 3,
+                          children: caseRecord.videos
+                              .map((video) => GestureDetector(
+                                  onTap: () => context.push(
+                                      '${Routes.caseVideo}/${Uri.encodeComponent(video.videoUrl!)}'),
+                                  child: Image.network(
+                                    video
+                                        .thumbnailUrl!, // Replace with your actual image URL
+                                    fit: BoxFit.cover,
+                                    width: 250,
+                                    height:
+                                        250, // Optional: Show an error icon if the image fails to load
+                                  )))
+                              .toList()),
+                      const SizedBox(height: 20),
+                      const Text('Audio',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      const SizedBox(height: 20),
+                      Column(
+                          children: caseRecord.audios
+                              .map((audio) => AudioWidget(
+                                  audioPlayer: _audioPlayer, path: audio))
+                              .toList()),
+                      const SizedBox(height: 20),
+                      const Text('External links',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      const SizedBox(height: 20),
+                      Column(
+                          children: caseRecord.links
+                              .map((link) => TextButton.icon(
+                                  onPressed: () {
+                                    Utility.openLink(context, link);
+                                  },
+                                  icon: const Icon(Icons.link),
+                                  label: Text(link,
+                                      style: const TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: Colors.blue,
+                                          decorationThickness: 2.0,
+                                          fontSize: 14,
+                                          color: Colors.blue))))
+                              .toList()),
+                      SegmentedButton<String>(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.zero, // This removes the curve
+                            ),
                           ),
-                        )
-                        .toList(),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text('Videos',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  const SizedBox(height: 20),
-                  GridView.count(
-                      shrinkWrap: true,
-                      mainAxisSpacing: 4,
-                      crossAxisSpacing: 4,
-                      physics: const NeverScrollableScrollPhysics(),
-                      crossAxisCount: 3,
-                      children: caseRecord.videos
-                          .map((video) => GestureDetector(
-                              onTap: () => context.push(
-                                  '${Routes.caseVideo}/${Uri.encodeComponent(video.videoUrl!)}'),
-                              child: Image.network(
-                                video
-                                    .thumbnailUrl!, // Replace with your actual image URL
-                                fit: BoxFit.cover,
-                                width: 250,
-                                height:
-                                    250, // Optional: Show an error icon if the image fails to load
-                              )))
-                          .toList()),
-                  const SizedBox(height: 20),
-                  const Text('Audio',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  const SizedBox(height: 20),
-                  Column(
-                      children: caseRecord.audios
-                          .map((audio) => AudioWidget(
-                              audioPlayer: _audioPlayer, path: audio))
-                          .toList()),
-                  const SizedBox(height: 20),
-                  const Text('External links',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  const SizedBox(height: 20),
-                  Column(
-                      children: caseRecord.links
-                          .map((link) => TextButton.icon(
-                              onPressed: () {
-                                Utility.openLink(context, link);
-                              },
-                              icon: const Icon(Icons.link),
-                              label: Text(link,
-                                  style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.blue,
-                                      decorationThickness: 2.0,
-                                      fontSize: 14,
-                                      color: Colors.blue))))
-                          .toList()),
-                  StreamBuilder<List<Comment>>(
-                      stream: DatabaseComments.getComments(caseRecord.uid),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<List<Comment>> snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong');
-                        }
-
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
-                        }
-                        if (snapshot.hasData) {
-                          List<Comment> comments =
-                              snapshot.data as List<Comment>;
-                          return ListView.builder(
-                              itemCount: comments.length,
-                              itemBuilder: (context, index) {
-                                Comment comment = comments[index];
+                        ),
+                        segments: const <ButtonSegment<String>>[
+                          ButtonSegment<String>(
+                              value: CaseValues.commentVerified,
+                              label: Text(CaseValues.commentVerified),
+                              icon: Icon(Icons.verified)),
+                          ButtonSegment<String>(
+                              value: CaseValues.commentUseful,
+                              label: Text(CaseValues.commentUseful),
+                              icon: Icon(Icons.thumb_up)),
+                          ButtonSegment<String>(
+                              value: CaseValues.commentOthers,
+                              label: Text(CaseValues.commentOthers),
+                              icon: Icon(Icons.more_vert)),
+                        ],
+                        selected: <String>{commentsType},
+                        onSelectionChanged: (Set<String> newSelection) {
+                          setState(() {
+                            commentsType = newSelection.first;
+                            Utility.showSnackBar(context, commentsType);
+                          });
+                        },
+                      ),
+                      StreamBuilder<List<Comment>>(
+                          stream: DatabaseComments.getComments(
+                              caseRecord.uid, commentsType),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List<Comment>> snapshot) {
+                            if (snapshot.hasError) {
+                              return const Text('Something went wrong');
+                            }
+                            if (snapshot.hasData) {
+                              List<Comment> comments =
+                                  snapshot.data as List<Comment>;
+                              if (comments.isEmpty) {
+                                return const Text('No comments');
+                              }
+                              return Column(
+                                  children: comments.map((comment) {
                                 return CommentWidget(
                                     authorName: Utility.getFirstAndlastName(
                                         comment.author),
@@ -233,34 +266,32 @@ class _CasePageState extends State<CasePage> {
                                     commentText: comment.commentText,
                                     commentDate:
                                         comment.dateCreated.toString());
-                              });
-                        }
-                        return const CircularProgressIndicator();
-                      }),
-                  TextField(
-                    controller: _commentController,
-                    decoration: InputDecoration(
-                      hintText: 'Write a comment...',
-                      suffixIcon: IconButton(
-                        icon: const Icon(Icons.send),
-                        onPressed: () async {
-                          String text = _commentController.text;
-                          if (text.isNotEmpty) {
-                            Comment comment = Comment.forUpload(
-                              caseRecordId: caseRecord.uid,
-                              commentText: text,
-                              authorId: member.uid!,
-                              commentType: CaseValues.notVerfiedID,
-                              dateCreated: Timestamp.now(),
-                            );
-                            DatabaseComments.addComment(
-                                context, caseRecord.uid, comment);
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                ]));
+                              }).toList());
+                            }
+                            return const Text('No comments');
+                          }),
+                      TextField(
+                          autofocus: true,
+                          controller: _commentController,
+                          decoration: InputDecoration(
+                              hintText: 'Write a comment...',
+                              suffixIcon: IconButton(
+                                  icon: const Icon(Icons.send),
+                                  onPressed: () async {
+                                    String text = _commentController.text;
+                                    if (text.isNotEmpty) {
+                                      Comment comment = Comment.forUpload(
+                                        caseRecordId: caseRecord.uid,
+                                        commentText: text,
+                                        authorId: member.uid!,
+                                        commentType: CaseValues.commentOthers,
+                                        dateCreated: Timestamp.now(),
+                                      );
+                                      DatabaseComments.addComment(
+                                          context, caseRecord.uid, comment);
+                                    }
+                                  })))
+                    ]));
           } else {
             return const Loading();
           }

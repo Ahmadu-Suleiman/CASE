@@ -21,16 +21,19 @@ class DatabaseComments {
         .then((_) => Utility.showSnackBar(context, 'comment added'));
   }
 
-  static Stream<List<Comment>> getComments(String caseRecordId) {
+  static Stream<List<Comment>> getComments(
+      String caseRecordId, String commentsType) {
     return commentsCollection
         .where('caseRecordId', isEqualTo: caseRecordId)
+        .where('commentType', isEqualTo: commentsType)
         .orderBy('dateCreated', descending: true)
         .snapshots()
         .asyncMap((snapshots) async {
       List<Future<Comment>> commentFutures = snapshots.docs
-          .map((doc) => Comment.fromMap(doc as Map<String, dynamic>))
+          .map((doc) => Comment.fromMap(doc.data() as Map<String, dynamic>))
           .toList();
-      return await Future.wait(commentFutures);
+      List<Comment> comments = await Future.wait(commentFutures);
+      return comments;
     });
   }
 }
