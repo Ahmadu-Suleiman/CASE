@@ -102,6 +102,8 @@ class DatabaseCase {
       } else {
         pagingController.appendPage(caseRecordList, lastDoc);
       }
+    } else {
+      pagingController.appendLastPage(<CaseRecord>[]);
     }
   }
 
@@ -143,17 +145,21 @@ class DatabaseCase {
   }
 
   static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
+    DocumentReference caseRef =
+        await caseCollection.add(<String, dynamic>{}); //error here
+    String id = caseRef.id;
+
     caseRecord.dateCreated = Timestamp.now();
     caseRecord.views = [];
     caseRecord.reads = [];
     caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
-        caseRecord.uid, caseRecord.mainImage);
-    caseRecord.photos = await StorageService.uploadCaseRecordPhotos(
-        caseRecord.uid, caseRecord.photos);
-    List<String> videoLinks = await StorageService.uploadCaseRecordVideos(
-        caseRecord.uid, caseRecord.videos);
-    List<String> thumbnails = await StorageService.uploadCaseRecordThumbnails(
-        caseRecord.uid, caseRecord.videos);
+        id, caseRecord.mainImage);
+    caseRecord.photos =
+        await StorageService.uploadCaseRecordPhotos(id, caseRecord.photos);
+    List<String> videoLinks =
+        await StorageService.uploadCaseRecordVideos(id, caseRecord.videos);
+    List<String> thumbnails =
+        await StorageService.uploadCaseRecordThumbnails(id, caseRecord.videos);
 
     caseRecord.videos = List.generate(videoLinks.length, (index) {
       String videoLink = videoLinks[index];
@@ -161,10 +167,10 @@ class DatabaseCase {
       return Video.fromCase(videoLink, thumbnail);
     });
 
-    caseRecord.audios = await StorageService.uploadCaseRecordAudios(
-        caseRecord.uid, caseRecord.audios);
+    caseRecord.audios =
+        await StorageService.uploadCaseRecordAudios(id, caseRecord.audios);
 
-    await caseCollection.doc(caseRecord.uid).set(caseRecord.toMap());
+    await caseCollection.doc(id).set(caseRecord.toMap());
   }
 
   static Future<void> updateCaseRecord(CaseRecord caseRecord) async {

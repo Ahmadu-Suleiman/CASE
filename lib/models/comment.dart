@@ -37,12 +37,13 @@ class Comment {
     };
   }
 
-  static Future<Comment> fromMap(Map<String, dynamic> map,String commentId) async {
+  static Future<Comment> fromMap(
+      Map<String, dynamic> map, String commentId) async {
     String authorId = map['authorId'];
     CommunityMember member =
         await DatabaseMember(uid: authorId).getCommunityMember();
     return Comment(
-        commentId: map['commentId'],
+        commentId: commentId,
         commentText: map['commentText'],
         authorId: authorId,
         caseRecordId: map['caseRecordId'],

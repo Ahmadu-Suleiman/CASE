@@ -258,7 +258,7 @@ class _CasePageState extends State<CasePage> {
                               }
 
                               bool isCaseRecordCreator =
-                                  member.uid == caseRecord.uid;
+                                  member.uid == caseRecord.member.uid;
                               return ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -266,9 +266,12 @@ class _CasePageState extends State<CasePage> {
                                   itemBuilder: (context, index) {
                                     Comment comment = comments[index];
                                     return GestureDetector(
-                                        onLongPress: CaseHelper
-                                            .editOrDeleteCommentAsOwner(context,
-                                                comment, () => setState(() {})),
+                                        onLongPress: () {
+                                          CaseHelper.editOrDeleteCommentAsOwner(
+                                              context,
+                                              comment,
+                                              () => setState(() {}));
+                                        },
                                         child: CommentWidget(
                                             authorName:
                                                 Utility.getFirstAndlastName(
@@ -282,6 +285,7 @@ class _CasePageState extends State<CasePage> {
                                                 isCaseRecordCreator,
                                             onChangeCategory:
                                                 (commentType) async {
+                                              comment.commentType = commentType;
                                               await DatabaseComments
                                                   .updateComment(
                                                       context, comment);

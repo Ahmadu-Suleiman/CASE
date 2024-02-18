@@ -30,36 +30,37 @@ class CommentWidget extends StatelessWidget {
         margin: const EdgeInsets.all(4.0),
         child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              CachedAvatar(url: profilePictureUrl, size: 20),
-              const SizedBox(width: 10),
-              Expanded(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(children: [
+              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                CachedAvatar(url: profilePictureUrl, size: 20),
+                const SizedBox(width: 10),
+                Expanded(
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(authorName),
-                          Text(
-                              'Uploaded ${timeago.format(commentDate.toDate())}')
-                        ]),
-                    Text(commentText)
-                  ])),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(authorName),
+                            Text(
+                                'Uploaded ${timeago.format(commentDate.toDate())}')
+                          ]),
+                      Text(commentText)
+                    ])),
+              ]),
               if (isCaseRecordCreator)
                 DropdownButton<String>(
-                  value: commentType,
-                  items: CaseValues.dropdownItemsCommentsType
-                      .map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    onChangeCategory(newValue!);
-                  },
-                ),
+                    value: commentType,
+                    items: CaseValues.dropdownItemsCommentsType
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      onChangeCategory(newValue!);
+                    })
             ])));
   }
 }
