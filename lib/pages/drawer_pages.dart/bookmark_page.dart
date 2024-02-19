@@ -1,4 +1,11 @@
+import 'dart:async';
+import 'package:case_be_heard/custom_widgets/case_card.dart';
+import 'package:case_be_heard/custom_widgets/loading.dart';
+import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BookmarkWidget extends StatefulWidget {
   const BookmarkWidget({super.key});
@@ -7,30 +14,60 @@ class BookmarkWidget extends StatefulWidget {
   State<BookmarkWidget> createState() => _BookmarkWidgetState();
 }
 
-class _BookmarkWidgetState extends State<BookmarkWidget> {
+class _BookmarkWidgetState extends State<BookmarkWidget>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2, // Number of tabs
-      child: Scaffold(
-        appBar: AppBar(
-          bottom: const TabBar(
-            tabs: [
-              Tab(text: 'Cases'),
-              Tab(text: 'Petitions'),
-            ],
-          ),
-          title: const Text('Bookmarks',
-              style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-              )),
-        ),
-        body: const TabBarView(
-          children: [
-            Center(child: Text('Content for Tab  2')),
+    CommunityMember member = context.watch<CommunityMember>();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Bookmark'),
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(text: 'Cases'),
+            Tab(text: 'Petitions'),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          FutureBuilder<List<CaseRecord>>(
+            future: DatabaseCase.getCaseRecordsByIds(member.bookmarkCaseIds),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<CaseRecord>> snapshot) {
+              if (snapshot.hasData) {
+                final caseRecords = snapshot.data!;
+                return ListView.builder(itemBuilder: (context, index) {
+                  return CaseCard(caseRecord: caseRecords[index]);
+                });
+              }
+              return const Loading();
+            },
+          ),
+          FutureBuilder<String>(
+            future: _fetchDataForTab2(),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData) {}
+              return const Loading();
+            },
+          ),
+        ],
       ),
     );
   }

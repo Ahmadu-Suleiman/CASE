@@ -3,7 +3,7 @@ import 'package:case_be_heard/models/video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CaseRecord {
-  late String uid;
+  late String id;
   Timestamp dateCreated = Timestamp.now();
   String uidMember;
   String title = '', details = '', summary = '', type, progress, mainImage = '';
@@ -15,7 +15,7 @@ class CaseRecord {
   late List<String> viewIds, readIds;
 
   CaseRecord(
-      {required this.uid,
+      {required this.id,
       required this.uidMember,
       required this.member,
       required this.dateCreated,
@@ -49,7 +49,7 @@ class CaseRecord {
       required this.audios,
       required this.links});
   CaseRecord.forUpdate(
-      {required this.uid,
+      {required this.id,
       required this.uidMember,
       required this.title,
       required this.details,

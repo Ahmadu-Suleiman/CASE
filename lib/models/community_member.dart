@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommunityMember {
-  String? uid;
+  String? id;
   String firstName = '';
   String lastName = '';
   String email = '';
@@ -12,12 +12,12 @@ class CommunityMember {
   String bio = '';
   bool verified = false;
   late GeoPoint location;
-  List<String> bookmarkCaseId = [];
+  List<String> bookmarkCaseIds = [];
 
   CommunityMember.empty();
-  CommunityMember({required this.uid});
+  CommunityMember({required this.id});
   CommunityMember.full(
-      {required this.uid,
+      {required this.id,
       required this.firstName,
       required this.lastName,
       required this.email,
@@ -27,5 +27,5 @@ class CommunityMember {
       required this.gender,
       required this.photoUrl,
       required this.bio,
-      required this.bookmarkCaseId});
+      required this.bookmarkCaseIds});
 }

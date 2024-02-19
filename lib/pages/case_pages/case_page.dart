@@ -51,7 +51,7 @@ class _CasePageState extends State<CasePage> {
             _scrollController.addListener(() {
               if (_scrollController.position.pixels ==
                   _scrollController.position.maxScrollExtent) {
-                DatabaseCase.addCaseRead(member.uid!, caseRecord);
+                DatabaseCase.addCaseRead(member.id!, caseRecord);
               }
             });
             return Scaffold(
@@ -71,10 +71,10 @@ class _CasePageState extends State<CasePage> {
                               : Colors.black,
                           onPressed: () async {
                             if (CaseHelper.isBookmark(member, caseRecord)) {
-                              await DatabaseMember.addBookmark(
+                              await DatabaseMember.addBookmarkCaseRecord(
                                   member, caseRecord);
                             } else {
-                              await DatabaseMember.removeBookmark(
+                              await DatabaseMember.removeBookmarkCase(
                                   member, caseRecord);
                             }
                             setState(() {});
@@ -254,7 +254,7 @@ class _CasePageState extends State<CasePage> {
                       ),
                       StreamBuilder<List<Comment>>(
                           stream: DatabaseComments.getComments(
-                              caseRecord.uid, commentsType),
+                              caseRecord.id, commentsType),
                           builder: (BuildContext context,
                               AsyncSnapshot<List<Comment>> snapshot) {
                             if (snapshot.hasError) {
@@ -268,7 +268,7 @@ class _CasePageState extends State<CasePage> {
                               }
 
                               bool isCaseRecordCreator =
-                                  member.uid == caseRecord.member.uid;
+                                  member.id == caseRecord.member.id;
                               return ListView.builder(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -313,9 +313,9 @@ class _CasePageState extends State<CasePage> {
                                     if (text.isNotEmpty) {
                                       _commentController.text = '';
                                       Comment comment = Comment.forUpload(
-                                        caseRecordId: caseRecord.uid,
+                                        caseRecordId: caseRecord.id,
                                         commentText: text,
-                                        authorId: member.uid!,
+                                        authorId: member.id!,
                                         commentType: CaseValues.commentOthers,
                                         dateCreated: Timestamp.now(),
                                       );

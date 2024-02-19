@@ -8,11 +8,12 @@ class StorageService {
   static const Uuid uuid = Uuid();
   static final _storageRef = FirebaseStorage.instance.ref();
   static final _profileImagesRef = _storageRef.child("profileImages");
-  static final _mainImageCaseRef = _storageRef.child("mainImageCase");
+  static final _mainImageCaseRef = _storageRef.child("mainImagesCase");
   static final _photosCaseRef = _storageRef.child("photosCase");
   static final _videosCaseRef = _storageRef.child("videosCase");
   static final _audiosCaseRef = _storageRef.child("audiosCase");
   static final _thumbnailsCaseRef = _storageRef.child("thumbnailsCase");
+  static final _mainImagePetitionsRef = _storageRef.child("imagesPetition");
 
   static Future<String> uploadProfileImage(String uid, File file) async {
     final fileName = uid;
@@ -226,6 +227,27 @@ class StorageService {
         // some media files were not uploaded in the reference to delete
       }
     }
+  }
+
+  static Future<String> uploadPetitionImage(
+      String petitionId, String filePath) async {
+    final fileName = petitionId;
+    final petitionImageRef = _mainImagePetitionsRef.child(fileName);
+    await petitionImageRef.putFile(File(filePath));
+    return await petitionImageRef.getDownloadURL();
+  }
+
+  static Future<String> updatePetitionImage(
+      String petitionId, String urlPath) async {
+    if (urlPath.startsWith('http')) return urlPath;
+    final fileName = petitionId;
+    final petitionImageRef = _mainImagePetitionsRef.child(fileName);
+    await petitionImageRef.putFile(File(urlPath));
+    return await petitionImageRef.getDownloadURL();
+  }
+
+  static deleteImagePetition(String petitionId) async {
+    await _mainImagePetitionsRef.child(petitionId).delete();
   }
 
   static Future<int?> getFileSizeFromFirebaseStorage(String downloadUrl) async {

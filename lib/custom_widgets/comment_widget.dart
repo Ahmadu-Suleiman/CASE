@@ -34,7 +34,7 @@ class CommentWidget extends StatelessWidget {
                   url: author.photoUrl,
                   size: 20,
                   onPressed: () {
-                    context.push('${Routes.memberProfileOthers}/${author.uid}');
+                    context.push('${Routes.memberProfileOthers}/${author.id}');
                   },
                 ),
                 const SizedBox(width: 10),

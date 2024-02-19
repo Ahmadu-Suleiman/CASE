@@ -41,7 +41,7 @@ class Case extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           context
-              .push('${Routes.editCase}/${caseRecord.uid}')
+              .push('${Routes.editCase}/${caseRecord.id}')
               .then((value) => update());
         },
         child: Card(
@@ -115,7 +115,7 @@ class Case extends StatelessWidget {
                                 children: [
                                   TextButton.icon(
                                       onPressed: () => context.push(
-                                          '${Routes.caseViews}/${caseRecord.uid}'),
+                                          '${Routes.caseViews}/${caseRecord.id}'),
                                       icon: const Icon(Icons.remove_red_eye),
                                       label: Text(
                                           caseRecord.views.length.toString(),
@@ -125,7 +125,7 @@ class Case extends StatelessWidget {
                                           ))),
                                   TextButton.icon(
                                       onPressed: () => context.push(
-                                          '${Routes.caseReads}/${caseRecord.uid}'),
+                                          '${Routes.caseReads}/${caseRecord.id}'),
                                       icon: const Icon(Icons.mark_chat_read),
                                       label: Text(
                                           caseRecord.reads.length.toString(),

@@ -11,7 +11,7 @@ class DatabaseMember {
       FirebaseFirestore.instance.collection('communityMembers');
 
   static Future<void> updateCommunityMemberData(CommunityMember member) async {
-    return await communityMemberCollection.doc(member.uid).set({
+    return await communityMemberCollection.doc(member.id).set({
       'firstName': member.firstName,
       'lastName': member.lastName,
       'email': member.email,
@@ -27,7 +27,7 @@ class DatabaseMember {
   static CommunityMember _communityMemberFromSnapshot(
       DocumentSnapshot snapshot) {
     return CommunityMember.full(
-        uid: snapshot.id,
+        id: snapshot.id,
         firstName: snapshot['firstName'] ?? '',
         lastName: snapshot['lastName'] ?? '',
         email: snapshot['email'] ?? '',
@@ -37,7 +37,7 @@ class DatabaseMember {
         gender: snapshot['gender'] ?? '',
         photoUrl: snapshot['photoUrl'] ?? '',
         bio: snapshot['bio'] ?? '',
-        bookmarkCaseId: Utility.stringList(snapshot, 'bookmarks'));
+        bookmarkCaseIds: Utility.stringList(snapshot, 'bookmarksCase'));
   }
 
   static Stream<List<CommunityMember?>> get communityMembers {
@@ -91,21 +91,21 @@ class DatabaseMember {
     return communityMembers;
   }
 
-  static Future<void> addBookmark(
+  static Future<void> addBookmarkCaseRecord(
       CommunityMember member, CaseRecord caseRecord) async {
-    String memberId = member.uid!;
-    String caseRecordId = caseRecord.uid;
+    String memberId = member.id!;
+    String caseRecordId = caseRecord.id;
     await communityMemberCollection.doc(memberId).update({
-      'bookmarks': FieldValue.arrayUnion([caseRecordId])
+      'bookmarksCase': FieldValue.arrayUnion([caseRecordId])
     });
   }
 
-  static Future<void> removeBookmark(
+  static Future<void> removeBookmarkCase(
       CommunityMember member, CaseRecord caseRecord) async {
-    String memberId = member.uid!;
-    String caseRecordId = caseRecord.uid;
+    String memberId = member.id!;
+    String caseRecordId = caseRecord.id;
     await communityMemberCollection.doc(memberId).update({
-      'bookmarks': FieldValue.arrayRemove([caseRecordId])
+      'bookmarksCase': FieldValue.arrayRemove([caseRecordId])
     });
   }
 }

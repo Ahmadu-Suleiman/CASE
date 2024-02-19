@@ -2,6 +2,7 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/shared/case_values.dart';
+import 'package:case_be_heard/shared/gemini_help.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,15 +16,13 @@ void main() async {
   await Firebase.initializeApp();
   Gemini.init(
       apiKey: 'AIzaSyAurd8bwkqj7UaMlsByZ_4-rDBFTPCjMSk',
-      safetySettings: CaseValues.safetySettings,
+      safetySettings: GeminiHelp.safetySettings,
       enableDebugging: true);
   runApp(const CaseApp());
 }
 
 class CaseApp extends StatelessWidget {
-  const CaseApp({
-    super.key,
-  });
+  const CaseApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,30 +36,27 @@ class CaseApp extends StatelessWidget {
               child: Consumer<CommunityMember?>(
                   builder: (context, communityMember, child) {
                 return MaterialApp.router(
-                  routerConfig: Routes.router,
-                  theme: ThemeData(
-                      focusColor: Style.secondaryColor,
-                      hoverColor: Style.secondaryColor,
-                      primaryColor: Style.primaryColor,
-                      iconTheme: const IconThemeData(color: Colors.black),
-                      colorScheme: ColorScheme.light(
-                        background: Colors.white,
-                        primary: Style.primaryColor,
-                        secondary: Style.secondaryColor,
-                      )),
-                  darkTheme: ThemeData(
-                      focusColor: Style.secondaryColor,
-                      hoverColor: Style.secondaryColor,
-                      primaryColor: Style.primaryColor,
-                      iconTheme: const IconThemeData(
-                        color: Colors.black, // Set the global color for icons
-                      ),
-                      colorScheme: ColorScheme.dark(
-                        background: Style.colorDark,
-                        secondary: Style.secondaryColor,
-                      )),
-                  themeMode: ThemeMode.system,
-                );
+                    routerConfig: Routes.router,
+                    theme: ThemeData(
+                        focusColor: Style.secondaryColor,
+                        hoverColor: Style.secondaryColor,
+                        primaryColor: Style.primaryColor,
+                        cardTheme: const CardTheme(color: Colors.white),
+                        iconTheme: const IconThemeData(color: Colors.black),
+                        colorScheme: ColorScheme.light(
+                            background: Colors.white,
+                            primary: Style.primaryColor,
+                            secondary: Style.secondaryColor)),
+                    darkTheme: ThemeData(
+                        focusColor: Style.secondaryColor,
+                        hoverColor: Style.secondaryColor,
+                        primaryColor: Style.primaryColor,
+                        cardTheme: CardTheme(color: Style.colorDark),
+                        iconTheme: const IconThemeData(color: Colors.white),
+                        colorScheme: ColorScheme.dark(
+                            background: Style.colorDarker,
+                            secondary: Style.colorDark)),
+                    themeMode: ThemeMode.system);
               }));
         }));
   }

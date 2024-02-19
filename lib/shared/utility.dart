@@ -11,6 +11,13 @@ import 'package:url_launcher/url_launcher.dart';
 class Utility {
   static final ImagePicker _picker = ImagePicker();
 
+  static Future<void> addMainImage(Function(String) updateMainImage) async {
+    XFile? image = await _picker.pickImage(
+      source: ImageSource.gallery,
+    );
+    if (image != null) updateMainImage(image.path);
+  }
+
   static Future<bool> checkPermission() async {
     var status = await Permission.storage.status;
     if (!status.isGranted) {
@@ -48,7 +55,7 @@ class Utility {
   static Future<String?> pickandUpdateProfileImage(
       CommunityMember member) async {
     XFile? imageFile = await _picker.pickImage(source: ImageSource.gallery);
-    String? uid = member.uid;
+    String? uid = member.id;
     if (imageFile != null && uid != null) {
       String link =
           await StorageService.uploadProfileImage(uid, File(imageFile.path));

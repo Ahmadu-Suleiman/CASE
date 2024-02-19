@@ -32,7 +32,7 @@ class _CreateProfileState extends State<CreateProfile> {
               onPressed: () async {
                 if (_formKey.currentState != null &&
                     _formKey.currentState!.validate()) {
-                  member.uid = user!.uid;
+                  member.id = user!.uid;
                   await DatabaseMember.updateCommunityMemberData(member);
                 }
               },

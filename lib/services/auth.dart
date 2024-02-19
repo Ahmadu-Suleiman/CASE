@@ -8,7 +8,7 @@ class AuthService extends ChangeNotifier {
 
   // create user obj based on firebase user
   CommunityMember? _communityMemberFromFirebaseUser(User? user) {
-    return user != null ? CommunityMember(uid: user.uid) : null;
+    return user != null ? CommunityMember(id: user.uid) : null;
   }
 
   // auth change user stream
@@ -49,7 +49,7 @@ class AuthService extends ChangeNotifier {
       User? user = result.user;
       // create a new document for the user with the uid
       await DatabaseMember.updateCommunityMemberData(
-          CommunityMember(uid: user!.uid));
+          CommunityMember(id: user!.uid));
       return _communityMemberFromFirebaseUser(user);
     } catch (error) {
       print(error.toString());

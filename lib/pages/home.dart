@@ -10,6 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:case_be_heard/custom_widgets/case_card.dart';
+import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -168,13 +169,13 @@ class _HomeWidgetState extends State<HomeWidget> {
                 builderDelegate: PagedChildBuilderDelegate<CaseRecord>(
                     itemBuilder: (context, caseRecord, index) =>
                         VisibilityDetector(
-                            key: Key(caseRecord.uid),
+                            key: Key(caseRecord.id),
                             onVisibilityChanged: (VisibilityInfo info) {
                               var visiblePercentage =
                                   info.visibleFraction * 100;
                               if (visiblePercentage >= 50) {
                                 DatabaseCase.addCaseView(
-                                    member.uid!, caseRecord);
+                                    member.id!, caseRecord);
                               }
                             },
                             child: CaseCard(caseRecord: caseRecord)),
@@ -183,17 +184,29 @@ class _HomeWidgetState extends State<HomeWidget> {
                           icon: Icon(Icons.search_off),
                         ),
                     noMoreItemsIndicatorBuilder: (_) => const MesssageScreen(
-                          message: 'No more cases found',
-                          icon: Icon(Icons.search_off),
-                        )))),
-        floatingActionButton: FloatingActionButton(
-            onPressed: () => context.push(Routes.createCase),
-            shape: const CircleBorder(),
-            splashColor: Style.secondaryColor,
-            child: Icon(
-              Icons.add,
-              color: Style.primaryColor,
-            )),
+                        message: 'No more cases found',
+                        icon: Icon(Icons.search_off))))),
+        floatingActionButton: ExpandableFab(
+            type: ExpandableFabType.fan,
+            pos: ExpandableFabPos.left,
+            children: [
+              FloatingActionButton.small(
+                heroTag: null,
+                child: const Stack(alignment: Alignment.center, children: [
+                  Icon(Icons.article),
+                  Positioned(bottom: 0, child: Text('petition'))
+                ]),
+                onPressed: () {},
+              ),
+              FloatingActionButton.small(
+                heroTag: null,
+                child: const Stack(alignment: Alignment.center, children: [
+                  Icon(Icons.insert_drive_file),
+                  Positioned(bottom: 0, child: Text('case'))
+                ]),
+                onPressed: () => context.push(Routes.createCase),
+              )
+            ]),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: AnimatedBottomNavigationBar(
           icons: const <IconData>[

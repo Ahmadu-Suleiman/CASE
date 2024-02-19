@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/video.dart';
@@ -25,7 +27,7 @@ class DatabaseCase {
     });
 
     return CaseRecord(
-        uid: snapshot.id,
+        id: snapshot.id,
         uidMember: snapshot['uidMember'] ?? '',
         dateCreated: snapshot['dateCreated'] ?? Timestamp.now(),
         member: member,
@@ -70,6 +72,33 @@ class DatabaseCase {
   static Future<CaseRecord> getCaseRecord(String uidCase) async {
     DocumentSnapshot docSnapshot = await caseCollection.doc(uidCase).get();
     return await _caseRecordFromSnapshot(docSnapshot);
+  }
+
+  static Future<List<CaseRecord>> getCaseRecordsByIds(List<String> ids) async {
+    List<CaseRecord> caseRecords = [];
+
+    // Split the list into chunks of   10 or fewer
+    List<List<String>> chunks =
+        List.generate((ids.length / 10).ceil(), (index) {
+      int start = index * 10;
+      int end = min(start + 10, ids.length);
+      return ids.sublist(start, end);
+    });
+
+    // Query Firestore for each chunk and merge the results
+    for (var chunk in chunks) {
+      QuerySnapshot querySnapshot = await caseCollection
+          .where(FieldPath.documentId, whereIn: chunk)
+          .get();
+
+      List<CaseRecord> caseRecordsFromFuture = await Future.wait(querySnapshot
+          .docs
+          .map((doc) => _caseRecordFromSnapshot(doc))
+          .toList());
+
+      caseRecords.addAll(caseRecordsFromFuture);
+    }
+    return caseRecords;
   }
 
   static Future<void> fetchCaseRecords(
@@ -176,13 +205,13 @@ class DatabaseCase {
 
   static Future<void> updateCaseRecord(CaseRecord caseRecord) async {
     caseRecord.mainImage = await StorageService.updateCaseRecordMainImage(
-        caseRecord.uid, caseRecord.mainImage);
+        caseRecord.id, caseRecord.mainImage);
     caseRecord.photos = await StorageService.updateCaseRecordPhotos(
-        caseRecord.uid, caseRecord.photos);
+        caseRecord.id, caseRecord.photos);
     List<String> videoLinks = await StorageService.updateCaseRecordVideos(
-        caseRecord.uid, caseRecord.videos);
+        caseRecord.id, caseRecord.videos);
     List<String> thumbnails = await StorageService.updateCaseRecordThumbnails(
-        caseRecord.uid, caseRecord.videos);
+        caseRecord.id, caseRecord.videos);
 
     caseRecord.videos = List.generate(videoLinks.length, (index) {
       String videoLink = videoLinks[index];
@@ -191,19 +220,19 @@ class DatabaseCase {
     });
 
     caseRecord.audios = await StorageService.updateCaseRecordAudios(
-        caseRecord.uid, caseRecord.audios);
+        caseRecord.id, caseRecord.audios);
 
-    await caseCollection.doc(caseRecord.uid).update(caseRecord.toMap());
+    await caseCollection.doc(caseRecord.id).update(caseRecord.toMap());
   }
 
   static Future<void> deleteCaseRecord(CaseRecord caseRecord) async {
-    await StorageService.deleteCaseRefernces(caseRecord.uid);
-    await caseCollection.doc(caseRecord.uid).delete();
+    await StorageService.deleteCaseRefernces(caseRecord.id);
+    await caseCollection.doc(caseRecord.id).delete();
   }
 
   static Future<void> addCaseView(
       String memberId, CaseRecord caseRecord) async {
-    String caseId = caseRecord.uid;
+    String caseId = caseRecord.id;
     await caseCollection.doc(caseId).update({
       'views': FieldValue.arrayUnion([memberId])
     });
@@ -211,7 +240,7 @@ class DatabaseCase {
 
   static Future<void> addCaseRead(
       String memberId, CaseRecord caseRecord) async {
-    String caseId = caseRecord.uid;
+    String caseId = caseRecord.id;
     await caseCollection.doc(caseId).update({
       'reads': FieldValue.arrayUnion([memberId])
     });

@@ -16,7 +16,7 @@ class MembersListWidget extends StatelessWidget {
           url: member.photoUrl,
           size: 20,
           onPressed: () =>
-              context.push('${Routes.memberProfileOthers}/${member.uid}')),
+              context.push('${Routes.memberProfileOthers}/${member.id}')),
       const SizedBox(width: 4),
       Column(children: [
         Text(Utility.getFirstAndlastName(member), maxLines: 1),

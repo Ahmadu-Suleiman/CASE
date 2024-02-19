@@ -112,8 +112,8 @@ class _EditCaseState extends State<EditCase> {
                                                 title, details, summary);
                                         CaseRecord caseRecord =
                                             CaseRecord.forUpdate(
-                                                uid: uidCase!,
-                                                uidMember: member.uid!,
+                                                id: uidCase!,
+                                                uidMember: member.id!,
                                                 title: title,
                                                 summary: summary,
                                                 details: details,
@@ -174,8 +174,8 @@ class _EditCaseState extends State<EditCase> {
                                     }),
                                 TextButton.icon(
                                     onPressed: () async {
-                                      await CaseHelper.addMainImage(
-                                          (imagePath) => setState(
+                                      await Utility.addMainImage((imagePath) =>
+                                          setState(
                                               () => mainImagePath = imagePath));
                                     },
                                     icon: const Icon(Icons.image),
@@ -571,7 +571,7 @@ class _EditCaseState extends State<EditCase> {
                               ),
                               StreamBuilder<List<Comment>>(
                                   stream: DatabaseComments.getComments(
-                                      caseRecord.uid, commentsType),
+                                      caseRecord.id, commentsType),
                                   builder: (BuildContext context,
                                       AsyncSnapshot<List<Comment>> snapshot) {
                                     if (snapshot.hasError) {
@@ -585,7 +585,7 @@ class _EditCaseState extends State<EditCase> {
                                       }
 
                                       bool isCaseRecordCreator =
-                                          member.uid == caseRecord.member.uid;
+                                          member.id == caseRecord.member.id;
                                       return ListView.builder(
                                           shrinkWrap: true,
                                           physics:
@@ -637,9 +637,9 @@ class _EditCaseState extends State<EditCase> {
                                               _commentController.text = '';
                                               Comment comment =
                                                   Comment.forUpload(
-                                                caseRecordId: caseRecord.uid,
+                                                caseRecordId: caseRecord.id,
                                                 commentText: text,
-                                                authorId: member.uid!,
+                                                authorId: member.id!,
                                                 commentType:
                                                     CaseValues.commentOthers,
                                                 dateCreated: Timestamp.now(),
