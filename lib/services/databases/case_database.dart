@@ -14,8 +14,8 @@ class DatabaseCase {
 
   static Future<CaseRecord> _caseRecordFromSnapshot(
       DocumentSnapshot snapshot) async {
-    CommunityMember member =
-        await DatabaseMember(uid: snapshot['uidMember']).getCommunityMember();
+    String uid = snapshot['uidMember'];
+    CommunityMember member = await DatabaseMember.getCommunityMember(uid);
     List<String> videoLinks = Utility.stringList(snapshot, 'videos');
     List<String> thumbnails = Utility.stringList(snapshot, 'thumbnails');
     List<Video> videos = List.generate(videoLinks.length, (index) {
@@ -240,7 +240,7 @@ class DatabaseCase {
     }
   }
 
-  Future<List<String>> getAllViewIds(String caseId) async {
+  static Future<List<String>> getAllViewIds(String caseId) async {
     // Create a reference to the views subcollection
     CollectionReference viewsRef =
         caseCollection.doc(caseId).collection('views');
@@ -252,13 +252,13 @@ class DatabaseCase {
     return querySnapshot.docs.map((doc) => doc.id).toList();
   }
 
-  Future<List<String>> getAllReadIds(String caseId) async {
+  static Future<List<String>> getAllReadIds(String caseId) async {
     // Create a reference to the views subcollection
-    CollectionReference viewsRef =
+    CollectionReference readsRef =
         caseCollection.doc(caseId).collection('reads');
 
     // Retrieve all documents in the views subcollection
-    QuerySnapshot querySnapshot = await viewsRef.get();
+    QuerySnapshot querySnapshot = await readsRef.get();
 
     // Extract the IDs from the documents and return them as a list
     return querySnapshot.docs.map((doc) => doc.id).toList();

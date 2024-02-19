@@ -35,7 +35,7 @@ class _EditCaseState extends State<EditCase> {
   final _commentController = TextEditingController();
   String commentsType = CaseValues.commentVerified;
   bool addLink = false;
-  bool loading = false;
+  bool isLoading = false;
 
   late CaseRecord caseRecord;
   String? uidCase;
@@ -73,8 +73,9 @@ class _EditCaseState extends State<EditCase> {
             titleController.text = title;
             detailController.text = details;
             summaryController.text = summary;
-            return (!loading)
-                ? Scaffold(
+            return isLoading
+                ? const Loading()
+                : Scaffold(
                     resizeToAvoidBottomInset: true,
                     body: Material(
                         child: Padding(
@@ -105,7 +106,7 @@ class _EditCaseState extends State<EditCase> {
                                         Utility.showSnackBar(
                                             context, 'Please add main image');
                                       } else {
-                                        setState(() => loading = true);
+                                        setState(() => isLoading = true);
                                         String type =
                                             await CaseHelper.getCaseCategory(
                                                 title, details, summary);
@@ -144,7 +145,7 @@ class _EditCaseState extends State<EditCase> {
                                           await CaseHelper.showDeleteCaseDialog(
                                               context);
                                       if (delete) {
-                                        setState(() => loading = true);
+                                        setState(() => isLoading = true);
                                         await DatabaseCase.deleteCaseRecord(
                                             caseRecord);
                                         if (mounted) Navigator.pop(context);
@@ -647,8 +648,7 @@ class _EditCaseState extends State<EditCase> {
                                                   context, comment);
                                             }
                                           })))
-                            ]))))
-                : const Loading();
+                            ]))));
           }
           return const Loading();
         });

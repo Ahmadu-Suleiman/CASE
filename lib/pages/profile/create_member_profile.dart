@@ -32,8 +32,8 @@ class _CreateProfileState extends State<CreateProfile> {
               onPressed: () async {
                 if (_formKey.currentState != null &&
                     _formKey.currentState!.validate()) {
-                  await DatabaseMember(uid: member.uid ?? user!.uid)
-                      .updateCommunityMemberData(member);
+                  member.uid = user!.uid;
+                  await DatabaseMember.updateCommunityMemberData(member);
                 }
               },
               child: const Text('Create community member information'),

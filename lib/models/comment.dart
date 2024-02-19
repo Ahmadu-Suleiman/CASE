@@ -40,8 +40,7 @@ class Comment {
   static Future<Comment> fromMap(
       Map<String, dynamic> map, String commentId) async {
     String authorId = map['authorId'];
-    CommunityMember member =
-        await DatabaseMember(uid: authorId).getCommunityMember();
+    CommunityMember member = await DatabaseMember.getCommunityMember(authorId);
     return Comment(
         commentId: commentId,
         commentText: map['commentText'],

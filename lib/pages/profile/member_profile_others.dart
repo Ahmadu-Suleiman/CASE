@@ -47,7 +47,7 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
   }
 
   void setup() async {
-    member = await DatabaseMember(uid: widget.memberId).getCommunityMember();
+    member = await DatabaseMember.getCommunityMember(widget.memberId);
     address = await LocationService.getLocationAddress(member.location);
     setState(() => loading = false);
   }
@@ -90,8 +90,8 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
                   CachedAvatar(
                       url: member.photoUrl,
                       size: 60,
-                      onPressed: () => context
-                          .push('${Routes.casePhoto}/${member.photoUrl}')),
+                      onPressed: () => context.push(
+                          '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}')),
                   Text(
                     '${member.firstName} ${member.lastName}',
                     maxLines: 1,

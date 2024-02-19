@@ -32,7 +32,7 @@ class CaseApp extends StatelessWidget {
         initialData: null,
         child: Consumer<User?>(builder: (context, user, child) {
           return StreamProvider<CommunityMember?>.value(
-              value: DatabaseMember(uid: user?.uid).member,
+              value: DatabaseMember.getMember(user?.uid),
               initialData: null,
               child: Consumer<CommunityMember?>(
                   builder: (context, communityMember, child) {
@@ -42,9 +42,7 @@ class CaseApp extends StatelessWidget {
                       focusColor: Style.secondaryColor,
                       hoverColor: Style.secondaryColor,
                       primaryColor: Style.primaryColor,
-                      iconTheme: const IconThemeData(
-                        color: Colors.black, // Set the global color for icons
-                      ),
+                      iconTheme: const IconThemeData(color: Colors.black),
                       colorScheme: ColorScheme.light(
                         background: Colors.white,
                         primary: Style.primaryColor,

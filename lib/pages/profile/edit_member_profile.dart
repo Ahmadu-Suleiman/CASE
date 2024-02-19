@@ -25,7 +25,6 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    User user = context.watch<User>();
     member = context.watch<CommunityMember>();
     return FutureBuilder(
         future: LocationService.getLocationAddress(member.location),
@@ -46,8 +45,8 @@ class _EditProfileState extends State<EditProfile> {
                         onPressed: () async {
                           if (_formKey.currentState != null &&
                               _formKey.currentState!.validate()) {
-                            await DatabaseMember(uid: member.uid ?? user.uid)
-                                .updateCommunityMemberData(member);
+                            await DatabaseMember.updateCommunityMemberData(
+                                member);
                             if (context.mounted) {
                               Utility.showSnackBar(
                                   context, 'information updated');

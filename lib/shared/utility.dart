@@ -53,7 +53,7 @@ class Utility {
       String link =
           await StorageService.uploadProfileImage(uid, File(imageFile.path));
       member.photoUrl = link;
-      await DatabaseMember(uid: member.uid).updateCommunityMemberData(member);
+      await DatabaseMember.updateCommunityMemberData(member);
       return link;
     }
     return null;

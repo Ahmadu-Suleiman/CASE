@@ -1,16 +1,15 @@
+import 'dart:math';
+
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMember {
-  final String? uid;
-  DatabaseMember({required this.uid});
-
   // collection reference
-  final CollectionReference communityMemberCollection =
+  static final CollectionReference communityMemberCollection =
       FirebaseFirestore.instance.collection('communityMembers');
 
-  Future<void> updateCommunityMemberData(CommunityMember member) async {
-    return await communityMemberCollection.doc(uid).set({
+  static Future<void> updateCommunityMemberData(CommunityMember member) async {
+    return await communityMemberCollection.doc(member.uid).set({
       'firstName': member.firstName,
       'lastName': member.lastName,
       'email': member.email,
@@ -23,9 +22,10 @@ class DatabaseMember {
     });
   }
 
-  CommunityMember _communityMemberFromSnapshot(DocumentSnapshot snapshot) {
+  static CommunityMember _communityMemberFromSnapshot(
+      DocumentSnapshot snapshot) {
     return CommunityMember.full(
-      uid: uid,
+      uid: snapshot.id,
       firstName: snapshot['firstName'] ?? '',
       lastName: snapshot['lastName'] ?? '',
       email: snapshot['email'] ?? '',
@@ -38,32 +38,55 @@ class DatabaseMember {
     );
   }
 
-  Stream<List<CommunityMember?>> get communityMembers {
+  static Stream<List<CommunityMember?>> get communityMembers {
     return communityMemberCollection.snapshots().map((snapshots) {
       return snapshots.docs.map(_communityMemberFromSnapshot).toList();
     });
   }
 
-  Stream<CommunityMember?>? get member {
-    return uid != null
-        ? communityMemberCollection
-            .doc(uid)
-            .snapshots()
-            .map(_communityMemberFromSnapshot)
-        : null;
+  static Stream<CommunityMember?>? getMember(String? uid) {
+    return communityMemberCollection
+        .doc(uid)
+        .snapshots()
+        .map(_communityMemberFromSnapshot);
   }
 
-  Future<CommunityMember> getCommunityMember() async {
+  static Future<CommunityMember> getCommunityMember(String uid) async {
     return _communityMemberFromSnapshot(
         await communityMemberCollection.doc(uid).get());
   }
 
-  Future<List<CommunityMember>> getCommunityMembers(
+  static Future<List<CommunityMember>> getCommunityMembers(
       List<String> memberIds) async {
     return await Future.wait(memberIds.map((memberId) =>
         communityMemberCollection
             .doc(memberId)
             .get()
             .then(_communityMemberFromSnapshot)));
+  }
+
+  static Future<List<CommunityMember>> getCommunityMembersByIds(
+      List<String> ids) async {
+    List<CommunityMember> communityMembers = [];
+
+    // Split the list into chunks of   10 or fewer
+    List<List<String>> chunks = List.generate((ids.length / 10).ceil(), (i) {
+      int start = i * 10;
+      int end = min(start + 10, ids.length);
+      return ids.sublist(start, end);
+    });
+
+    // Query Firestore for each chunk and merge the results
+    for (var chunk in chunks) {
+      QuerySnapshot querySnapshot = await communityMemberCollection
+          .where(FieldPath.documentId, whereIn: chunk)
+          .get();
+
+      communityMembers.addAll(querySnapshot.docs
+          .map((doc) => _communityMemberFromSnapshot(doc))
+          .toList());
+    }
+
+    return communityMembers;
   }
 }

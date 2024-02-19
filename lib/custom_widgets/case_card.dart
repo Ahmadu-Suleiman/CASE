@@ -105,10 +105,12 @@ class Case extends StatelessWidget {
                                       MaterialTapTargetSize.shrinkWrap,
                                 ),
                                 onPressed: () {},
-                                icon: const Icon(Icons.verified),
-                                label: const Text(
-                                  'ID Verified',
-                                  style: TextStyle(
+                                icon: caseRecord.member.verified
+                                    ? const Icon(Icons.verified)
+                                    : const Icon(Icons.error),
+                                label: Text(
+                                  caseRecord.member.verified.toString(),
+                                  style: const TextStyle(
                                     fontSize: 14,
                                     color: Colors.blue,
                                   ),
@@ -190,7 +192,8 @@ class Case extends StatelessWidget {
                                             color: Colors.blue,
                                           ))),
                                   TextButton.icon(
-                                      onPressed: () {},
+                                      onPressed: () => context.push(
+                                          '${Routes.caseReads}/${caseRecord.uid}'),
                                       icon: const Icon(Icons.mark_chat_read),
                                       label: Text(
                                           caseRecord.reads.length.toString(),

@@ -92,7 +92,7 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                             url: member.photoUrl,
                             size: 60,
                             onPressed: () => context.push(
-                                '${Routes.casePhoto}/${member.photoUrl}')),
+                                '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}')),
                         Text(
                           '${member.firstName} ${member.lastName}',
                           maxLines: 1,
