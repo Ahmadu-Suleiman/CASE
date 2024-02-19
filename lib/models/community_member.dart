@@ -1,4 +1,3 @@
-import 'package:case_be_heard/models/case_record.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CommunityMember {
@@ -13,7 +12,7 @@ class CommunityMember {
   String bio = '';
   bool verified = false;
   late GeoPoint location;
-  List<CaseRecord> cases = [];
+  List<String> bookmarkCaseId = [];
 
   CommunityMember.empty();
   CommunityMember({required this.uid});
@@ -27,5 +26,6 @@ class CommunityMember {
       required this.location,
       required this.gender,
       required this.photoUrl,
-      required this.bio});
+      required this.bio,
+      required this.bookmarkCaseId});
 }

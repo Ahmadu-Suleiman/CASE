@@ -4,7 +4,9 @@ import 'package:case_be_heard/pages/case_pages/case_view_photo.dart';
 import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps_case.dart';
+import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
 import 'package:case_be_heard/pages/feedback/case_reads.dart';
+import 'package:case_be_heard/pages/feedback/case_views.dart';
 import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile_others.dart';
@@ -24,19 +26,19 @@ class Routes {
   static const String casePhoto = '/case-photo';
   static const String caseVideo = '/case-video';
   static const String nextSteps = '/next-steps';
+  static const String caseViews = '/case-views';
   static const String caseReads = '/case-reads';
+  static const String bookmarks = '/bookmarks';
 
   static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
     GoRoute(
-      name: 'wrapper',
-      path: Routes.wrapper,
-      builder: (context, state) => const Wrapper(),
-    ),
+        name: 'wrapper',
+        path: Routes.wrapper,
+        builder: (context, state) => const Wrapper()),
     GoRoute(
-      name: 'createCase',
-      path: Routes.createCase,
-      builder: (context, state) => const CreateCase(),
-    ),
+        name: 'createCase',
+        path: Routes.createCase,
+        builder: (context, state) => const CreateCase()),
     GoRoute(
         name: 'editCase',
         path: '${Routes.editCase}/:caseId',
@@ -95,11 +97,22 @@ class Routes {
           return NextSteps(nextSteps: steps!);
         }),
     GoRoute(
+        name: 'caseViews',
+        path: '${Routes.caseViews}/:caseId',
+        builder: (context, state) {
+          final caseId = state.pathParameters['caseId'];
+          return CaseViewsWidget(caseRecordId: caseId!);
+        }),
+    GoRoute(
         name: 'caseReads',
         path: '${Routes.caseReads}/:caseId',
         builder: (context, state) {
           final caseId = state.pathParameters['caseId'];
           return CaseReadsWidget(caseRecordId: caseId!);
-        })
+        }),
+    GoRoute(
+        name: 'bookmarks',
+        path: Routes.bookmarks,
+        builder: (context, state) => const BookmarkWidget())
   ]);
 }

@@ -12,6 +12,7 @@ class CaseRecord {
   late GeoPoint location;
   late List<String> photos, audios, links;
   late List<Video> videos;
+  late List<String> viewIds, readIds;
 
   CaseRecord(
       {required this.uid,
@@ -30,7 +31,9 @@ class CaseRecord {
       required this.photos,
       required this.videos,
       required this.audios,
-      required this.links});
+      required this.links,
+      required this.viewIds,
+      required this.readIds});
   CaseRecord.forUpload(
       {required this.uidMember,
       required this.dateCreated,
@@ -76,6 +79,8 @@ class CaseRecord {
       'thumbnails': videos.map((video) => video.thumbnailUrl),
       'audios': audios,
       'links': links,
+      'viewIds': links,
+      'readIds': links
     };
   }
 }

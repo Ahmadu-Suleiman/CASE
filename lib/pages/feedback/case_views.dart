@@ -5,16 +5,16 @@ import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:flutter/material.dart';
 
-class CaseReadsWidget extends StatefulWidget {
+class CaseViewsWidget extends StatefulWidget {
   final String caseRecordId;
-  const CaseReadsWidget({super.key, required this.caseRecordId});
+  const CaseViewsWidget({super.key, required this.caseRecordId});
 
   @override
-  State<CaseReadsWidget> createState() => _CaseReadsState();
+  State<CaseViewsWidget> createState() => _CaseViewsState();
 }
 
-class _CaseReadsState extends State<CaseReadsWidget> {
-  List<CommunityMember> membersRead = [];
+class _CaseViewsState extends State<CaseViewsWidget> {
+  List<CommunityMember> membersViews = [];
   bool isLoading = true;
 
   @override
@@ -25,9 +25,9 @@ class _CaseReadsState extends State<CaseReadsWidget> {
 
   void setup() async {
     DatabaseCase.getCaseRecord(widget.caseRecordId).then((caseRecord) {
-      DatabaseMember.getCommunityMembersByIds(caseRecord.readIds)
+      DatabaseMember.getCommunityMembersByIds(caseRecord.viewIds)
           .then((members) {
-        membersRead.addAll(members);
+        membersViews.addAll(members);
         setState(() => isLoading = false);
       });
     });
@@ -39,15 +39,15 @@ class _CaseReadsState extends State<CaseReadsWidget> {
         ? const Loading()
         : Scaffold(
             body: ListView(children: [
-            const Text('Reads',
+            const Text('Views',
                 style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
             const SizedBox(height: 20),
             ListView.builder(
                 padding: const EdgeInsets.all(8),
                 shrinkWrap: true,
-                itemCount: membersRead.length,
+                itemCount: membersViews.length,
                 itemBuilder: (BuildContext context, int index) {
-                  final member = membersRead[index];
+                  final member = membersViews[index];
                   return MembersListWidget(member: member);
                 })
           ]));

@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/comment.dart';
+import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/comments_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
@@ -298,5 +300,7 @@ class CaseHelper {
         });
   }
 
-  // static showReadList()
+  static bool isBookmark(CommunityMember member, CaseRecord caseRecord) {
+    return member.bookmarkCaseId.contains(caseRecord.uid);
+  }
 }

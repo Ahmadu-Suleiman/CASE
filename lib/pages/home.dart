@@ -119,9 +119,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           ),
                           leading: const Icon(Icons.bookmark),
                           onTap: () {
-                            // Update the state of the app
-                            // ...
-                            // Then close the drawer
+                            context.push(Routes.bookmarks);
                             Navigator.pop(context);
                           }),
                       ListTile(

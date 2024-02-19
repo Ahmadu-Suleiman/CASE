@@ -111,31 +111,28 @@ class Case extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                TextButton.icon(
-                                    onPressed: () {},
-                                    icon: const Icon(Icons.remove_red_eye),
-                                    label:
-                                        Text(caseRecord.views.length.toString(),
-                                            style: const TextStyle(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  TextButton.icon(
+                                      onPressed: () => context.push(
+                                          '${Routes.caseViews}/${caseRecord.uid}'),
+                                      icon: const Icon(Icons.remove_red_eye),
+                                      label: Text(
+                                          caseRecord.views.length.toString(),
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blue,
+                                          ))),
+                                  TextButton.icon(
+                                      onPressed: () => context.push(
+                                          '${Routes.caseReads}/${caseRecord.uid}'),
+                                      icon: const Icon(Icons.mark_chat_read),
+                                      label: Text(
+                                          caseRecord.reads.length.toString(),
+                                          style: const TextStyle(
                                               fontSize: 14,
-                                              color: Colors.blue,
-                                            ))),
-                                TextButton.icon(
-                                  onPressed: () => context.push(
-                                      '${Routes.casePage}/${caseRecord.uid}'),
-                                  icon: const Icon(Icons.mark_chat_read),
-                                  label: Text(
-                                    caseRecord.reads.length.toString(),
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                                              color: Colors.blue)))
+                                ]),
                             IconButton(
                                 icon: const Icon(Icons.share),
                                 onPressed: () {

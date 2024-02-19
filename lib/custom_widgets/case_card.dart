@@ -183,7 +183,8 @@ class Case extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   TextButton.icon(
-                                      onPressed: () {},
+                                      onPressed: () => context.push(
+                                          '${Routes.caseViews}/${caseRecord.uid}'),
                                       icon: const Icon(Icons.remove_red_eye),
                                       label: Text(
                                           caseRecord.views.length.toString(),
@@ -198,9 +199,8 @@ class Case extends StatelessWidget {
                                       label: Text(
                                           caseRecord.reads.length.toString(),
                                           style: const TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.blue,
-                                          )))
+                                              fontSize: 14,
+                                              color: Colors.blue)))
                                 ]),
                             IconButton(
                                 icon: const Icon(Icons.share),

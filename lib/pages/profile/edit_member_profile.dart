@@ -5,7 +5,6 @@ import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/location.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';

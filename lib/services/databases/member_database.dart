@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DatabaseMember {
@@ -25,17 +27,17 @@ class DatabaseMember {
   static CommunityMember _communityMemberFromSnapshot(
       DocumentSnapshot snapshot) {
     return CommunityMember.full(
-      uid: snapshot.id,
-      firstName: snapshot['firstName'] ?? '',
-      lastName: snapshot['lastName'] ?? '',
-      email: snapshot['email'] ?? '',
-      phoneNumber: snapshot['phoneNumber'] ?? '',
-      occupation: snapshot['occupation'] ?? '',
-      location: snapshot['location'],
-      gender: snapshot['gender'] ?? '',
-      photoUrl: snapshot['photoUrl'] ?? '',
-      bio: snapshot['bio'] ?? '',
-    );
+        uid: snapshot.id,
+        firstName: snapshot['firstName'] ?? '',
+        lastName: snapshot['lastName'] ?? '',
+        email: snapshot['email'] ?? '',
+        phoneNumber: snapshot['phoneNumber'] ?? '',
+        occupation: snapshot['occupation'] ?? '',
+        location: snapshot['location'],
+        gender: snapshot['gender'] ?? '',
+        photoUrl: snapshot['photoUrl'] ?? '',
+        bio: snapshot['bio'] ?? '',
+        bookmarkCaseId: Utility.stringList(snapshot, 'bookmarks'));
   }
 
   static Stream<List<CommunityMember?>> get communityMembers {
@@ -86,7 +88,24 @@ class DatabaseMember {
           .map((doc) => _communityMemberFromSnapshot(doc))
           .toList());
     }
-
     return communityMembers;
+  }
+
+  static Future<void> addBookmark(
+      CommunityMember member, CaseRecord caseRecord) async {
+    String memberId = member.uid!;
+    String caseRecordId = caseRecord.uid;
+    await communityMemberCollection.doc(memberId).update({
+      'bookmarks': FieldValue.arrayUnion([caseRecordId])
+    });
+  }
+
+  static Future<void> removeBookmark(
+      CommunityMember member, CaseRecord caseRecord) async {
+    String memberId = member.uid!;
+    String caseRecordId = caseRecord.uid;
+    await communityMemberCollection.doc(memberId).update({
+      'bookmarks': FieldValue.arrayRemove([caseRecordId])
+    });
   }
 }

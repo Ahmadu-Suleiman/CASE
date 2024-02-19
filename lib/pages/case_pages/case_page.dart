@@ -9,9 +9,11 @@ import 'package:case_be_heard/models/comment.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/databases/comments_database.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
+import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -54,22 +56,30 @@ class _CasePageState extends State<CasePage> {
             });
             return Scaffold(
                 appBar: AppBar(
-                  title: const Image(
-                    height: 80,
-                    width: 80,
-                    image: AssetImage('assets/case_logo_main.ico'),
-                    color: Colors.brown,
-                  ),
-                  centerTitle: true,
-                  actions: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.bookmark),
-                      onPressed: () {
-                        // Add your logic here
-                      },
+                    title: const Image(
+                      height: 80,
+                      width: 80,
+                      image: AssetImage('assets/case_logo_main.ico'),
+                      color: Colors.brown,
                     ),
-                  ],
-                ),
+                    centerTitle: true,
+                    actions: <Widget>[
+                      IconButton(
+                          icon: const Icon(Icons.bookmark),
+                          color: CaseHelper.isBookmark(member, caseRecord)
+                              ? Style.primaryColor
+                              : Colors.black,
+                          onPressed: () async {
+                            if (CaseHelper.isBookmark(member, caseRecord)) {
+                              await DatabaseMember.addBookmark(
+                                  member, caseRecord);
+                            } else {
+                              await DatabaseMember.removeBookmark(
+                                  member, caseRecord);
+                            }
+                            setState(() {});
+                          })
+                    ]),
                 body: ListView(
                     padding: const EdgeInsets.all(8),
                     controller: _scrollController,
