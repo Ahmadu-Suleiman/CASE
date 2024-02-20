@@ -116,6 +116,6 @@ class PetitionHelper {
   }
 
   static bool isBookmark(CommunityMember member, Petition petition) {
-    return member.bookmarkCaseIds.contains(petition.id);
+    return member.bookmarkPetitionIds.contains(petition.id);
   }
 }

@@ -24,7 +24,7 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    member = context.watch<CommunityMember>();
+    member = context.watch<CommunityMember>().copyWith();
     return FutureBuilder(
         future: LocationService.getLocationAddress(member.location),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {

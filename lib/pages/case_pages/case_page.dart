@@ -71,13 +71,13 @@ class _CasePageState extends State<CasePage> {
                               : Colors.black,
                           onPressed: () async {
                             if (CaseHelper.isBookmark(member, caseRecord)) {
-                              await DatabaseMember.addBookmarkCaseRecord(
+                              await DatabaseMember.removeBookmarkCase(
                                       member, caseRecord)
                                   .then((bookmarkCaseIds) => setState(() =>
                                       member.bookmarkCaseIds =
                                           bookmarkCaseIds));
                             } else {
-                              await DatabaseMember.removeBookmarkCase(
+                              await DatabaseMember.addBookmarkCaseRecord(
                                       member, caseRecord)
                                   .then((bookmarkCaseIds) => setState(() =>
                                       member.bookmarkCaseIds =

@@ -53,9 +53,11 @@ class LocationService {
     Placemark place = placemarks[0];
     List<String> location = [
       place.street,
+      place.subThoroughfare,
       place.thoroughfare,
       place.locality,
       place.administrativeArea,
+      place.subAdministrativeArea,
       place.country
     ].nonNulls.toList();
     return location.join(',');

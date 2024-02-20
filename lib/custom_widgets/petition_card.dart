@@ -136,10 +136,10 @@ class _PetitionCardState extends State<PetitionCard> {
                             onPressed: () async {
                               if (PetitionHelper.isBookmark(
                                   widget.member, widget.petition)) {
-                                await DatabaseMember.addBookmarkPetition(
+                                await DatabaseMember.removeBookmarkPetition(
                                     widget.member, widget.petition);
                               } else {
-                                await DatabaseMember.removeBookmarkPetition(
+                                await DatabaseMember.addBookmarkPetition(
                                     widget.member, widget.petition);
                               }
                               setState(() {});

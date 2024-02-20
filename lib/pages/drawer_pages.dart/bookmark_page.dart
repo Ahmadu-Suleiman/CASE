@@ -55,9 +55,11 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
                 if (snapshot.hasData) {
                   final caseRecords = snapshot.data!;
                   if (caseRecords.isNotEmpty) {
-                    return ListView.builder(itemBuilder: (context, index) {
-                      return CaseCard(caseRecord: caseRecords[index]);
-                    });
+                    return ListView.builder(
+                        itemCount: caseRecords.length,
+                        itemBuilder: (context, index) {
+                          return CaseCard(caseRecord: caseRecords[index]);
+                        });
                   } else {
                     return const MesssageScreen(
                         message: 'No cases bookmarked',
@@ -74,10 +76,12 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
                 if (snapshot.hasData) {
                   final petitions = snapshot.data!;
                   if (petitions.isNotEmpty) {
-                    return ListView.builder(itemBuilder: (context, index) {
-                      return PetitionCard(
-                          petition: petitions[index], member: member);
-                    });
+                    return ListView.builder(
+                        itemCount: petitions.length,
+                        itemBuilder: (context, index) {
+                          return PetitionCard(
+                              petition: petitions[index], member: member);
+                        });
                   } else {
                     return const MesssageScreen(
                         message: 'No petitions bookmarked',
