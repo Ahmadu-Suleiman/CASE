@@ -7,7 +7,6 @@ class CaseRecord {
   Timestamp dateCreated = Timestamp.now();
   String uidMember;
   String title = '', details = '', summary = '', type, progress, mainImage = '';
-  late List<String> views, reads;
   late CommunityMember member;
   late GeoPoint location;
   late List<String> photos, audios, links;
@@ -24,8 +23,6 @@ class CaseRecord {
       required this.summary,
       required this.type,
       required this.progress,
-      required this.views,
-      required this.reads,
       required this.mainImage,
       required this.location,
       required this.photos,
@@ -79,8 +76,8 @@ class CaseRecord {
       'thumbnails': videos.map((video) => video.thumbnailUrl),
       'audios': audios,
       'links': links,
-      'viewIds': links,
-      'readIds': links
+      'viewIds': viewIds,
+      'readIds': viewIds
     };
   }
 }

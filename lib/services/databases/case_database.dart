@@ -36,8 +36,6 @@ class DatabaseCase {
         details: snapshot['details'] ?? '',
         type: snapshot['type'] ?? '',
         progress: snapshot['progress'] ?? '',
-        views: Utility.stringList(snapshot, 'views'),
-        reads: Utility.stringList(snapshot, 'reads'),
         mainImage: snapshot['mainImage'] ?? '',
         location: snapshot['location'],
         photos: Utility.stringList(snapshot, 'photos'),
@@ -184,8 +182,8 @@ class DatabaseCase {
     String id = caseRef.id;
 
     caseRecord.dateCreated = Timestamp.now();
-    caseRecord.views = [];
-    caseRecord.reads = [];
+    caseRecord.viewIds = [];
+    caseRecord.readIds = [];
     caseRecord.mainImage = await StorageService.uploadCaseRecordMainImage(
         id, caseRecord.mainImage);
     caseRecord.photos =
@@ -238,7 +236,7 @@ class DatabaseCase {
       String memberId, CaseRecord caseRecord) async {
     String caseId = caseRecord.id;
     await caseCollection.doc(caseId).update({
-      'views': FieldValue.arrayUnion([memberId])
+      'viewIds': FieldValue.arrayUnion([memberId])
     });
   }
 
@@ -246,7 +244,7 @@ class DatabaseCase {
       String memberId, CaseRecord caseRecord) async {
     String caseId = caseRecord.id;
     await caseCollection.doc(caseId).update({
-      'reads': FieldValue.arrayUnion([memberId])
+      'readIds': FieldValue.arrayUnion([memberId])
     });
   }
 }

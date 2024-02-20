@@ -93,39 +93,75 @@ class DatabaseMember {
     return communityMembers;
   }
 
-  static Future<void> addBookmarkCaseRecord(
+  static Future<List<String>> addBookmarkCaseRecord(
       CommunityMember member, CaseRecord caseRecord) async {
     String memberId = member.id!;
     String caseRecordId = caseRecord.id;
-    await communityMemberCollection.doc(memberId).update({
+    DocumentReference memberRef = communityMemberCollection.doc(memberId);
+    await memberRef.update({
       'bookmarksCase': FieldValue.arrayUnion([caseRecordId])
     });
+    // Fetch the updated document to get the new list of bookmarked petitions
+    DocumentSnapshot updatedMemberDoc = await memberRef.get();
+    List<dynamic> updatedBookmarkedPetitionIds =
+        updatedMemberDoc.get('bookmarksCase') ?? [];
+    // Convert the list of dynamic to a list of strings
+    List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
+    // Return the updated list of bookmarked petition IDs
+    return updatedBookmarks;
   }
 
-  static Future<void> removeBookmarkCase(
+  static Future<List<String>> removeBookmarkCase(
       CommunityMember member, CaseRecord caseRecord) async {
     String memberId = member.id!;
     String caseRecordId = caseRecord.id;
-    await communityMemberCollection.doc(memberId).update({
+    DocumentReference memberRef = communityMemberCollection.doc(memberId);
+    await memberRef.update({
       'bookmarksCase': FieldValue.arrayRemove([caseRecordId])
     });
+    // Fetch the updated document to get the new list of bookmarked petitions
+    DocumentSnapshot updatedMemberDoc = await memberRef.get();
+    List<dynamic> updatedBookmarkedPetitionIds =
+        updatedMemberDoc.get('bookmarksCase') ?? [];
+    // Convert the list of dynamic to a list of strings
+    List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
+    // Return the updated list of bookmarked petition IDs
+    return updatedBookmarks;
   }
 
-  static Future<void> addBookmarkPetition(
+  static Future<List<String>> addBookmarkPetition(
       CommunityMember member, Petition petition) async {
     String memberId = member.id!;
     String petitionId = petition.id;
-    await communityMemberCollection.doc(memberId).update({
+    DocumentReference memberRef = communityMemberCollection.doc(memberId);
+    await memberRef.update({
       'bookmarksPetition': FieldValue.arrayUnion([petitionId])
     });
+    // Fetch the updated document to get the new list of bookmarked petitions
+    DocumentSnapshot updatedMemberDoc = await memberRef.get();
+    List<dynamic> updatedBookmarkedPetitionIds =
+        updatedMemberDoc.get('bookmarksPetition') ?? [];
+    // Convert the list of dynamic to a list of strings
+    List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
+    // Return the updated list of bookmarked petition IDs
+    return updatedBookmarks;
   }
 
-  static Future<void> removeBookmarkPetition(
+  static Future<List<String>> removeBookmarkPetition(
       CommunityMember member, Petition petition) async {
     String memberId = member.id!;
     String petitionId = petition.id;
-    await communityMemberCollection.doc(memberId).update({
+    DocumentReference memberRef = communityMemberCollection.doc(memberId);
+    await memberRef.update({
       'bookmarksPetition': FieldValue.arrayRemove([petitionId])
     });
+    // Fetch the updated document to get the new list of bookmarked petitions
+    DocumentSnapshot updatedMemberDoc = await memberRef.get();
+    List<dynamic> updatedBookmarkedPetitionIds =
+        updatedMemberDoc.get('bookmarksPetition') ?? [];
+    // Convert the list of dynamic to a list of strings
+    List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
+    // Return the updated list of bookmarked petition IDs
+    return updatedBookmarks;
   }
 }

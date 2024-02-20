@@ -72,12 +72,17 @@ class _CasePageState extends State<CasePage> {
                           onPressed: () async {
                             if (CaseHelper.isBookmark(member, caseRecord)) {
                               await DatabaseMember.addBookmarkCaseRecord(
-                                  member, caseRecord);
+                                      member, caseRecord)
+                                  .then((bookmarkCaseIds) => setState(() =>
+                                      member.bookmarkCaseIds =
+                                          bookmarkCaseIds));
                             } else {
                               await DatabaseMember.removeBookmarkCase(
-                                  member, caseRecord);
+                                      member, caseRecord)
+                                  .then((bookmarkCaseIds) => setState(() =>
+                                      member.bookmarkCaseIds =
+                                          bookmarkCaseIds));
                             }
-                            setState(() {});
                           })
                     ]),
                 body: ListView(

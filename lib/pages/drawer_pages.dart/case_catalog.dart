@@ -108,7 +108,7 @@ class _CaseCatalogState extends State<CaseCatalog> with WidgetsBindingObserver {
                                   progress = newSelection.first;
                                   _pagingController.refresh();
                                 });
-                              }),
+                              })
                         )
                       ])),
                       PagedSliverList<DocumentSnapshot?, CaseRecord>(
@@ -124,7 +124,7 @@ class _CaseCatalogState extends State<CaseCatalog> with WidgetsBindingObserver {
                                   noItemsFoundIndicatorBuilder: (_) =>
                                       const MesssageScreen(
                                         message: 'No cases found',
-                                        icon: Icon(Icons.search_off),
+                                        icon: Icon(Icons.search_off)
                                       ),
                                   noMoreItemsIndicatorBuilder: (_) =>
                                       const MesssageScreen(

@@ -85,8 +85,8 @@ class _HomeWidgetState extends State<HomeWidget> {
                         currentAccountPicture: CachedAvatar(
                             url: member.photoUrl,
                             size: 80,
-                            onPressed: () =>
-                                context.push(Routes.memberProfile)),
+                            onPressed: () => context
+                                .push('${Routes.memberProfile}/${member.id}')),
                       ),
                       ListTile(
                         title: const Text(
@@ -187,27 +187,39 @@ class _HomeWidgetState extends State<HomeWidget> {
                         message: 'No more cases found',
                         icon: Icon(Icons.search_off))))),
         floatingActionButton: ExpandableFab(
-            type: ExpandableFabType.fan,
-            pos: ExpandableFabPos.left,
+            openButtonBuilder: RotateFloatingActionButtonBuilder(
+              child: const Icon(Icons.add),
+              fabSize: ExpandableFabSize.regular,
+              foregroundColor: Style.primaryColor,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+            ),
+            closeButtonBuilder: DefaultFloatingActionButtonBuilder(
+              child: const Icon(Icons.close),
+              fabSize: ExpandableFabSize.small,
+              foregroundColor: Style.primaryColor,
+              backgroundColor: Colors.white,
+              shape: const CircleBorder(),
+            ),
             children: [
-              FloatingActionButton.small(
-                heroTag: null,
-                child: const Stack(alignment: Alignment.center, children: [
-                  Icon(Icons.article),
-                  Positioned(bottom: 0, child: Text('petition'))
-                ]),
-                onPressed: () {},
-              ),
-              FloatingActionButton.small(
-                heroTag: null,
-                child: const Stack(alignment: Alignment.center, children: [
-                  Icon(Icons.insert_drive_file),
-                  Positioned(bottom: 0, child: Text('case'))
-                ]),
-                onPressed: () => context.push(Routes.createCase),
+              SizedBox(
+                  width: 60,
+                  height: 60,
+                  child: FloatingActionButton.large(
+                    heroTag: null,
+                    child: const Icon(Icons.article),
+                    onPressed: () {},
+                  )),
+              SizedBox(
+                width: 60,
+                height: 60,
+                child: FloatingActionButton.large(
+                    heroTag: null,
+                    child: const Icon(Icons.insert_drive_file),
+                    onPressed: () => context.push(Routes.createCase)),
               )
             ]),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButtonLocation: ExpandableFab.location,
         bottomNavigationBar: AnimatedBottomNavigationBar(
           icons: const <IconData>[
             Icons.home,
@@ -216,8 +228,9 @@ class _HomeWidgetState extends State<HomeWidget> {
             Icons.ondemand_video,
           ],
           activeIndex: bottomNavIndex,
-          gapLocation: GapLocation.center,
+          gapLocation: GapLocation.none,
           notchMargin: 8,
+          elevation: 0.0,
           notchSmoothness: NotchSmoothness.sharpEdge,
           onTap: (index) => setState(() => bottomNavIndex = index),
         ));

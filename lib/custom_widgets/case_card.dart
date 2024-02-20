@@ -168,7 +168,7 @@ class CaseCard extends StatelessWidget {
                                           '${Routes.caseViews}/${caseRecord.id}'),
                                       icon: const Icon(Icons.remove_red_eye),
                                       label: Text(
-                                          caseRecord.views.length.toString(),
+                                          caseRecord.viewIds.length.toString(),
                                           style: const TextStyle(
                                             fontSize: 14,
                                             color: Colors.blue,
@@ -178,7 +178,7 @@ class CaseCard extends StatelessWidget {
                                           '${Routes.caseReads}/${caseRecord.id}'),
                                       icon: const Icon(Icons.mark_chat_read),
                                       label: Text(
-                                          caseRecord.reads.length.toString(),
+                                          caseRecord.readIds.length.toString(),
                                           style: const TextStyle(
                                               fontSize: 14,
                                               color: Colors.blue)))
