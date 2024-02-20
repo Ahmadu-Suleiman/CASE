@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/storage.dart';
+import 'package:case_be_heard/shared/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -37,7 +38,10 @@ class Utility {
   }
 
   static void showSnackBar(BuildContext context, String text) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(text)));
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(text),
+        duration: const Duration(seconds: 1),
+        backgroundColor: Style.primaryColor));
   }
 
   static bool isValidUrl(String url) {

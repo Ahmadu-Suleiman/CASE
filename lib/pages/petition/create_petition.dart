@@ -53,6 +53,9 @@ class _CreatePetitionWidgetState extends State<CreatePetitionWidget> {
                               } else if (imagePath.isEmpty) {
                                 Utility.showSnackBar(
                                     context, 'Please add main image');
+                              } else if (_controllerTarget.text.isEmpty) {
+                                Utility.showSnackBar(
+                                    context, 'Please add target');
                               } else {
                                 setState(() => isLoading = true);
                                 String category =
@@ -84,7 +87,7 @@ class _CreatePetitionWidgetState extends State<CreatePetitionWidget> {
                         TextButton.icon(
                             onPressed: () async {
                               await Utility.addMainImage((imagePath) =>
-                                  setState(() => imagePath = imagePath));
+                                  setState(() => this.imagePath = imagePath));
                             },
                             icon: const Icon(Icons.image),
                             label: const Text('Add main image',

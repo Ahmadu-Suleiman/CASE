@@ -52,7 +52,7 @@ class Petition {
       title: map['title'],
       description: map['description'],
       image: map['image'],
-      signatoryIds: map['signatoryIds'],
+      signatoryIds: map['signatoryIds'].cast<String>(),
       target: map['target'],
       memberId: map['memberId'],
       dateCreated: map['dateCreated'],

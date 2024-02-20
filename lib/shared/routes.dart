@@ -5,9 +5,11 @@ import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps_case.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
+import 'package:case_be_heard/pages/drawer_pages.dart/petitions_page.dart';
 import 'package:case_be_heard/pages/feedback/case_reads.dart';
 import 'package:case_be_heard/pages/feedback/case_views.dart';
 import 'package:case_be_heard/pages/feedback/signatories_page.dart';
+import 'package:case_be_heard/pages/petition/create_petition.dart';
 import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile_others.dart';
@@ -31,6 +33,8 @@ class Routes {
   static const String caseReads = '/case-reads';
   static const String signatories = '/signatories-page';
   static const String bookmarks = '/bookmarks';
+  static const String createPetition = '/create-petition';
+  static const String petitionPage = '/petition-page';
 
   static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
     GoRoute(
@@ -124,6 +128,14 @@ class Routes {
     GoRoute(
         name: 'bookmarks',
         path: Routes.bookmarks,
-        builder: (context, state) => const BookmarkWidget())
+        builder: (context, state) => const BookmarkWidget()),
+    GoRoute(
+        name: 'createPetition',
+        path: Routes.createPetition,
+        builder: (context, state) => const CreatePetitionWidget()),
+    GoRoute(
+        name: 'petitionPage',
+        path: Routes.petitionPage,
+        builder: (context, state) => const PetitionsPageWidget())
   ]);
 }

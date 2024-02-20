@@ -54,6 +54,15 @@ class DatabasePetition {
     return caseRecords;
   }
 
+  static Future<List<Petition>> getPetitions(String memberId) async {
+    QuerySnapshot querySnapshot = await petitionCollection
+        .orderBy('dateCreated', descending: true)
+        .where('uidMember', isEqualTo: memberId)
+        .get();
+
+    return Future.wait(querySnapshot.docs.map(_petitionFromSnapshot).toList());
+  }
+
   static Future<void> fetchPetitions(
       {int limit = 10,
       DocumentSnapshot? pageKey,
@@ -87,9 +96,13 @@ class DatabasePetition {
   }
 
   static Future<void> uploadPetition(Petition petition) async {
+    DocumentReference petitionRef =
+        await petitionCollection.add(<String, dynamic>{});
+    String id = petitionRef.id;
+
     petition.image =
-        await StorageService.uploadPetitionImage(petition.id, petition.image);
-    await petitionCollection.add(petition.toMap());
+        await StorageService.uploadPetitionImage(id, petition.image);
+    await petitionCollection.doc(id).set(petition.toMap());
   }
 
   static Future<void> updatePetition(Petition petition) async {

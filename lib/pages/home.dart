@@ -108,9 +108,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                           ),
                           leading: const Icon(Icons.article),
                           onTap: () {
-                            // Update the state of the app
-                            // ...
-                            // Then close the drawer
+                            context.push(Routes.petitionPage);
                             Navigator.pop(context);
                           }),
                       ListTile(
@@ -202,21 +200,28 @@ class _HomeWidgetState extends State<HomeWidget> {
               shape: const CircleBorder(),
             ),
             children: [
-              SizedBox(
+              GestureDetector(
+                onLongPress: () =>
+                    Utility.showSnackBar(context, 'create a petition'),
+                child: SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: FloatingActionButton.large(
+                        heroTag: null,
+                        child: const Icon(Icons.article),
+                        onPressed: () => context.push(Routes.createPetition))),
+              ),
+              GestureDetector(
+                onLongPress: () =>
+                    Utility.showSnackBar(context, 'create a case'),
+                child: SizedBox(
                   width: 60,
                   height: 60,
                   child: FloatingActionButton.large(
-                    heroTag: null,
-                    child: const Icon(Icons.article),
-                    onPressed: () {},
-                  )),
-              SizedBox(
-                width: 60,
-                height: 60,
-                child: FloatingActionButton.large(
-                    heroTag: null,
-                    child: const Icon(Icons.insert_drive_file),
-                    onPressed: () => context.push(Routes.createCase)),
+                      heroTag: null,
+                      child: const Icon(Icons.insert_drive_file),
+                      onPressed: () => context.push(Routes.createCase)),
+                ),
               )
             ]),
         floatingActionButtonLocation: ExpandableFab.location,

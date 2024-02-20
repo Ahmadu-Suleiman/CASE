@@ -20,7 +20,6 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, Petition> _pagingController =
       PagingController(firstPageKey: null);
-  @override
   late TabController _tabController;
 
   @override
@@ -61,16 +60,21 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
                 tabs: const [Tab(text: 'Created'), Tab(text: 'Others')])),
         body: TabBarView(controller: _tabController, children: [
           FutureBuilder<List<Petition>>(
-              future: DatabasePetition.getPetitionsByIds(
-                  member.bookmarkPetitionIds),
+              future: DatabasePetition.getPetitions(member.id!),
               builder: (BuildContext context,
                   AsyncSnapshot<List<Petition>> snapshot) {
                 if (snapshot.hasData) {
                   final petitions = snapshot.data!;
-                  return ListView.builder(itemBuilder: (context, index) {
-                    return PetitionCard(
-                        petition: petitions[index], member: member);
-                  });
+                  if (petitions.isNotEmpty) {
+                    return ListView.builder(itemBuilder: (context, index) {
+                      return PetitionCard(
+                          petition: petitions[index], member: member);
+                    });
+                  } else {
+                    return const MesssageScreen(
+                        message: 'No petitions created',
+                        icon: Icon(Icons.search));
+                  }
                 }
                 return const Loading();
               }),
@@ -78,7 +82,7 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
               onRefresh: () async {
                 _pagingController.refresh();
               },
-              child: PagedSliverList<DocumentSnapshot?, Petition>(
+              child: PagedListView<DocumentSnapshot?, Petition>(
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Petition>(
                       itemBuilder: (context, petition, index) =>

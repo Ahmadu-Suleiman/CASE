@@ -178,7 +178,7 @@ class DatabaseCase {
 
   static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
     DocumentReference caseRef =
-        await caseCollection.add(<String, dynamic>{}); //error here
+        await caseCollection.add(<String, dynamic>{}); 
     String id = caseRef.id;
 
     caseRecord.dateCreated = Timestamp.now();

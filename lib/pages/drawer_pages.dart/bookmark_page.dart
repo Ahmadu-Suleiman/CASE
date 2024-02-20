@@ -1,5 +1,6 @@
 import 'package:case_be_heard/custom_widgets/case_card.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
+import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/custom_widgets/petition_card.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
@@ -55,9 +56,15 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
                   AsyncSnapshot<List<CaseRecord>> snapshot) {
                 if (snapshot.hasData) {
                   final caseRecords = snapshot.data!;
-                  return ListView.builder(itemBuilder: (context, index) {
-                    return CaseCard(caseRecord: caseRecords[index]);
-                  });
+                  if (caseRecords.isNotEmpty) {
+                    return ListView.builder(itemBuilder: (context, index) {
+                      return CaseCard(caseRecord: caseRecords[index]);
+                    });
+                  } else {
+                    return const MesssageScreen(
+                        message: 'No cases bookmarked',
+                        icon: Icon(Icons.search));
+                  }
                 }
                 return const Loading();
               }),
