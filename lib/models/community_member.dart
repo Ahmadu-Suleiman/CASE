@@ -14,6 +14,7 @@ class CommunityMember {
   late GeoPoint location;
   List<String> bookmarkCaseIds = [];
   List<String> bookmarkPetitionIds = [];
+  List<String> communityIds = [];
 
   CommunityMember.empty();
   CommunityMember({required this.id});
@@ -30,6 +31,7 @@ class CommunityMember {
       required this.bio,
       required this.bookmarkCaseIds,
       required this.bookmarkPetitionIds,
+      required this.communityIds,
       verified});
 
   CommunityMember copyWith({
@@ -62,6 +64,7 @@ class CommunityMember {
       bookmarkCaseIds: bookmarkCaseIds ?? List.from(this.bookmarkCaseIds),
       bookmarkPetitionIds:
           bookmarkPetitionIds ?? List.from(this.bookmarkPetitionIds),
+      communityIds: communityIds ?? List.from(this.communityIds),
     );
   }
 }

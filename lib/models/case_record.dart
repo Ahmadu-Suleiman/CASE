@@ -12,6 +12,7 @@ class CaseRecord {
   late List<String> photos, audios, links;
   late List<Video> videos;
   late List<String> viewIds, readIds;
+  late String communityId;
 
   CaseRecord(
       {required this.id,

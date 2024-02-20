@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/models/community.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -22,24 +23,27 @@ class DatabaseMember {
       'gender': member.gender,
       'bio': member.bio,
       'photoUrl': member.photoUrl,
+      'communityIds': member.communityIds,
     });
   }
 
   static CommunityMember _communityMemberFromSnapshot(
       DocumentSnapshot snapshot) {
     return CommunityMember.full(
-        id: snapshot.id,
-        firstName: snapshot['firstName'] ?? '',
-        lastName: snapshot['lastName'] ?? '',
-        email: snapshot['email'] ?? '',
-        phoneNumber: snapshot['phoneNumber'] ?? '',
-        occupation: snapshot['occupation'] ?? '',
-        location: snapshot['location'],
-        gender: snapshot['gender'] ?? '',
-        photoUrl: snapshot['photoUrl'] ?? '',
-        bio: snapshot['bio'] ?? '',
-        bookmarkCaseIds: Utility.stringList(snapshot, 'bookmarksCase'),
-        bookmarkPetitionIds: Utility.stringList(snapshot, 'bookmarksPetition'));
+      id: snapshot.id,
+      firstName: snapshot['firstName'] ?? '',
+      lastName: snapshot['lastName'] ?? '',
+      email: snapshot['email'] ?? '',
+      phoneNumber: snapshot['phoneNumber'] ?? '',
+      occupation: snapshot['occupation'] ?? '',
+      location: snapshot['location'],
+      gender: snapshot['gender'] ?? '',
+      photoUrl: snapshot['photoUrl'] ?? '',
+      bio: snapshot['bio'] ?? '',
+      bookmarkCaseIds: Utility.stringList(snapshot, 'bookmarksCase'),
+      bookmarkPetitionIds: Utility.stringList(snapshot, 'bookmarksPetition'),
+      communityIds: Utility.stringList(snapshot, 'communityIds'),
+    );
   }
 
   static Stream<List<CommunityMember?>> get communityMembers {
@@ -133,6 +137,42 @@ class DatabaseMember {
       CommunityMember member, Petition petition) async {
     String memberId = member.id!;
     String petitionId = petition.id;
+    DocumentReference memberRef = communityMemberCollection.doc(memberId);
+    await memberRef.update({
+      'bookmarksPetition': FieldValue.arrayUnion([petitionId])
+    });
+    // Fetch the updated document to get the new list of bookmarked petitions
+    DocumentSnapshot updatedMemberDoc = await memberRef.get();
+    List<dynamic> updatedBookmarkedPetitionIds =
+        updatedMemberDoc.get('bookmarksPetition') ?? [];
+    // Convert the list of dynamic to a list of strings
+    List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
+    // Return the updated list of bookmarked petition IDs
+    return updatedBookmarks;
+  }
+
+  static Future<List<String>> removeBookmarkPetition(
+      CommunityMember member, Petition petition) async {
+    String memberId = member.id!;
+    String petitionId = petition.id;
+    DocumentReference memberRef = communityMemberCollection.doc(memberId);
+    await memberRef.update({
+      'bookmarksPetition': FieldValue.arrayRemove([petitionId])
+    });
+    // Fetch the updated document to get the new list of bookmarked petitions
+    DocumentSnapshot updatedMemberDoc = await memberRef.get();
+    List<dynamic> updatedBookmarkedPetitionIds =
+        updatedMemberDoc.get('bookmarksPetition') ?? [];
+    // Convert the list of dynamic to a list of strings
+    List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
+    // Return the updated list of bookmarked petition IDs
+    return updatedBookmarks;
+  }
+
+  static Future<List<String>> addCommunity(
+      CommunityMember member, Community community) async {
+    String memberId = member.id!;
+    String communityId = community.id;
     DocumentReference memberRef = communityMemberCollection.doc(memberId);
     await memberRef.update({
       'bookmarksPetition': FieldValue.arrayUnion([petitionId])

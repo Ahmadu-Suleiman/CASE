@@ -55,8 +55,10 @@ class LocationService {
       place.street,
       place.subThoroughfare,
       place.thoroughfare,
+      place.thoroughfare,
       place.locality,
       place.administrativeArea,
+      place.subAdministrativeArea,
       place.subAdministrativeArea,
       place.country
     ].nonNulls.toList();
