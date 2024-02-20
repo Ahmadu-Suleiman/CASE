@@ -219,7 +219,9 @@ class CaseHelper {
     Title: "$title"
     Description: "$description"
     Summary: "$summary". Do not include asterisks for formating.''');
-    return result!.output ?? 'Unknown';
+    String? nextSteps = result?.output;
+    if (nextSteps != null) return nextSteps.replaceAll('*', '');
+    return 'Uknown';
   }
 
   static showNextSteps(BuildContext context, String title, String description,

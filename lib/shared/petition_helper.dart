@@ -104,7 +104,9 @@ class PetitionHelper {
     next steps for my petition, considering the details provided:
     Title: "$title"
     Description: "$description". Do not include asterisks for formating.''');
-    return result!.output ?? 'Unknown';
+    String? nextSteps = result?.output;
+    if (nextSteps != null) return nextSteps.replaceAll('*', '');
+    return 'Uknown';
   }
 
   static showNextSteps(

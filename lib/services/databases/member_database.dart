@@ -73,7 +73,7 @@ class DatabaseMember {
       List<String> ids) async {
     List<CommunityMember> communityMembers = [];
 
-    // Split the list into chunks of   10 or fewer
+    // Split the list into chunks of 10 or fewer
     List<List<String>> chunks = List.generate((ids.length / 10).ceil(), (i) {
       int start = i * 10;
       int end = min(start + 10, ids.length);
