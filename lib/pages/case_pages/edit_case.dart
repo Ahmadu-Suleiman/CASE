@@ -604,7 +604,6 @@ class _EditCaseState extends State<EditCase> {
                                                               });
                                                 },
                                                 child: CommentWidget(
-                                                    author: member,
                                                     comment: comment,
                                                     isCaseRecordCreator:
                                                         isCaseRecordCreator,

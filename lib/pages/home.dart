@@ -95,9 +95,7 @@ class _HomeWidgetState extends State<HomeWidget> {
                         ),
                         leading: const Icon(Icons.folder),
                         onTap: () {
-                          // Update the state of the app
-                          // ...
-                          // Then close the drawer
+                          context.push(Routes.caseCatalog);
                           Navigator.pop(context);
                         },
                       ),

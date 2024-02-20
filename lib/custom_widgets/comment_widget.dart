@@ -9,14 +9,12 @@ import 'package:timeago/timeago.dart' as timeago;
 import 'package:flutter/material.dart';
 
 class CommentWidget extends StatelessWidget {
-  final CommunityMember author;
   final Comment comment;
   final bool isCaseRecordCreator;
   final Function(String) onChangeCategory;
 
   const CommentWidget({
     super.key,
-    required this.author,
     required this.comment,
     required this.isCaseRecordCreator,
     required this.onChangeCategory,
@@ -24,6 +22,7 @@ class CommentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    CommunityMember author = comment.author;
     return Card(
         margin: const EdgeInsets.all(4.0),
         child: Padding(

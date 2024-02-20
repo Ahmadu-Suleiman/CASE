@@ -1,9 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/petition.dart';
-import 'package:case_be_heard/services/databases/member_database.dart';
-import 'package:case_be_heard/services/databases/petition_database.dart';
-import 'package:case_be_heard/shared/petition_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';

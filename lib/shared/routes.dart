@@ -5,6 +5,7 @@ import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps_case.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
+import 'package:case_be_heard/pages/drawer_pages.dart/case_catalog.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/petitions_page.dart';
 import 'package:case_be_heard/pages/feedback/case_reads.dart';
 import 'package:case_be_heard/pages/feedback/case_views.dart';
@@ -35,6 +36,7 @@ class Routes {
   static const String bookmarks = '/bookmarks';
   static const String createPetition = '/create-petition';
   static const String petitionPage = '/petition-page';
+  static const String caseCatalog = '/case-catalog';
 
   static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
     GoRoute(
@@ -136,6 +138,10 @@ class Routes {
     GoRoute(
         name: 'petitionPage',
         path: Routes.petitionPage,
-        builder: (context, state) => const PetitionsPageWidget())
+        builder: (context, state) => const PetitionsPageWidget()),
+    GoRoute(
+        name: 'caseCatalog',
+        path: Routes.caseCatalog,
+        builder: (context, state) => const CaseCatalog())
   ]);
 }

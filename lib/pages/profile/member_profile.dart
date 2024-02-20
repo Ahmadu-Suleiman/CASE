@@ -110,38 +110,37 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                         IconText(icon: Icons.location_on, text: address),
                         Text(member.bio, maxLines: 4),
                         SizedBox(
-                          width: double.infinity,
-                          child: SegmentedButton<String>(
-                              //fill horizontally
-                              showSelectedIcon: false,
-                              style: ButtonStyle(
-                                  shape: MaterialStateProperty.all<
-                                          RoundedRectangleBorder>(
-                                      const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.zero, // This removes the curve
-                              ))),
-                              segments: const <ButtonSegment<String>>[
-                                ButtonSegment<String>(
-                                  value: CaseValues.investigationPending,
-                                  label: Text(CaseValues.pending),
-                                ),
-                                ButtonSegment<String>(
-                                  value: CaseValues.investigationOngoing,
-                                  label: Text(CaseValues.ongoing),
-                                ),
-                                ButtonSegment<String>(
-                                    value: CaseValues.caseSolved,
-                                    label: Text(CaseValues.solved))
-                              ],
-                              selected: <String>{progress},
-                              onSelectionChanged: (Set<String> newSelection) {
-                                setState(() {
-                                  progress = newSelection.first;
-                                  _pagingController.refresh();
-                                });
-                              }),
-                        )
+                            width: double.infinity,
+                            child: SegmentedButton<String>(
+                                //fill horizontally
+                                showSelectedIcon: false,
+                                style: ButtonStyle(
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius
+                                      .zero, // This removes the curve
+                                ))),
+                                segments: const <ButtonSegment<String>>[
+                                  ButtonSegment<String>(
+                                    value: CaseValues.investigationPending,
+                                    label: Text(CaseValues.pending),
+                                  ),
+                                  ButtonSegment<String>(
+                                    value: CaseValues.investigationOngoing,
+                                    label: Text(CaseValues.ongoing),
+                                  ),
+                                  ButtonSegment<String>(
+                                      value: CaseValues.caseSolved,
+                                      label: Text(CaseValues.solved))
+                                ],
+                                selected: <String>{progress},
+                                onSelectionChanged: (Set<String> newSelection) {
+                                  setState(() {
+                                    progress = newSelection.first;
+                                    _pagingController.refresh();
+                                  });
+                                }))
                       ])),
                       PagedSliverList<DocumentSnapshot?, CaseRecord>(
                           pagingController: _pagingController,

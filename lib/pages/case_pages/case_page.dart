@@ -288,7 +288,6 @@ class _CasePageState extends State<CasePage> {
                                               () => setState(() {}));
                                         },
                                         child: CommentWidget(
-                                            author: member,
                                             comment: comment,
                                             isCaseRecordCreator:
                                                 isCaseRecordCreator,

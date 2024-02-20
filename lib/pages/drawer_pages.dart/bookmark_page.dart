@@ -80,7 +80,7 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
                     });
                   } else {
                     return const MesssageScreen(
-                        message: 'No cases bookmarked',
+                        message: 'No petitions bookmarked',
                         icon: Icon(Icons.search));
                   }
                 }
