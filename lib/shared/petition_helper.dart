@@ -1,3 +1,5 @@
+import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
@@ -54,7 +56,7 @@ class PetitionHelper {
     _gemini.text('''_generate_petition_description(title, details):
     Generate a concise and comprehensive description for a petition.
 
-    Craft a coherent first-person paragraph with a length of under 100 words based on the provided details:
+    Craft a coherent first-person paragraph with a length of under 50 words based on the provided details:
     Title: "$title"
     Details: "$details"
 
@@ -111,5 +113,9 @@ class PetitionHelper {
     if (context.mounted) {
       context.replace('${Routes.nextSteps}/$nextSteps');
     }
+  }
+
+  static bool isBookmark(CommunityMember member, Petition petition) {
+    return member.bookmarkCaseIds.contains(petition.id);
   }
 }

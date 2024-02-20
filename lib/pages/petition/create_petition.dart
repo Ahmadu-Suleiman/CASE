@@ -1,11 +1,9 @@
 import 'dart:io';
 
 import 'package:case_be_heard/custom_widgets/loading.dart';
-import 'package:case_be_heard/main.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
-import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/petition_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

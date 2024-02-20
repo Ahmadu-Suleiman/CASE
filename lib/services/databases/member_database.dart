@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -37,7 +38,8 @@ class DatabaseMember {
         gender: snapshot['gender'] ?? '',
         photoUrl: snapshot['photoUrl'] ?? '',
         bio: snapshot['bio'] ?? '',
-        bookmarkCaseIds: Utility.stringList(snapshot, 'bookmarksCase'));
+        bookmarkCaseIds: Utility.stringList(snapshot, 'bookmarksCase'),
+        bookmarkPetitionIds: Utility.stringList(snapshot, 'bookmarksPetition'));
   }
 
   static Stream<List<CommunityMember?>> get communityMembers {
@@ -106,6 +108,24 @@ class DatabaseMember {
     String caseRecordId = caseRecord.id;
     await communityMemberCollection.doc(memberId).update({
       'bookmarksCase': FieldValue.arrayRemove([caseRecordId])
+    });
+  }
+
+  static Future<void> addBookmarkPetition(
+      CommunityMember member, Petition petition) async {
+    String memberId = member.id!;
+    String petitionId = petition.id;
+    await communityMemberCollection.doc(memberId).update({
+      'bookmarksPetition': FieldValue.arrayUnion([petitionId])
+    });
+  }
+
+  static Future<void> removeBookmarkPetition(
+      CommunityMember member, Petition petition) async {
+    String memberId = member.id!;
+    String petitionId = petition.id;
+    await communityMemberCollection.doc(memberId).update({
+      'bookmarksPetition': FieldValue.arrayRemove([petitionId])
     });
   }
 }

@@ -1,29 +1,24 @@
-import 'package:case_be_heard/custom_widgets/cached_image.dart';
+import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:case_be_heard/custom_widgets/case_card_edit.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/custom_widgets/message_screen.dart';
-import 'package:case_be_heard/custom_widgets/text_icon.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/location.dart';
 import 'package:case_be_heard/shared/case_values.dart';
-import 'package:case_be_heard/shared/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-class Profile extends StatefulWidget {
-  final String memberId;
-  const Profile({super.key, required this.memberId});
+class CaseCatalog extends StatefulWidget {
+  const CaseCatalog({super.key});
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<CaseCatalog> createState() => _CaseCatalogState();
 }
 
-class _ProfileState extends State<Profile> with WidgetsBindingObserver {
+class _CaseCatalogState extends State<CaseCatalog> with WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, CaseRecord> _pagingController =
       PagingController(firstPageKey: null);
 
@@ -38,8 +33,7 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
           pagingController: _pagingController,
           limit: 10,
           pageKey: pageKey,
-          progress: progress,
-          memberId: widget.memberId);
+          progress: progress);
     });
     super.initState();
   }
@@ -69,20 +63,13 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
             address = snapshot.data!;
             return Scaffold(
                 appBar: AppBar(
-                    title: const Image(
-                      height: 80,
-                      width: 80,
-                      image: AssetImage('assets/case_logo_main.ico'),
-                    ),
-                    centerTitle: true,
-                    actions: [
-                      IconButton.filled(
-                        onPressed: () async {
-                          context.push(Routes.editMemberProfile);
-                        },
-                        icon: const Icon(Icons.edit),
-                      )
-                    ]),
+                  title: const Image(
+                    height: 80,
+                    width: 80,
+                    image: AssetImage('assets/case_logo_main.ico'),
+                  ),
+                  centerTitle: true,
+                ),
                 body: RefreshIndicator(
                     onRefresh: () async {
                       _pagingController.refresh();
@@ -90,25 +77,6 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                     child: CustomScrollView(slivers: [
                       SliverToBoxAdapter(
                           child: Column(children: <Widget>[
-                        CachedAvatar(
-                            url: member.photoUrl,
-                            size: 60,
-                            onPressed: () => context.push(
-                                '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}')),
-                        Text(
-                          '${member.firstName} ${member.lastName}',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        IconText(icon: Icons.email, text: member.email),
-                        IconText(icon: Icons.phone, text: member.phoneNumber),
-                        IconText(icon: Icons.work, text: member.occupation),
-                        IconText(icon: Icons.location_on, text: address),
-                        Text(member.bio, maxLines: 4),
                         SizedBox(
                           width: double.infinity,
                           child: SegmentedButton<String>(

@@ -1,9 +1,11 @@
-import 'dart:async';
 import 'package:case_be_heard/custom_widgets/case_card.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
+import 'package:case_be_heard/custom_widgets/petition_card.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
+import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
+import 'package:case_be_heard/services/databases/petition_database.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,22 +50,29 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
         controller: _tabController,
         children: [
           FutureBuilder<List<CaseRecord>>(
-            future: DatabaseCase.getCaseRecordsByIds(member.bookmarkCaseIds),
-            builder: (BuildContext context,
-                AsyncSnapshot<List<CaseRecord>> snapshot) {
+              future: DatabaseCase.getCaseRecordsByIds(member.bookmarkCaseIds),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<CaseRecord>> snapshot) {
+                if (snapshot.hasData) {
+                  final caseRecords = snapshot.data!;
+                  return ListView.builder(itemBuilder: (context, index) {
+                    return CaseCard(caseRecord: caseRecords[index]);
+                  });
+                }
+                return const Loading();
+              }),
+          FutureBuilder<List<Petition>>(
+            future:
+                DatabasePetition.getPetitionsByIds(member.bookmarkPetitionIds),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Petition>> snapshot) {
               if (snapshot.hasData) {
-                final caseRecords = snapshot.data!;
+                final petitions = snapshot.data!;
                 return ListView.builder(itemBuilder: (context, index) {
-                  return CaseCard(caseRecord: caseRecords[index]);
+                  return PetitionCard(
+                      petition: petitions[index], member: member);
                 });
               }
-              return const Loading();
-            },
-          ),
-          FutureBuilder<String>(
-            future: _fetchDataForTab2(),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.hasData) {}
               return const Loading();
             },
           ),

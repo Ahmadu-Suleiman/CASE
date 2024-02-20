@@ -13,6 +13,7 @@ class CommunityMember {
   bool verified = false;
   late GeoPoint location;
   List<String> bookmarkCaseIds = [];
+  List<String> bookmarkPetitionIds = [];
 
   CommunityMember.empty();
   CommunityMember({required this.id});
@@ -27,5 +28,6 @@ class CommunityMember {
       required this.gender,
       required this.photoUrl,
       required this.bio,
-      required this.bookmarkCaseIds});
+      required this.bookmarkCaseIds,
+      required this.bookmarkPetitionIds});
 }

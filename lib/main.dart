@@ -1,7 +1,6 @@
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
-import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/gemini_help.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';

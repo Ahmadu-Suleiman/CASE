@@ -105,11 +105,15 @@ class DatabaseCase {
       {int limit = 10,
       DocumentSnapshot? pageKey,
       required PagingController pagingController,
-      String? progress}) async {
+      String? progress,
+      String? memberId}) async {
     QuerySnapshot querySnapshot;
     Query query = caseCollection.orderBy('dateCreated', descending: true);
     if (progress != null) {
       query = query.where('progress', isEqualTo: progress);
+    }
+    if (memberId != null) {
+      query = query.where('uidMember', isEqualTo: memberId);
     }
 
     if (pageKey != null) {

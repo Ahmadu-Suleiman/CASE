@@ -7,27 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-class CaseCard extends StatefulWidget {
-  final CaseRecord caseRecord;
-
+class CaseCard extends StatelessWidget {
   const CaseCard({
-    super.key,
-    required this.caseRecord,
-  });
-
-  @override
-  State<CaseCard> createState() => _CaseCardState();
-}
-
-class _CaseCardState extends State<CaseCard> {
-  @override
-  Widget build(BuildContext context) {
-    return Case(caseRecord: widget.caseRecord);
-  }
-}
-
-class Case extends StatelessWidget {
-  const Case({
     super.key,
     required this.caseRecord,
   });

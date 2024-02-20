@@ -7,6 +7,7 @@ import 'package:case_be_heard/pages/case_pages/next_steps_case.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
 import 'package:case_be_heard/pages/feedback/case_reads.dart';
 import 'package:case_be_heard/pages/feedback/case_views.dart';
+import 'package:case_be_heard/pages/feedback/signatories_page.dart';
 import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile_others.dart';
@@ -28,6 +29,7 @@ class Routes {
   static const String nextSteps = '/next-steps';
   static const String caseViews = '/case-views';
   static const String caseReads = '/case-reads';
+  static const String signatories = '/signatories-page';
   static const String bookmarks = '/bookmarks';
 
   static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
@@ -54,10 +56,12 @@ class Routes {
           return CasePage(caseId: caseId!);
         }),
     GoRoute(
-      name: 'memberProfile',
-      path: Routes.memberProfile,
-      builder: (context, state) => const Profile(),
-    ),
+        name: 'memberProfile',
+        path: '${Routes.memberProfile}/:memberId',
+        builder: (context, state) {
+          final memberId = state.pathParameters['memberId'];
+          return Profile(memberId: memberId!);
+        }),
     GoRoute(
         name: 'memberProfileOthers',
         path: '${Routes.memberProfileOthers}/:memberId',
@@ -109,6 +113,13 @@ class Routes {
         builder: (context, state) {
           final caseId = state.pathParameters['caseId'];
           return CaseReadsWidget(caseRecordId: caseId!);
+        }),
+    GoRoute(
+        name: 'signatoriesPage',
+        path: '${Routes.signatories}/:petitionId',
+        builder: (context, state) {
+          final petitionId = state.pathParameters['petitionId'];
+          return SignatoriesWidget(petitionId: petitionId!);
         }),
     GoRoute(
         name: 'bookmarks',
