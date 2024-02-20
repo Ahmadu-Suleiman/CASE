@@ -66,10 +66,12 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
                 if (snapshot.hasData) {
                   final petitions = snapshot.data!;
                   if (petitions.isNotEmpty) {
-                    return ListView.builder(itemBuilder: (context, index) {
-                      return PetitionCard(
-                          petition: petitions[index], member: member);
-                    });
+                    return ListView.builder(
+                        itemCount: petitions.length,
+                        itemBuilder: (context, index) {
+                          return PetitionCard(
+                              petition: petitions[index], member: member);
+                        });
                   } else {
                     return const MesssageScreen(
                         message: 'No petitions created',

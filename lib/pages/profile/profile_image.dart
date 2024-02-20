@@ -28,7 +28,7 @@ class _ProfileImageState extends State<ProfileImage> {
             alignment: Alignment.bottomCenter,
             child: TextButton.icon(
                 onPressed: () async {
-                  Utility.pickandUpdateProfileImage(member);
+                  Utility.pickandUpdateProfileImage(context, member);
                 },
                 icon: const Icon(Icons.image),
                 label: const Text('Change image',

@@ -37,19 +37,17 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bookmark'),
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: 'Cases'),
-            Tab(text: 'Petitions'),
-          ],
+        appBar: AppBar(
+          title: const Text('Bookmark'),
+          bottom: TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: 'Cases'),
+              Tab(text: 'Petitions'),
+            ],
+          ),
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
+        body: TabBarView(controller: _tabController, children: [
           FutureBuilder<List<CaseRecord>>(
               future: DatabaseCase.getCaseRecordsByIds(member.bookmarkCaseIds),
               builder: (BuildContext context,
@@ -69,22 +67,25 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
                 return const Loading();
               }),
           FutureBuilder<List<Petition>>(
-            future:
-                DatabasePetition.getPetitionsByIds(member.bookmarkPetitionIds),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Petition>> snapshot) {
-              if (snapshot.hasData) {
-                final petitions = snapshot.data!;
-                return ListView.builder(itemBuilder: (context, index) {
-                  return PetitionCard(
-                      petition: petitions[index], member: member);
-                });
-              }
-              return const Loading();
-            },
-          ),
-        ],
-      ),
-    );
+              future: DatabasePetition.getPetitionsByIds(
+                  member.bookmarkPetitionIds),
+              builder: (BuildContext context,
+                  AsyncSnapshot<List<Petition>> snapshot) {
+                if (snapshot.hasData) {
+                  final petitions = snapshot.data!;
+                  if (petitions.isNotEmpty) {
+                    return ListView.builder(itemBuilder: (context, index) {
+                      return PetitionCard(
+                          petition: petitions[index], member: member);
+                    });
+                  } else {
+                    return const MesssageScreen(
+                        message: 'No cases bookmarked',
+                        icon: Icon(Icons.search));
+                  }
+                }
+                return const Loading();
+              })
+        ]));
   }
 }

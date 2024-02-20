@@ -57,7 +57,7 @@ class DatabasePetition {
   static Future<List<Petition>> getPetitions(String memberId) async {
     QuerySnapshot querySnapshot = await petitionCollection
         .orderBy('dateCreated', descending: true)
-        .where('uidMember', isEqualTo: memberId)
+        .where('memberId', isEqualTo: memberId)
         .get();
 
     return Future.wait(querySnapshot.docs.map(_petitionFromSnapshot).toList());

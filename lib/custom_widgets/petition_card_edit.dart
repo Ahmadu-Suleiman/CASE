@@ -81,101 +81,50 @@ class _PetitionCardState extends State<PetitionCardEdit> {
                     style: const TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   LinearProgressBar(
-                    maxSteps: 6,
+                    maxSteps: widget.petition.target,
                     progressType: LinearProgressBar
                         .progressTypeLinear, // Use Linear progress
-                    currentStep: 1,
+                    currentStep: widget.petition.signatoryIds.length,
                     progressColor: Style.primaryColor,
                     backgroundColor: Style.secondaryColor,
                   ),
                   GestureDetector(
-                    onTap: () => context
-                        .push('${Routes.signatories}/${widget.petition.id}'),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
+                      onTap: () => context
+                          .push('${Routes.signatories}/${widget.petition.id}'),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                                widget.petition.signatoryIds.length.toString()),
-                            const Text('Signatures')
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(widget.petition.target.toString()),
-                            const Text('Target Signatures')
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                  ElevatedButton(
-                      onPressed: () {
-                        if (!_isSigned()) {
-                          _sign();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Style.primaryColor,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12), // Padding
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              8), // Optional: Border radius
-                        ),
-                      ),
-                      child: _isSigned()
-                          ? const Text('Signed')
-                          : const Text('Sign this peition')),
+                            Column(
+                              children: [
+                                Text(widget.petition.signatoryIds.length
+                                    .toString()),
+                                const Text('Signatures')
+                              ],
+                            ),
+                            Column(children: [
+                              Text(widget.petition.target.toString()),
+                              const Text('Target Signatures')
+                            ])
+                          ])),
                   const Divider(),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        IconButton(
-                            icon: const Icon(Icons.bookmark),
-                            color: PetitionHelper.isBookmark(
-                                    widget.member, widget.petition)
-                                ? Style.primaryColor
-                                : Colors.black,
-                            onPressed: () async {
-                              if (PetitionHelper.isBookmark(
-                                  widget.member, widget.petition)) {
-                                await DatabaseMember.addBookmarkPetition(
-                                    widget.member, widget.petition);
-                              } else {
-                                await DatabaseMember.removeBookmarkPetition(
-                                    widget.member, widget.petition);
-                              }
-                              setState(() {});
-                            }),
+                        Center(
+                            child: IconButton(
+                                icon: const Icon(Icons.delete_forever),
+                                onPressed: () {
+                                  _deletePetition().then((delete) {
+                                    if (delete) widget.onDelete;
+                                  });
+                                })),
                         IconButton(
                             icon: const Icon(Icons.share),
                             onPressed: () {
                               //TODO: Add your logic here
                             })
-                      ]),
-                  Center(
-                      child: IconButton(
-                    icon: const Icon(Icons.delete_forever),
-                    onPressed: () {
-                      _deletePetition().then((delete) {
-                        if (delete) widget.onDelete;
-                      });
-                    },
-                  ))
+                      ])
                 ])));
-  }
-
-  bool _isSigned() {
-    return widget.petition.signatoryIds.contains(widget.member.id);
-  }
-
-  void _sign() async {
-    DatabasePetition.addSignature(widget.member.id!, widget.petition).then(
-        (_) => DatabasePetition.getPetition(widget.petition.id).then(
-            (petition) => setState(
-                () => widget.petition.signatoryIds = petition.signatoryIds)));
   }
 
   Future<bool> _deletePetition() async {

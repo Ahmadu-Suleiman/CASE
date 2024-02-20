@@ -76,10 +76,10 @@ class _PetitionCardState extends State<PetitionCard> {
                     style: const TextStyle(fontSize: 18.0, color: Colors.black),
                   ),
                   LinearProgressBar(
-                    maxSteps: 6,
+                    maxSteps: widget.petition.target,
                     progressType: LinearProgressBar
                         .progressTypeLinear, // Use Linear progress
-                    currentStep: 1,
+                    currentStep: widget.petition.signatoryIds.length,
                     progressColor: Style.primaryColor,
                     backgroundColor: Style.secondaryColor,
                   ),
@@ -105,24 +105,24 @@ class _PetitionCardState extends State<PetitionCard> {
                       ],
                     ),
                   ),
-                  ElevatedButton(
-                      onPressed: () {
-                        if (!_isSigned()) {
-                          _sign();
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Style.primaryColor,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12), // Padding
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              8), // Optional: Border radius
-                        ),
-                      ),
-                      child: _isSigned()
-                          ? const Text('Signed')
-                          : const Text('Sign this peition')),
+                  Row(children: [
+                    Expanded(
+                        child: ElevatedButton(
+                            onPressed: () {
+                              if (!_isSigned()) _sign();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Style.primaryColor,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 12), // Padding
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8))),
+                            child: _isSigned()
+                                ? const Text('Signed',
+                                    style: TextStyle(color: Colors.white))
+                                : const Text('Sign this peition',
+                                    style: TextStyle(color: Colors.white))))
+                  ]),
                   const Divider(),
                   Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
