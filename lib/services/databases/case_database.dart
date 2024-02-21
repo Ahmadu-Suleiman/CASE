@@ -31,6 +31,7 @@ class DatabaseCase {
         uidMember: snapshot['uidMember'] ?? '',
         dateCreated: snapshot['dateCreated'] ?? Timestamp.now(),
         member: member,
+        communityId: snapshot['communityId'] ?? '',
         title: snapshot['title'] ?? '',
         summary: snapshot['summary'] ?? '',
         details: snapshot['details'] ?? '',
@@ -105,9 +106,11 @@ class DatabaseCase {
       required PagingController pagingController,
       String? progress,
       String? memberId,
-      String? communityId}) async {
+      String? communityId,
+      List<String>? communityIds}) async {
     QuerySnapshot querySnapshot;
     Query query = caseCollection.orderBy('dateCreated', descending: true);
+
     if (progress != null) {
       query = query.where('progress', isEqualTo: progress);
     }
@@ -117,21 +120,50 @@ class DatabaseCase {
     if (communityId != null) {
       query = query.where('communityId', isEqualTo: communityId);
     }
+    if (communityIds != null && communityIds.isNotEmpty) {
+      // Split communityIds into chunks of  10 and perform queries for each chunk
+      final chunks = List.generate(
+          (communityIds.length / 10).ceil(),
+          (index) => communityIds.sublist(
+              index * 10,
+              (index + 1) * 10 > communityIds.length
+                  ? communityIds.length
+                  : (index + 1) * 10));
 
-    if (pageKey != null) {
-      querySnapshot =
-          await query.startAfterDocument(pageKey).limit(limit).get();
+      // Initialize an empty list to hold all the results
+      List<QueryDocumentSnapshot> allResults = [];
+
+      for (var chunk in chunks) {
+        // Perform a query for each chunk and add the results to allResults
+        querySnapshot =
+            await query.where('communityId', whereIn: chunk).limit(limit).get();
+        allResults.addAll(querySnapshot.docs);
+      }
+
+      // Handle the allResults here, e.g., update the pagingController
+      _handleQuerySnapshot(allResults, pagingController, limit);
     } else {
-      querySnapshot = await query.limit(limit).get();
-    }
+      if (pageKey != null) {
+        querySnapshot =
+            await query.startAfterDocument(pageKey).limit(limit).get();
+      } else {
+        querySnapshot = await query.limit(limit).get();
+      }
 
-    if (querySnapshot.docs.isNotEmpty) {
+      // Handle the querySnapshot here, e.g., update the pagingController
+      _handleQuerySnapshot(querySnapshot.docs, pagingController, limit);
+    }
+  }
+
+// Nested function to handle the common logic for updating the PagingController
+  static void _handleQuerySnapshot(List<QueryDocumentSnapshot> docs,
+      PagingController pagingController, int limit) async {
+    if (docs.isNotEmpty) {
       List<Future<CaseRecord>> caseRecordFutures =
-          querySnapshot.docs.map(_caseRecordFromSnapshot).toList();
+          docs.map(_caseRecordFromSnapshot).toList();
       final caseRecordList = await Future.wait(caseRecordFutures);
-      final bool isLastPage = caseRecordList.length < 10;
-      final DocumentSnapshot? lastDoc =
-          isLastPage ? null : querySnapshot.docs.last;
+      final bool isLastPage = caseRecordList.length < limit;
+      final DocumentSnapshot? lastDoc = isLastPage ? null : docs.last;
 
       if (isLastPage) {
         pagingController.appendLastPage(caseRecordList);

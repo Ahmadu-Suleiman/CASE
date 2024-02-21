@@ -14,7 +14,8 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 
 class CreateCase extends StatefulWidget {
-  const CreateCase({super.key});
+  final String communityId;
+  const CreateCase({super.key, required this.communityId});
 
   @override
   State<CreateCase> createState() => _CreateCaseState();
@@ -89,6 +90,7 @@ class _CreateCaseState extends State<CreateCase> {
                                     title, detailedDescription, summary);
                                 CaseRecord caseRecord = CaseRecord.forUpload(
                                     uidMember: member.id!,
+                                    communityId: widget.communityId,
                                     dateCreated: Timestamp.now(),
                                     title: title,
                                     summary: summary,

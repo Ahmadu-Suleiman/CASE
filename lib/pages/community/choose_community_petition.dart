@@ -12,17 +12,18 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-class CommunitiesPageWidget extends StatefulWidget {
+class ChosePetitionCommunityPageWidget extends StatefulWidget {
   final String state;
   final String countryISO;
-  const CommunitiesPageWidget(
+  const ChosePetitionCommunityPageWidget(
       {super.key, required this.state, required this.countryISO});
 
   @override
-  State<CommunitiesPageWidget> createState() => _CommunitiesWidgetState();
+  State<ChosePetitionCommunityPageWidget> createState() =>
+      _CommunityPetitionWidgetState();
 }
 
-class _CommunitiesWidgetState extends State<CommunitiesPageWidget>
+class _CommunityPetitionWidgetState extends State<ChosePetitionCommunityPageWidget>
     with WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, Community> _pagingController =
       PagingController(firstPageKey: null);
@@ -75,6 +76,11 @@ class _CommunitiesWidgetState extends State<CommunitiesPageWidget>
               SliverToBoxAdapter(
                   child: Card(
                       child: Column(children: [
+                      const Text('Choose community for case',
+                    style: TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                    )),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -90,23 +96,14 @@ class _CommunitiesWidgetState extends State<CommunitiesPageWidget>
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.search))),
                 const Divider(),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Communities'),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text('view all states',
-                              style: TextStyle(color: Style.primaryColor)))
-                    ])
+             
               ]))),
               PagedSliverList<DocumentSnapshot?, Community>(
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Community>(
-                      itemBuilder: (context, community, index) => CommunityWidget(
-                          community: community,
-                          onChoose: () => context.push(
-                              '${Routes.mainCommunityPage}/${community.id}')),
+                      itemBuilder: (context, community, index) =>
+                          CommunityWidget(community: community,onChoose: ()=>
+                                  context.replace('${Routes.createCase}/${community.id}')),
                       noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
                           message: 'No communities found',
                           icon: Icon(Icons.search_off))))

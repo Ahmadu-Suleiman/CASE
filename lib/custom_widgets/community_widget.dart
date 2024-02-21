@@ -6,13 +6,14 @@ import 'package:go_router/go_router.dart';
 
 class CommunityWidget extends StatelessWidget {
   final Community community;
-  const CommunityWidget({super.key, required this.community});
+  final Function onChoose;
+  const CommunityWidget(
+      {super.key, required this.community, required this.onChoose});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () =>
-            context.push('${Routes.mainCommunityPage}/${community.id}'),
+        onTap: () => onChoose(),
         child: Card(
             child: Padding(
                 padding: const EdgeInsets.all(16.0),

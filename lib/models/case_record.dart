@@ -12,12 +12,13 @@ class CaseRecord {
   late List<String> photos, audios, links;
   late List<Video> videos;
   late List<String> viewIds, readIds;
-  late String communityId;
+  String communityId;
 
   CaseRecord(
       {required this.id,
       required this.uidMember,
       required this.member,
+      required this.communityId,
       required this.dateCreated,
       required this.title,
       required this.details,
@@ -34,6 +35,7 @@ class CaseRecord {
       required this.readIds});
   CaseRecord.forUpload(
       {required this.uidMember,
+      required this.communityId,
       required this.dateCreated,
       required this.title,
       required this.details,
@@ -49,6 +51,7 @@ class CaseRecord {
   CaseRecord.forUpdate(
       {required this.id,
       required this.uidMember,
+      required this.communityId,
       required this.title,
       required this.details,
       required this.summary,
@@ -64,6 +67,7 @@ class CaseRecord {
   Map<String, dynamic> toMap() {
     return {
       'uidMember': uidMember,
+      'communityId': communityId,
       'dateCreated': dateCreated,
       'title': title,
       'details': details,

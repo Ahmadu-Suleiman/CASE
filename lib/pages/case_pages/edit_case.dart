@@ -114,6 +114,7 @@ class _EditCaseState extends State<EditCase> {
                                             CaseRecord.forUpdate(
                                                 id: uidCase!,
                                                 uidMember: member.id!,
+                                                communityId: member.communityId,
                                                 title: title,
                                                 summary: summary,
                                                 details: details,

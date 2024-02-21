@@ -202,7 +202,7 @@ class _HomeWidgetState extends State<HomeWidget> {
             children: [
               GestureDetector(
                 onLongPress: () =>
-                    Utility.showSnackBar(context, 'create a petition'),
+                    Utility.showSnackBar(context, 'Create a petition'),
                 child: SizedBox(
                     width: 60,
                     height: 60,
@@ -213,7 +213,7 @@ class _HomeWidgetState extends State<HomeWidget> {
               ),
               GestureDetector(
                 onLongPress: () =>
-                    Utility.showSnackBar(context, 'create a case'),
+                    Utility.showSnackBar(context, 'Create a case'),
                 child: SizedBox(
                   width: 60,
                   height: 60,

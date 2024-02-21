@@ -4,6 +4,7 @@ import 'package:case_be_heard/pages/case_pages/case_view_photo.dart';
 import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps.dart';
+import 'package:case_be_heard/pages/community/choose_community_case.dart';
 import 'package:case_be_heard/pages/community/community_main_page.dart';
 import 'package:case_be_heard/pages/community/create_community.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
@@ -43,6 +44,7 @@ class Routes {
   static const String communitiesPage = '/communities-page';
   static const String createCommunity = '/create-community';
   static const String mainCommunityPage = '/main-community-page';
+  static const String chooseCommunityCase = '/choose-community-case';
 
   static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
     GoRoute(
@@ -51,8 +53,11 @@ class Routes {
         builder: (context, state) => const Wrapper()),
     GoRoute(
         name: 'createCase',
-        path: Routes.createCase,
-        builder: (context, state) => const CreateCase()),
+        path: '$createCase/:communityId',
+        builder: (context, state) {
+          final communityId = state.pathParameters['communityId'];
+          return CreateCase(communityId: communityId!);
+        }),
     GoRoute(
         name: 'editCase',
         path: '$editCase/:caseId',
@@ -168,6 +173,15 @@ class Routes {
           String countryISO = state.pathParameters['countryISO']!;
           return CommunitiesPageWidget(
               state: communityState, countryISO: countryISO);
-        })
+        }),
+    GoRoute(
+        name: 'chooseCommunityCase',
+        path: '$chooseCommunityCase/:state/:countryISO',
+        builder: (context, state) {
+          String communityState = state.pathParameters['state']!;
+          String countryISO = state.pathParameters['countryISO']!;
+          return ChoseCaseCommunityPageWidget(
+              state: communityState, countryISO: countryISO);
+        }),
   ]);
 }
