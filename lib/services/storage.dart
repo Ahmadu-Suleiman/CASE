@@ -14,6 +14,7 @@ class StorageService {
   static final _audiosCaseRef = _storageRef.child("audiosCase");
   static final _thumbnailsCaseRef = _storageRef.child("thumbnailsCase");
   static final _mainImagePetitionsRef = _storageRef.child("imagesPetition");
+  static final _imageCommunitiesRef = _storageRef.child("imagesCommunity");
 
   static Future<String> uploadProfileImage(String uid, File file) async {
     final fileName = uid;
@@ -248,6 +249,27 @@ class StorageService {
 
   static deleteImagePetition(String petitionId) async {
     await _mainImagePetitionsRef.child(petitionId).delete();
+  }
+
+  static Future<String> uploadCommunityImage(
+      String communityId, String filePath) async {
+    final fileName = communityId;
+    final communityImageRef = _imageCommunitiesRef.child(fileName);
+    await communityImageRef.putFile(File(filePath));
+    return await communityImageRef.getDownloadURL();
+  }
+
+  static Future<String> updateCommunityImage(
+      String communityId, String urlPath) async {
+    if (urlPath.startsWith('http')) return urlPath;
+    final fileName = communityId;
+    final communityImageRef = _imageCommunitiesRef.child(fileName);
+    await communityImageRef.putFile(File(urlPath));
+    return await communityImageRef.getDownloadURL();
+  }
+
+  static deleteImageCommunity(String communityId) async {
+    await _imageCommunitiesRef.child(communityId).delete();
   }
 
   static Future<int?> getFileSizeFromFirebaseStorage(String downloadUrl) async {

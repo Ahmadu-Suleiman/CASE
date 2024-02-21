@@ -4,9 +4,10 @@ import 'package:case_be_heard/pages/case_pages/case_view_photo.dart';
 import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps.dart';
+import 'package:case_be_heard/pages/community/create_community.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/case_catalog.dart';
-import 'package:case_be_heard/pages/drawer_pages.dart/community_page.dart';
+import 'package:case_be_heard/pages/drawer_pages.dart/communities_page.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/petitions_page.dart';
 import 'package:case_be_heard/pages/feedback/case_reads.dart';
 import 'package:case_be_heard/pages/feedback/case_views.dart';
@@ -39,6 +40,7 @@ class Routes {
   static const String petitionPage = '/petition-page';
   static const String caseCatalog = '/case-catalog';
   static const String communitiesPage = '/communities-page';
+  static const String createCommunity = '/create-community';
 
   static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
     GoRoute(
@@ -146,12 +148,16 @@ class Routes {
         path: Routes.caseCatalog,
         builder: (context, state) => const CaseCatalog()),
     GoRoute(
-        name: 'communitiesPage',
-        path: '$communitiesPage/view/:id/:name',
+        name: 'createCommunity',
+        path: Routes.createCommunity,
+        builder: (context, state) => const CreateCommunityWidget()),
+    GoRoute(
+        name: communitiesPage,
+        path: '/communitiesPage/:state/:countryISO',
         builder: (context, state) {
           String communityState = state.pathParameters['state']!;
           String countryISO = state.pathParameters['countryISO']!;
-          return CommunityPageWidget(
+          return CommunitiesPageWidget(
               state: communityState, countryISO: countryISO);
         })
   ]);

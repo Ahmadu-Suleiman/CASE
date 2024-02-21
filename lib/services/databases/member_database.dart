@@ -45,6 +45,7 @@ class DatabaseMember {
       gender: snapshot['gender'] ?? '',
       photoUrl: snapshot['photoUrl'] ?? '',
       bio: snapshot['bio'] ?? '',
+      communityId: snapshot['communityId'] ?? '',
       bookmarkCaseIds: Utility.stringList(snapshot, 'bookmarksCase'),
       bookmarkPetitionIds: Utility.stringList(snapshot, 'bookmarksPetition'),
       communityIds: Utility.stringList(snapshot, 'communityIds'),

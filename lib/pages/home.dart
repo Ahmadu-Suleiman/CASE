@@ -126,9 +126,11 @@ class _HomeWidgetState extends State<HomeWidget> {
                           ),
                           leading: const Icon(Icons.people),
                           onTap: () {
-                            // Update the state of the app
-                            // ...
-                            // Then close the drawer
+                            context.pushNamed(Routes.communitiesPage,
+                                pathParameters: {
+                                  'state': member.placemark.administrativeArea!,
+                                  'countryISO': member.placemark.isoCountryCode!
+                                });
                             Navigator.pop(context);
                           }),
                       ListTile(

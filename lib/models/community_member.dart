@@ -15,6 +15,7 @@ class CommunityMember {
   List<String> bookmarkCaseIds = [];
   List<String> bookmarkPetitionIds = [];
   List<String> communityIds = [];
+  late String communityId;
   late GeoPoint location;
   late Placemark placemark;
   late String address;
@@ -37,6 +38,7 @@ class CommunityMember {
       required this.communityIds,
       required this.placemark,
       required this.address,
+      required this.communityId,
       verified});
 
   CommunityMember copyWith({
@@ -57,6 +59,7 @@ class CommunityMember {
     List<String>? communityIds,
     Placemark? placemark,
     String? address,
+    String? communityId,
   }) {
     return CommunityMember.full(
       id: id ?? this.id,
@@ -72,6 +75,7 @@ class CommunityMember {
       verified: verified ?? this.verified,
       placemark: placemark ?? this.placemark,
       address: address ?? this.address,
+      communityId: communityId ?? this.communityId,
       bookmarkCaseIds: bookmarkCaseIds ?? List.from(this.bookmarkCaseIds),
       bookmarkPetitionIds:
           bookmarkPetitionIds ?? List.from(this.bookmarkPetitionIds),
