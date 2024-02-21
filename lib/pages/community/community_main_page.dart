@@ -88,11 +88,7 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                 length: 2,
                 child: Scaffold(
                     appBar: AppBar(
-                        title: const Image(
-                          height: 80,
-                          width: 80,
-                          image: AssetImage('assets/case_logo_main.ico'),
-                        ),
+                        title: Text(community.name),
                         actions: <Widget>[
                           IconButton(
                               icon: const Icon(Icons.group_add),
