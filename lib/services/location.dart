@@ -46,7 +46,7 @@ class LocationService {
     return GeoPoint(currentPosition.latitude, currentPosition.longitude);
   }
 
-  static Future<String> getLocationAddress(GeoPoint geoPoint,
+  static Future<String> getLocationAddressString(GeoPoint geoPoint,
       {BuildContext? context}) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(geoPoint.latitude, geoPoint.longitude);
@@ -63,5 +63,12 @@ class LocationService {
       place.country
     ].nonNulls.toList();
     return location.join(',');
+  }
+
+  static Future<Placemark> getLocationAddress(GeoPoint geoPoint,
+      {BuildContext? context}) async {
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(geoPoint.latitude, geoPoint.longitude);
+    return placemarks[0];
   }
 }

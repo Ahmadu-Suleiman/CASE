@@ -26,7 +26,7 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     member = context.watch<CommunityMember>().copyWith();
     return FutureBuilder(
-        future: LocationService.getLocationAddress(member.location),
+        future: LocationService.getLocationAddressString(member.location),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             address = snapshot.data!;
@@ -119,8 +119,8 @@ class _EditProfileState extends State<EditProfile> {
                                     await LocationService.getCurrentLocation(
                                         context);
                                 if (context.mounted) {
-                                  address =
-                                      await LocationService.getLocationAddress(
+                                  address = await LocationService
+                                      .getLocationAddressString(
                                           context: context, member.location);
                                 }
                                 setState(() => isLoading = false);

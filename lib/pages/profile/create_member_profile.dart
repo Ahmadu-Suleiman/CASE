@@ -102,8 +102,9 @@ class _CreateProfileState extends State<CreateProfile> {
                         member.location =
                             await LocationService.getCurrentLocation(context);
                         if (context.mounted) {
-                          address = await LocationService.getLocationAddress(
-                              context: context, member.location);
+                          address =
+                              await LocationService.getLocationAddressString(
+                                  context: context, member.location);
                         }
                         setState(() => isLoading = false);
                       },

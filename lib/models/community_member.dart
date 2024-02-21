@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geocoding/geocoding.dart';
 
 class CommunityMember {
   String? id;
@@ -11,10 +12,12 @@ class CommunityMember {
   String photoUrl = '';
   String bio = '';
   bool verified = false;
-  late GeoPoint location;
   List<String> bookmarkCaseIds = [];
   List<String> bookmarkPetitionIds = [];
   List<String> communityIds = [];
+  late GeoPoint location;
+  late Placemark placemark;
+  late String address;
 
   CommunityMember.empty();
   CommunityMember({required this.id});
@@ -32,6 +35,8 @@ class CommunityMember {
       required this.bookmarkCaseIds,
       required this.bookmarkPetitionIds,
       required this.communityIds,
+      required this.placemark,
+      required this.address,
       verified});
 
   CommunityMember copyWith({
@@ -46,8 +51,12 @@ class CommunityMember {
     String? photoUrl,
     String? bio,
     bool? verified,
+    String? defaultStateCommunityId,
     List<String>? bookmarkCaseIds,
     List<String>? bookmarkPetitionIds,
+    List<String>? communityIds,
+    Placemark? placemark,
+    String? address,
   }) {
     return CommunityMember.full(
       id: id ?? this.id,
@@ -61,6 +70,8 @@ class CommunityMember {
       photoUrl: photoUrl ?? this.photoUrl,
       bio: bio ?? this.bio,
       verified: verified ?? this.verified,
+      placemark: placemark ?? this.placemark,
+      address: address ?? this.address,
       bookmarkCaseIds: bookmarkCaseIds ?? List.from(this.bookmarkCaseIds),
       bookmarkPetitionIds:
           bookmarkPetitionIds ?? List.from(this.bookmarkPetitionIds),

@@ -57,7 +57,7 @@ class _CaseCatalogState extends State<CaseCatalog> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
     return FutureBuilder(
-        future: LocationService.getLocationAddress(member.location),
+        future: LocationService.getLocationAddressString(member.location),
         builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
           if (snapshot.hasData) {
             address = snapshot.data!;

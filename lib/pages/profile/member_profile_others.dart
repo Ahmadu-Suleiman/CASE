@@ -48,7 +48,7 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
 
   void setup() async {
     member = await DatabaseMember.getCommunityMember(widget.memberId);
-    address = await LocationService.getLocationAddress(member.location);
+    address = await LocationService.getLocationAddressString(member.location);
     setState(() => loading = false);
   }
 

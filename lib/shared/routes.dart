@@ -6,6 +6,7 @@ import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/case_catalog.dart';
+import 'package:case_be_heard/pages/drawer_pages.dart/community_page.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/petitions_page.dart';
 import 'package:case_be_heard/pages/feedback/case_reads.dart';
 import 'package:case_be_heard/pages/feedback/case_views.dart';
@@ -37,6 +38,7 @@ class Routes {
   static const String createPetition = '/create-petition';
   static const String petitionPage = '/petition-page';
   static const String caseCatalog = '/case-catalog';
+  static const String communitiesPage = '/communities-page';
 
   static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
     GoRoute(
@@ -49,28 +51,28 @@ class Routes {
         builder: (context, state) => const CreateCase()),
     GoRoute(
         name: 'editCase',
-        path: '${Routes.editCase}/:caseId',
+        path: '$editCase/:caseId',
         builder: (context, state) {
           final caseId = state.pathParameters['caseId'];
           return EditCase(caseId: caseId!);
         }),
     GoRoute(
         name: 'casePage',
-        path: '${Routes.casePage}/:caseId',
+        path: '$casePage/:caseId',
         builder: (context, state) {
           final caseId = state.pathParameters['caseId'];
           return CasePage(caseId: caseId!);
         }),
     GoRoute(
         name: 'memberProfile',
-        path: '${Routes.memberProfile}/:memberId',
+        path: '$memberProfile/:memberId',
         builder: (context, state) {
           final memberId = state.pathParameters['memberId'];
           return Profile(memberId: memberId!);
         }),
     GoRoute(
         name: 'memberProfileOthers',
-        path: '${Routes.memberProfileOthers}/:memberId',
+        path: '$memberProfileOthers/:memberId',
         builder: (context, state) {
           final memberId = state.pathParameters['memberId'];
           return ProfileOthers(memberId: memberId!);
@@ -87,42 +89,42 @@ class Routes {
     ),
     GoRoute(
         name: 'casePhoto',
-        path: '${Routes.casePhoto}/:photoUrl',
+        path: '$casePhoto/:photoUrl',
         builder: (context, state) {
           final photoUrl = state.pathParameters['photoUrl'];
           return CasePhotoViewer(photoUrl: photoUrl!);
         }),
     GoRoute(
         name: 'caseVideo',
-        path: '${Routes.caseVideo}/:videoUrl',
+        path: '$caseVideo/:videoUrl',
         builder: (context, state) {
           final videoUrl = state.pathParameters['videoUrl'];
           return CaseVideoPlayer(videoUrl: videoUrl!);
         }),
     GoRoute(
         name: 'nextSteps',
-        path: '${Routes.nextSteps}/:steps',
+        path: '$nextSteps/:steps',
         builder: (context, state) {
           final steps = state.pathParameters['steps'];
           return NextSteps(nextSteps: steps!);
         }),
     GoRoute(
         name: 'caseViews',
-        path: '${Routes.caseViews}/:caseId',
+        path: '$caseViews/:caseId',
         builder: (context, state) {
           final caseId = state.pathParameters['caseId'];
           return CaseViewsWidget(caseRecordId: caseId!);
         }),
     GoRoute(
         name: 'caseReads',
-        path: '${Routes.caseReads}/:caseId',
+        path: '$caseReads/:caseId',
         builder: (context, state) {
           final caseId = state.pathParameters['caseId'];
           return CaseReadsWidget(caseRecordId: caseId!);
         }),
     GoRoute(
         name: 'signatoriesPage',
-        path: '${Routes.signatories}/:petitionId',
+        path: '$signatories/:petitionId',
         builder: (context, state) {
           final petitionId = state.pathParameters['petitionId'];
           return SignatoriesWidget(petitionId: petitionId!);
@@ -142,6 +144,15 @@ class Routes {
     GoRoute(
         name: 'caseCatalog',
         path: Routes.caseCatalog,
-        builder: (context, state) => const CaseCatalog())
+        builder: (context, state) => const CaseCatalog()),
+    GoRoute(
+        name: 'communitiesPage',
+        path: '$communitiesPage/view/:id/:name',
+        builder: (context, state) {
+          String communityState = state.pathParameters['state']!;
+          String countryISO = state.pathParameters['countryISO']!;
+          return CommunityPageWidget(
+              state: communityState, countryISO: countryISO);
+        })
   ]);
 }
