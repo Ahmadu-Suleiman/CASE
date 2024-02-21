@@ -18,7 +18,7 @@ class Wrapper extends StatelessWidget {
       } else if (communityMember == null) {
         return const CreateProfile();
       } else {
-        return const HomeWidget();
+        return const HomePage();
       }
     });
   }

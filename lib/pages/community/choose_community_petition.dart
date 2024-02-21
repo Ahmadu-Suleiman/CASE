@@ -4,9 +4,7 @@ import 'package:case_be_heard/models/community.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -23,7 +21,8 @@ class ChosePetitionCommunityPageWidget extends StatefulWidget {
       _CommunityPetitionWidgetState();
 }
 
-class _CommunityPetitionWidgetState extends State<ChosePetitionCommunityPageWidget>
+class _CommunityPetitionWidgetState
+    extends State<ChosePetitionCommunityPageWidget>
     with WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, Community> _pagingController =
       PagingController(firstPageKey: null);
@@ -76,7 +75,7 @@ class _CommunityPetitionWidgetState extends State<ChosePetitionCommunityPageWidg
               SliverToBoxAdapter(
                   child: Card(
                       child: Column(children: [
-                      const Text('Choose community for case',
+                const Text('Choose community for case',
                     style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
@@ -96,14 +95,15 @@ class _CommunityPetitionWidgetState extends State<ChosePetitionCommunityPageWidg
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.search))),
                 const Divider(),
-             
               ]))),
               PagedSliverList<DocumentSnapshot?, Community>(
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Community>(
                       itemBuilder: (context, community, index) =>
-                          CommunityWidget(community: community,onChoose: ()=>
-                                  context.replace('${Routes.createCase}/${community.id}')),
+                          CommunityWidget(
+                              community: community,
+                              onChoose: () => context.replace(
+                                  '${Routes.createPetition}/${community.id}')),
                       noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
                           message: 'No communities found',
                           icon: Icon(Icons.search_off))))

@@ -1,21 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:case_be_heard/custom_widgets/case_card.dart';
 import 'package:case_be_heard/models/case_record.dart';
-import 'package:case_be_heard/services/databases/case_database.dart';
-import 'package:flutter/material.dart';
-import 'package:case_be_heard/custom_widgets/community_widget.dart';
-import 'package:case_be_heard/custom_widgets/message_screen.dart';
-import 'package:case_be_heard/models/community.dart';
-import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/services/databases/community_database.dart';
-import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_search_bar/easy_search_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:provider/provider.dart';
 
 class PagingCaseRecord extends StatefulWidget {
   final Function fetchCaseRecords;

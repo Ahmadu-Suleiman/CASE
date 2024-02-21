@@ -16,30 +16,29 @@ import 'package:provider/provider.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class HomeWidget extends StatefulWidget {
-  const HomeWidget({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<HomeWidget> createState() => _HomeWidgetState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _HomeWidgetState extends State<HomeWidget> {
+class _HomePageState extends State<HomePage> {
   final PagingController<DocumentSnapshot?, CaseRecord> _pagingController =
       PagingController(firstPageKey: null);
   int bottomNavIndex = 0;
 
   @override
-  void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      DatabaseCase.fetchCaseRecords(
-          pagingController: _pagingController, limit: 10, pageKey: pageKey);
-    });
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
+    _pagingController.addPageRequestListener((pageKey) {
+      DatabaseCase.fetchCaseRecords(
+          pagingController: _pagingController,
+          limit: 10,
+          pageKey: pageKey,
+          communityIds: member.communityIds);
+    });
+
     return Scaffold(
         backgroundColor: Style.secondaryColor,
         appBar: AppBar(

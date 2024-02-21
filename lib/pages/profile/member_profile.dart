@@ -1,12 +1,10 @@
 import 'package:case_be_heard/custom_widgets/cached_image.dart';
 import 'package:case_be_heard/custom_widgets/case_card_edit.dart';
-import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/custom_widgets/text_icon.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
-import 'package:case_be_heard/services/location.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

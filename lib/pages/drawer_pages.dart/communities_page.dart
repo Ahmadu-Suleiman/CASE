@@ -6,7 +6,6 @@ import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_search_bar/easy_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

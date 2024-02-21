@@ -1,3 +1,5 @@
+import 'package:case_be_heard/models/community.dart';
+import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -117,5 +119,9 @@ class CommunityHelper {
                     ]);
               })
         });
+  }
+
+  static bool isCommunityMember(CommunityMember member, Community community) {
+    return member.communityIds.contains(community.id);
   }
 }

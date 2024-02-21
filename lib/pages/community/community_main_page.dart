@@ -4,19 +4,16 @@ import 'package:case_be_heard/custom_widgets/petition_card.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
+import 'package:case_be_heard/shared/community_helper.dart';
+import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
-import 'package:case_be_heard/custom_widgets/community_widget.dart';
 import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/models/community.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/community_database.dart';
-import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_search_bar/easy_search_bar.dart';
-import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +45,7 @@ class _CommunityMainPageState extends State<CommunityMainPage>
       });
       _pagingPetitionController.addPageRequestListener((pageKey) {
         WidgetsBinding.instance.addObserver(this);
-        DatabaseCase.fetchCaseRecords(
+        DatabasePetition.fetchPetitions(
             pagingController: _pagingPetitionController,
             limit: 10,
             pageKey: pageKey,
@@ -92,8 +89,23 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                         actions: <Widget>[
                           IconButton(
                               icon: const Icon(Icons.group_add),
-                              onPressed: () {
-                                // Add your logic here
+                              color: CommunityHelper.isCommunityMember(
+                                      member, community)
+                                  ? Style.primaryColor
+                                  : Colors.black,
+                              onPressed: () async {
+                                if (CommunityHelper.isCommunityMember(
+                                    member, community)) {
+                                  await DatabaseMember.removeCommunity(
+                                          member, community)
+                                      .then((communityIds) => setState(() =>
+                                          member.communityIds = communityIds));
+                                } else {
+                                  await DatabaseMember.addCommunity(
+                                          member, community)
+                                      .then((communityIds) => setState(() =>
+                                          member.communityIds = communityIds));
+                                }
                               })
                         ],
                         bottom: const TabBar(tabs: [

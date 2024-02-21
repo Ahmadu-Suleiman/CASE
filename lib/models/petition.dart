@@ -10,7 +10,7 @@ class Petition {
   String memberId;
   String category;
   Timestamp dateCreated;
-  late String communityId;
+ String communityId;
 
   Petition({
     required this.id,

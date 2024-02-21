@@ -11,14 +11,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
-class CreatePetitionWidget extends StatefulWidget {
-  const CreatePetitionWidget({super.key});
+class CreatePetitionPage extends StatefulWidget {
+  final String communityId;
+  const CreatePetitionPage({super.key, required this.communityId});
 
   @override
-  State<CreatePetitionWidget> createState() => _CreatePetitionWidgetState();
+  State<CreatePetitionPage> createState() => _CreatePetitionPageState();
 }
 
-class _CreatePetitionWidgetState extends State<CreatePetitionWidget> {
+class _CreatePetitionPageState extends State<CreatePetitionPage> {
   final TextEditingController _controllerTarget = TextEditingController();
   String title = '', description = '', imagePath = '';
   bool isLoading = false;
@@ -70,7 +71,7 @@ class _CreatePetitionWidgetState extends State<CreatePetitionWidget> {
                                     target: target,
                                     category: category,
                                     memberId: member.id!,
-                                    communityId: 'member.id!',
+                                    communityId: widget.communityId,
                                     dateCreated: Timestamp.now());
                                 await DatabasePetition.uploadPetition(petition);
                                 if (context.mounted) {

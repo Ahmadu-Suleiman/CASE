@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/models/community.dart';
-import 'package:case_be_heard/shared/routes.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 class CommunityWidget extends StatelessWidget {
   final Community community;

@@ -46,10 +46,10 @@ class Routes {
   static const String mainCommunityPage = '/main-community-page';
   static const String chooseCommunityCase = '/choose-community-case';
 
-  static final router = GoRouter(initialLocation: Routes.wrapper, routes: [
+  static final router = GoRouter(initialLocation: wrapper, routes: [
     GoRoute(
         name: 'wrapper',
-        path: Routes.wrapper,
+        path: wrapper,
         builder: (context, state) => const Wrapper()),
     GoRoute(
         name: 'createCase',
@@ -88,12 +88,12 @@ class Routes {
         }),
     GoRoute(
       name: 'editMemberProfile',
-      path: Routes.editMemberProfile,
+      path: editMemberProfile,
       builder: (context, state) => const EditProfile(),
     ),
     GoRoute(
       name: 'profileImage',
-      path: Routes.profileImage,
+      path: profileImage,
       builder: (context, state) => const ProfileImage(),
     ),
     GoRoute(
@@ -140,23 +140,26 @@ class Routes {
         }),
     GoRoute(
         name: 'bookmarks',
-        path: Routes.bookmarks,
+        path: bookmarks,
         builder: (context, state) => const BookmarkWidget()),
     GoRoute(
         name: 'createPetition',
-        path: Routes.createPetition,
-        builder: (context, state) => const CreatePetitionWidget()),
+        path: '$createPetition/:communityId',
+        builder: (context, state) {
+          final communityId = state.pathParameters['communityId'];
+          return CreatePetitionPage(communityId: communityId!);
+        }),
     GoRoute(
         name: 'petitionPage',
-        path: Routes.petitionPage,
+        path: petitionPage,
         builder: (context, state) => const PetitionsPageWidget()),
     GoRoute(
         name: 'caseCatalog',
-        path: Routes.caseCatalog,
+        path: caseCatalog,
         builder: (context, state) => const CaseCatalog()),
     GoRoute(
         name: 'createCommunity',
-        path: Routes.createCommunity,
+        path: createCommunity,
         builder: (context, state) => const CreateCommunityWidget()),
     GoRoute(
         name: 'mainCommunityPage',
