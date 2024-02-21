@@ -28,7 +28,6 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
       PagingController(firstPageKey: null);
 
   String progress = CaseValues.investigationPending;
-  String address = '';
 
   @override
   void initState() {
@@ -62,109 +61,96 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
-    return FutureBuilder(
-        future: LocationService.getLocationAddressString(member.location),
-        builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-          if (snapshot.hasData) {
-            address = snapshot.data!;
-            return Scaffold(
-                appBar: AppBar(
-                    title: const Image(
-                      height: 80,
-                      width: 80,
-                      image: AssetImage('assets/case_logo_main.ico'),
-                    ),
-                    centerTitle: true,
-                    actions: [
-                      IconButton.filled(
-                        onPressed: () async {
-                          context.push(Routes.editMemberProfile);
-                        },
-                        icon: const Icon(Icons.edit),
-                      )
-                    ]),
-                body: RefreshIndicator(
-                    onRefresh: () async {
-                      _pagingController.refresh();
-                    },
-                    child: CustomScrollView(slivers: [
-                      SliverToBoxAdapter(
-                          child: Column(children: <Widget>[
-                        CachedAvatar(
-                            url: member.photoUrl,
-                            size: 60,
-                            onPressed: () => context.push(
-                                '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}')),
-                        Text(
-                          '${member.firstName} ${member.lastName}',
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black),
-                        ),
-                        IconText(icon: Icons.email, text: member.email),
-                        IconText(icon: Icons.phone, text: member.phoneNumber),
-                        IconText(icon: Icons.work, text: member.occupation),
-                        IconText(icon: Icons.location_on, text: address),
-                        Text(member.bio, maxLines: 4),
-                        SizedBox(
-                            width: double.infinity,
-                            child: SegmentedButton<String>(
-                                //fill horizontally
-                                showSelectedIcon: false,
-                                style: ButtonStyle(
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius
-                                      .zero, // This removes the curve
-                                ))),
-                                segments: const <ButtonSegment<String>>[
-                                  ButtonSegment<String>(
-                                    value: CaseValues.investigationPending,
-                                    label: Text(CaseValues.pending),
-                                  ),
-                                  ButtonSegment<String>(
-                                    value: CaseValues.investigationOngoing,
-                                    label: Text(CaseValues.ongoing),
-                                  ),
-                                  ButtonSegment<String>(
-                                      value: CaseValues.caseSolved,
-                                      label: Text(CaseValues.solved))
-                                ],
-                                selected: <String>{progress},
-                                onSelectionChanged: (Set<String> newSelection) {
-                                  setState(() {
-                                    progress = newSelection.first;
-                                    _pagingController.refresh();
-                                  });
-                                }))
-                      ])),
-                      PagedSliverList<DocumentSnapshot?, CaseRecord>(
-                          pagingController: _pagingController,
-                          builderDelegate:
-                              PagedChildBuilderDelegate<CaseRecord>(
-                                  itemBuilder: (context, item, index) =>
-                                      CaseCardEdit(
-                                          caseRecord: item,
-                                          update: () {
-                                            _pagingController.refresh();
-                                          }),
-                                  noItemsFoundIndicatorBuilder: (_) =>
-                                      const MesssageScreen(
-                                        message: 'No cases found',
-                                        icon: Icon(Icons.search_off),
-                                      ),
-                                  noMoreItemsIndicatorBuilder: (_) =>
-                                      const MesssageScreen(
-                                          message: 'No more cases found',
-                                          icon: Icon(Icons.search_off))))
-                    ])));
-          } else {
-            return const Loading();
-          }
-        });
+    return Scaffold(
+        appBar: AppBar(
+            title: const Image(
+              height: 80,
+              width: 80,
+              image: AssetImage('assets/case_logo_main.ico'),
+            ),
+            centerTitle: true,
+            actions: [
+              IconButton.filled(
+                onPressed: () async {
+                  context.push(Routes.editMemberProfile);
+                },
+                icon: const Icon(Icons.edit),
+              )
+            ]),
+        body: RefreshIndicator(
+            onRefresh: () async {
+              _pagingController.refresh();
+            },
+            child: CustomScrollView(slivers: [
+              SliverToBoxAdapter(
+                  child: Column(children: <Widget>[
+                CachedAvatar(
+                    url: member.photoUrl,
+                    size: 60,
+                    onPressed: () => context.push(
+                        '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}')),
+                Text(
+                  '${member.firstName} ${member.lastName}',
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 25.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black),
+                ),
+                IconText(icon: Icons.email, text: member.email),
+                IconText(icon: Icons.phone, text: member.phoneNumber),
+                IconText(icon: Icons.work, text: member.occupation),
+                IconText(icon: Icons.location_on, text: member.address),
+                Text(member.bio, maxLines: 4),
+                SizedBox(
+                    width: double.infinity,
+                    child: SegmentedButton<String>(
+                        //fill horizontally
+                        showSelectedIcon: false,
+                        style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.zero, // This removes the curve
+                        ))),
+                        segments: const <ButtonSegment<String>>[
+                          ButtonSegment<String>(
+                            value: CaseValues.investigationPending,
+                            label: Text(CaseValues.pending),
+                          ),
+                          ButtonSegment<String>(
+                            value: CaseValues.investigationOngoing,
+                            label: Text(CaseValues.ongoing),
+                          ),
+                          ButtonSegment<String>(
+                              value: CaseValues.caseSolved,
+                              label: Text(CaseValues.solved))
+                        ],
+                        selected: <String>{progress},
+                        onSelectionChanged: (Set<String> newSelection) {
+                          setState(() {
+                            progress = newSelection.first;
+                            _pagingController.refresh();
+                          });
+                        }))
+              ])),
+              PagedSliverList<DocumentSnapshot?, CaseRecord>(
+                  pagingController: _pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<CaseRecord>(
+                      itemBuilder: (context, item, index) => CaseCardEdit(
+                          caseRecord: item,
+                          update: () {
+                            _pagingController.refresh();
+                          }),
+                      noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
+                            message: 'No cases found',
+                            icon: Icon(Icons.search_off),
+                          ),
+                      noMoreItemsIndicatorBuilder: (_) => const MesssageScreen(
+                          message: 'No more cases found',
+                          icon: Icon(Icons.search_off))))
+            ])));
   }
 }

@@ -66,10 +66,13 @@ class DatabasePetition {
   static Future<void> fetchPetitions(
       {int limit = 10,
       DocumentSnapshot? pageKey,
-      required PagingController pagingController}) async {
+      required PagingController pagingController,
+      String? communityId}) async {
     QuerySnapshot querySnapshot;
     Query query = petitionCollection.orderBy('dateCreated', descending: true);
-
+    if (communityId != null) {
+      query = query.where('communityId', isEqualTo: communityId);
+    }
     if (pageKey != null) {
       querySnapshot =
           await query.startAfterDocument(pageKey).limit(limit).get();

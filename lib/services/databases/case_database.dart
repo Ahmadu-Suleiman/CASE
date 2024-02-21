@@ -104,7 +104,8 @@ class DatabaseCase {
       DocumentSnapshot? pageKey,
       required PagingController pagingController,
       String? progress,
-      String? memberId}) async {
+      String? memberId,
+      String? communityId}) async {
     QuerySnapshot querySnapshot;
     Query query = caseCollection.orderBy('dateCreated', descending: true);
     if (progress != null) {
@@ -112,6 +113,9 @@ class DatabaseCase {
     }
     if (memberId != null) {
       query = query.where('uidMember', isEqualTo: memberId);
+    }
+    if (communityId != null) {
+      query = query.where('communityId', isEqualTo: communityId);
     }
 
     if (pageKey != null) {
@@ -177,8 +181,7 @@ class DatabaseCase {
   }
 
   static Future<void> uploadCaseRecord(CaseRecord caseRecord) async {
-    DocumentReference caseRef =
-        await caseCollection.add(<String, dynamic>{}); 
+    DocumentReference caseRef = await caseCollection.add(<String, dynamic>{});
     String id = caseRef.id;
 
     caseRecord.dateCreated = Timestamp.now();

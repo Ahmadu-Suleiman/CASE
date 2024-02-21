@@ -1,3 +1,9 @@
+import 'package:case_be_heard/custom_widgets/case_card.dart';
+import 'package:case_be_heard/custom_widgets/petition_card.dart';
+import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/models/petition.dart';
+import 'package:case_be_heard/services/databases/case_database.dart';
+import 'package:case_be_heard/services/databases/petition_database.dart';
 import 'package:flutter/material.dart';
 import 'package:case_be_heard/custom_widgets/community_widget.dart';
 import 'package:case_be_heard/custom_widgets/message_screen.dart';
@@ -14,10 +20,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
 class CommunityMainWidget extends StatefulWidget {
-  final String state;
-  final String countryISO;
-  const CommunityMainWidget(
-      {super.key, required this.state, required this.countryISO});
+  final String communityId;
+  const CommunityMainWidget({super.key, required this.communityId});
 
   @override
   State<CommunityMainWidget> createState() => _CommunityMainWidgetState();
@@ -25,26 +29,38 @@ class CommunityMainWidget extends StatefulWidget {
 
 class _CommunityMainWidgetState extends State<CommunityMainWidget>
     with WidgetsBindingObserver {
-  final PagingController<DocumentSnapshot?, Community> _pagingController =
-      PagingController(firstPageKey: null);
+  final PagingController<DocumentSnapshot?, CaseRecord>
+      _pagingCaseRecordController = PagingController(firstPageKey: null);
+  final PagingController<DocumentSnapshot?, Petition>
+      _pagingPetitionController = PagingController(firstPageKey: null);
 
   @override
   void initState() {
-    _pagingController.addPageRequestListener((pageKey) {
-      WidgetsBinding.instance.addObserver(this);
-      DatabaseCommunity.fetchCommunities(
-          pagingController: _pagingController,
-          limit: 10,
-          pageKey: pageKey,
-          state: widget.state,
-          countryISO: widget.countryISO);
+    DatabaseCommunity.getCommunityById(widget.communityId).then((community) {
+      _pagingCaseRecordController.addPageRequestListener((pageKey) {
+        WidgetsBinding.instance.addObserver(this);
+        DatabaseCase.fetchCaseRecords(
+            pagingController: _pagingCaseRecordController,
+            limit: 10,
+            pageKey: pageKey,
+            communityId: community.id);
+      });
+      _pagingPetitionController.addPageRequestListener((pageKey) {
+        WidgetsBinding.instance.addObserver(this);
+        DatabaseCase.fetchCaseRecords(
+            pagingController: _pagingPetitionController,
+            limit: 10,
+            pageKey: pageKey,
+            communityId: community.id);
+      });
     });
     super.initState();
   }
 
   @override
   void dispose() {
-    _pagingController.dispose();
+    _pagingCaseRecordController.dispose();
+    _pagingPetitionController.dispose();
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -53,72 +69,72 @@ class _CommunityMainWidgetState extends State<CommunityMainWidget>
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
       // The app has come back to the foreground, refresh the PagedListView
-      _pagingController.refresh();
+      _pagingCaseRecordController.refresh();
+      _pagingCaseRecordController.refresh();
     }
   }
 
   @override
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
-    return Scaffold(
-        appBar: AppBar(
-            title: const Image(
-              height: 80,
-              width: 80,
-              image: AssetImage('assets/case_logo_main.ico'),
-            ),
-            centerTitle: true),
-        body: RefreshIndicator(
-            onRefresh: () async {
-              _pagingController.refresh();
-            },
-            child: CustomScrollView(slivers: [
+    return DefaultTabController(
+        length: 3,
+        child: Scaffold(
+          appBar: AppBar(
+              title: const Image(
+                height: 80,
+                width: 80,
+                image: AssetImage('assets/case_logo_main.ico'),
+              ),
+              bottom: const TabBar(tabs: [
+                Tab(text: "Information"),
+                Tab(text: "Cases"),
+                Tab(text: "Petitions")
+              ])),
+          body: CustomScrollView(
+            slivers: [
               SliverToBoxAdapter(
-                  child: Card(
-                      child: Column(children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: TabBarView(
                     children: [
-                      Text('${member.placemark.administrativeArea} state'),
-                      TextButton.icon(
-                          onPressed: () => context.push(Routes.createCommunity),
-                          icon: const Icon(Icons.add_circle),
-                          label: const Text('add community'))
-                    ]),
-                const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search communities',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.search),
+                      //TODO: add stuff
+                      PagedSliverList<DocumentSnapshot?, CaseRecord>(
+                          pagingController: _pagingCaseRecordController,
+                          builderDelegate:
+                              PagedChildBuilderDelegate<CaseRecord>(
+                                  itemBuilder: (context, item, index) =>
+                                      CaseCard(caseRecord: item),
+                                  noItemsFoundIndicatorBuilder: (_) =>
+                                      const MesssageScreen(
+                                        message: 'No cases found',
+                                        icon: Icon(Icons.search_off),
+                                      ),
+                                  noMoreItemsIndicatorBuilder: (_) =>
+                                      const MesssageScreen(
+                                          message: 'No more cases found',
+                                          icon: Icon(Icons.search_off)))),
+                      PagedSliverList<DocumentSnapshot?, Petition>(
+                          pagingController: _pagingPetitionController,
+                          builderDelegate: PagedChildBuilderDelegate<Petition>(
+                              itemBuilder: (context, petition, index) =>
+                                  PetitionCard(
+                                      petition: petition, member: member),
+                              noItemsFoundIndicatorBuilder: (_) =>
+                                  const MesssageScreen(
+                                    message: 'No cases found',
+                                    icon: Icon(Icons.search_off),
+                                  ),
+                              noMoreItemsIndicatorBuilder: (_) =>
+                                  const MesssageScreen(
+                                      message: 'No more cases found',
+                                      icon: Icon(Icons.search_off)))),
+                    ],
                   ),
                 ),
-                const Divider(),
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text('Communities'),
-                      TextButton(
-                          onPressed: () {},
-                          child: Text('view all states',
-                              style: TextStyle(color: Style.primaryColor)))
-                    ])
-              ]))),
-              PagedSliverGrid<DocumentSnapshot?, Community>(
-                pagingController: _pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Community>(
-                    itemBuilder: (context, community, index) =>
-                        CommunityWidget(community: community),
-                    noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
-                          message: 'No communities found',
-                          icon: Icon(Icons.search_off),
-                        )),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 100 / 150,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  crossAxisCount: 2,
-                ),
-              )
-            ])));
+              ),
+            ],
+          ),
+        ));
   }
 }

@@ -10,17 +10,20 @@ class Petition {
   String memberId;
   String category;
   Timestamp dateCreated;
+  late String communityId;
 
-  Petition(
-      {required this.id,
-      required this.title,
-      required this.description,
-      required this.image,
-      required this.signatoryIds,
-      required this.target,
-      required this.memberId,
-      required this.category,
-      required this.dateCreated});
+  Petition({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.image,
+    required this.signatoryIds,
+    required this.target,
+    required this.memberId,
+    required this.category,
+    required this.dateCreated,
+    required this.communityId,
+  });
 
   Petition.forUpload({
     required this.title,
@@ -31,6 +34,7 @@ class Petition {
     required this.memberId,
     required this.category,
     required this.dateCreated,
+    required this.communityId,
   });
 
   Map<String, dynamic> toMap() {
@@ -43,6 +47,7 @@ class Petition {
       'dateCreated': dateCreated,
       'target': target,
       'category': category,
+      'communityId': communityId,
     };
   }
 
@@ -57,6 +62,7 @@ class Petition {
       memberId: map['memberId'],
       dateCreated: map['dateCreated'],
       category: map['category'],
+      communityId: map['communityId'],
     );
   }
 }
