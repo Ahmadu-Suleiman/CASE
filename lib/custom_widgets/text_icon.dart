@@ -9,12 +9,14 @@ class IconText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      Icon(
-        icon,
-        color: Colors.blue,
-      ),
-      const SizedBox(width: 8), // Space between the icon and the text
-      Text(text, style: const TextStyle(fontSize: 14, color: Colors.blue))
+      Icon(icon, color: Colors.blue),
+      const SizedBox(width: 8),
+      Flexible(
+        child: Text(text,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: const TextStyle(fontSize: 14, color: Colors.blue)),
+      )
     ]);
   }
 }

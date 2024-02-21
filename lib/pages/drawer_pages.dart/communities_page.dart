@@ -85,12 +85,10 @@ class _CommunitiesWidgetState extends State<CommunitiesPageWidget>
                           label: const Text('add community'))
                     ]),
                 const TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search communities',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.search),
-                  ),
-                ),
+                    decoration: InputDecoration(
+                        hintText: 'Search communities',
+                        border: OutlineInputBorder(),
+                        prefixIcon: Icon(Icons.search))),
                 const Divider(),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,22 +100,14 @@ class _CommunitiesWidgetState extends State<CommunitiesPageWidget>
                               style: TextStyle(color: Style.primaryColor)))
                     ])
               ]))),
-              PagedSliverGrid<DocumentSnapshot?, Community>(
-                pagingController: _pagingController,
-                builderDelegate: PagedChildBuilderDelegate<Community>(
-                    itemBuilder: (context, community, index) =>
-                        CommunityWidget(community: community),
-                    noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
+              PagedSliverList<DocumentSnapshot?, Community>(
+                  pagingController: _pagingController,
+                  builderDelegate: PagedChildBuilderDelegate<Community>(
+                      itemBuilder: (context, community, index) =>
+                          CommunityWidget(community: community),
+                      noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
                           message: 'No communities found',
-                          icon: Icon(Icons.search_off),
-                        )),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 100 / 150,
-                  crossAxisSpacing: 10,
-                  mainAxisSpacing: 10,
-                  crossAxisCount: 2,
-                ),
-              )
+                          icon: Icon(Icons.search_off))))
             ])));
   }
 }

@@ -1,4 +1,5 @@
 import 'package:case_be_heard/custom_widgets/case_card.dart';
+import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/custom_widgets/petition_card.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/petition.dart';
@@ -19,15 +20,15 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-class CommunityMainWidget extends StatefulWidget {
+class CommunityMainPage extends StatefulWidget {
   final String communityId;
-  const CommunityMainWidget({super.key, required this.communityId});
+  const CommunityMainPage({super.key, required this.communityId});
 
   @override
-  State<CommunityMainWidget> createState() => _CommunityMainWidgetState();
+  State<CommunityMainPage> createState() => _CommunityMainPageState();
 }
 
-class _CommunityMainWidgetState extends State<CommunityMainWidget>
+class _CommunityMainPageState extends State<CommunityMainPage>
     with WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, CaseRecord>
       _pagingCaseRecordController = PagingController(firstPageKey: null);
@@ -77,29 +78,41 @@ class _CommunityMainWidgetState extends State<CommunityMainWidget>
   @override
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
-    return DefaultTabController(
-        length: 3,
-        child: Scaffold(
-          appBar: AppBar(
-              title: const Image(
-                height: 80,
-                width: 80,
-                image: AssetImage('assets/case_logo_main.ico'),
-              ),
-              bottom: const TabBar(tabs: [
-                Tab(text: "Information"),
-                Tab(text: "Cases"),
-                Tab(text: "Petitions")
-              ])),
-          body: CustomScrollView(
-            slivers: [
-              SliverToBoxAdapter(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: TabBarView(
-                    children: [
-                      //TODO: add stuff
-                      PagedSliverList<DocumentSnapshot?, CaseRecord>(
+
+    return StreamBuilder(
+        stream: DatabaseCommunity.getCommunity(widget.communityId),
+        builder: ((context, snapshot) {
+          if (snapshot.hasData) {
+            Community community = snapshot.data!;
+            return DefaultTabController(
+                length: 2,
+                child: Scaffold(
+                    appBar: AppBar(
+                        title: const Image(
+                          height: 80,
+                          width: 80,
+                          image: AssetImage('assets/case_logo_main.ico'),
+                        ),
+                        actions: <Widget>[
+                          IconButton(
+                              icon: const Icon(Icons.group_add),
+                              onPressed: () {
+                                // Add your logic here
+                              })
+                        ],
+                        bottom: const TabBar(tabs: [
+                          Tab(text: "Information"),
+                          Tab(text: "Cases"),
+                          Tab(text: "Petitions")
+                        ])),
+                    body: TabBarView(children: [
+                      ListView(children: [
+                        const Text('Community guidelines',
+                            style: TextStyle(
+                                fontSize: 35, fontWeight: FontWeight.bold)),
+                        SelectableText(community.regulations)
+                      ]),
+                      PagedListView<DocumentSnapshot?, CaseRecord>(
                           pagingController: _pagingCaseRecordController,
                           builderDelegate:
                               PagedChildBuilderDelegate<CaseRecord>(
@@ -114,7 +127,7 @@ class _CommunityMainWidgetState extends State<CommunityMainWidget>
                                       const MesssageScreen(
                                           message: 'No more cases found',
                                           icon: Icon(Icons.search_off)))),
-                      PagedSliverList<DocumentSnapshot?, Petition>(
+                      PagedListView<DocumentSnapshot?, Petition>(
                           pagingController: _pagingPetitionController,
                           builderDelegate: PagedChildBuilderDelegate<Petition>(
                               itemBuilder: (context, petition, index) =>
@@ -128,13 +141,10 @@ class _CommunityMainWidgetState extends State<CommunityMainWidget>
                               noMoreItemsIndicatorBuilder: (_) =>
                                   const MesssageScreen(
                                       message: 'No more cases found',
-                                      icon: Icon(Icons.search_off)))),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ));
+                                      icon: Icon(Icons.search_off))))
+                    ])));
+          }
+          return const Loading();
+        }));
   }
 }

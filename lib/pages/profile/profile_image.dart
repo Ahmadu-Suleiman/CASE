@@ -16,25 +16,27 @@ class _ProfileImageState extends State<ProfileImage> {
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
     String? photoUrl = member.photoUrl;
-    return Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-          image: CachedNetworkImageProvider(photoUrl),
-          fit: BoxFit.contain,
-        )),
-        child: Align(
-            alignment: Alignment.bottomCenter,
-            child: TextButton.icon(
-                onPressed: () async {
-                  Utility.pickandUpdateProfileImage(context, member);
-                },
-                icon: const Icon(Icons.image),
-                label: const Text('Change image',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.blue,
-                    )))));
+    return Scaffold(
+      body: Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+              image: DecorationImage(
+            image: CachedNetworkImageProvider(photoUrl),
+            fit: BoxFit.contain,
+          )),
+          child: Align(
+              alignment: Alignment.bottomCenter,
+              child: TextButton.icon(
+                  onPressed: () async {
+                    Utility.pickandUpdateProfileImage(context, member);
+                  },
+                  icon: const Icon(Icons.image),
+                  label: const Text('Change image',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.blue,
+                      ))))),
+    );
   }
 }

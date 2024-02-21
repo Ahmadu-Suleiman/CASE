@@ -8,14 +8,13 @@ class DatabaseCommunity {
   static final CollectionReference communityCollection =
       FirebaseFirestore.instance.collection('communities');
 
-  static Future<DocumentReference> uploadCommunityData(
-      Community community) async {
+  static Future<void> uploadCommunityData(Community community) async {
     DocumentReference communityRef =
         await communityCollection.add(<String, dynamic>{});
     String id = communityRef.id;
     community.image =
         await StorageService.uploadCommunityImage(id, community.image);
-    return await communityCollection.add({
+    return await communityCollection.doc(id).set({
       'name': community.name,
       'image': community.image,
       'state': community.state,
@@ -55,7 +54,7 @@ class DatabaseCommunity {
         description: snapshot['description'] ?? '',
         adminIds: Utility.stringList(snapshot, 'adminIds'),
         memberIds: Utility.stringList(snapshot, 'memberIds'),
-        regulations: Utility.stringList(snapshot, 'regulations'));
+        regulations: snapshot['regulations'] ?? '');
   }
 
   static Stream<List<Community?>> get communities {
@@ -64,11 +63,8 @@ class DatabaseCommunity {
     });
   }
 
-  static Stream<Community?>? getCommunity(String? stateId) {
-    return communityCollection
-        .doc(stateId)
-        .snapshots()
-        .map(_communityFromSnapshot);
+  static Stream<Community?>? getCommunity(String? id) {
+    return communityCollection.doc(id).snapshots().map(_communityFromSnapshot);
   }
 
   static Future<Community> getCommunityById(String stateId) async {

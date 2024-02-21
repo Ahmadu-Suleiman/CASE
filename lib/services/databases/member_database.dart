@@ -25,6 +25,7 @@ class DatabaseMember {
       'gender': member.gender,
       'bio': member.bio,
       'photoUrl': member.photoUrl,
+      'communityId': member.communityId,
       'communityIds': member.communityIds,
     });
   }

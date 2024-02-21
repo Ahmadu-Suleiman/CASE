@@ -15,7 +15,7 @@ class CommunityMember {
   List<String> bookmarkCaseIds = [];
   List<String> bookmarkPetitionIds = [];
   List<String> communityIds = [];
-  late String communityId;
+  String communityId = '';
   late GeoPoint location;
   late Placemark placemark;
   late String address;

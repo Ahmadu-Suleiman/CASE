@@ -70,6 +70,7 @@ class _CreatePetitionWidgetState extends State<CreatePetitionWidget> {
                                     target: target,
                                     category: category,
                                     memberId: member.id!,
+                                    communityId: 'member.id!',
                                     dateCreated: Timestamp.now());
                                 await DatabasePetition.uploadPetition(petition);
                                 if (context.mounted) {

@@ -60,7 +60,7 @@ class Utility {
       BuildContext context, CommunityMember member) async {
     XFile? imageFile = await _picker.pickImage(source: ImageSource.gallery);
     String? uid = member.id;
-    if (imageFile != null && uid != null && context.mounted ) {
+    if (imageFile != null && uid != null && context.mounted) {
       showSnackBar(context, 'Updating profile image');
       String link =
           await StorageService.uploadProfileImage(uid, File(imageFile.path));

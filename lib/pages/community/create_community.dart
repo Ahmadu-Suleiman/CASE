@@ -18,7 +18,7 @@ class CreateCommunityWidget extends StatefulWidget {
 }
 
 class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
-  String name = '', description = '', imagePath = '';
+  String name = '', description = '', regulations = '', imagePath = '';
   bool isLoading = false;
 
   @override
@@ -59,6 +59,7 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                                     adminIds: [member.id!],
                                     memberIds: [member.id!],
                                     description: description,
+                                    regulations: regulations,
                                     image: imagePath,
                                     state: member.placemark.administrativeArea!,
                                     countryISO:
@@ -147,11 +148,40 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                                         );
                                       } else {
                                         Utility.showSnackBar(context,
-                                            'Please add a title and some details first');
+                                            'Please add a name and some description first');
                                       }
                                     },
                                     icon: const Icon(Icons.lightbulb_outline)),
                                 hintText: 'Detailed description',
+                                border: const OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                  Radius.circular(8),
+                                ))),
+                            minLines: 10,
+                            maxLines: null,
+                            style: const TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            )),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                            initialValue: regulations,
+                            onChanged: (value) => regulations = value,
+                            decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                    onPressed: () {
+                                      if (name.isNotEmpty ||
+                                          description.isNotEmpty) {
+                                        CommunityHelper
+                                            .showRecommendedRegulations(context,
+                                                name, description, regulations);
+                                      } else {
+                                        Utility.showSnackBar(context,
+                                            'Please add a name and some description first');
+                                      }
+                                    },
+                                    icon: const Icon(Icons.lightbulb_outline)),
+                                hintText: 'Community guidelines',
                                 border: const OutlineInputBorder(
                                     borderRadius: BorderRadius.all(
                                   Radius.circular(8),

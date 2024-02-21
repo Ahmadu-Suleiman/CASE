@@ -7,7 +7,7 @@ class Community {
   List<String> adminIds;
   List<String> memberIds;
   String description;
-  List<String> regulations = [];
+  String regulations;
   String image;
   String state;
   String countryISO;
@@ -18,6 +18,7 @@ class Community {
       required this.adminIds,
       required this.memberIds,
       required this.description,
+      required this.regulations,
       required this.image,
       required this.state,
       required this.countryISO});

@@ -305,4 +305,11 @@ class CaseHelper {
   static bool isBookmark(CommunityMember member, CaseRecord caseRecord) {
     return member.bookmarkCaseIds.contains(caseRecord.id);
   }
+
+  static createCase(BuildContext context, CommunityMember member) {
+    if (member.communityId.isEmpty) {
+      context.push(Routes.communitiesPage);
+      Utility.showSnackBar(context, 'Choose community');
+    }
+  }
 }
