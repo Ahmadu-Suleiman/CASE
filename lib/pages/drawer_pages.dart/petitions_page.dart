@@ -25,11 +25,6 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
   @override
   void initState() {
     super.initState();
-    _pagingController.addPageRequestListener((pageKey) {
-      WidgetsBinding.instance.addObserver(this);
-      DatabasePetition.fetchPetitions(
-          pagingController: _pagingController, limit: 10, pageKey: pageKey);
-    });
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -52,6 +47,14 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
   @override
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
+    _pagingController.addPageRequestListener((pageKey) {
+      WidgetsBinding.instance.addObserver(this);
+      DatabasePetition.fetchPetitions(
+          pagingController: _pagingController,
+          limit: 10,
+          pageKey: pageKey,
+          communityIds: member.communityIds);
+    });
     return Scaffold(
         appBar: AppBar(
             title: const Text('Petitions'),
