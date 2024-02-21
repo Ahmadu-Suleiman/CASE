@@ -60,11 +60,11 @@ class DatabaseMember {
     });
   }
 
-  static Stream<Future<CommunityMember>?>? getMember(String? uid) {
+  static Stream<CommunityMember?>? getMember(String? uid) {
     return communityMemberCollection
         .doc(uid)
         .snapshots()
-        .map(_communityMemberFromSnapshot);
+        .asyncMap(_communityMemberFromSnapshot);
   }
 
   static Future<CommunityMember> getCommunityMember(String uid) async {
