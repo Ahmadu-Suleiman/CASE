@@ -106,4 +106,17 @@ class DatabaseCommunity {
       pagingController.appendLastPage(<Community>[]);
     }
   }
+
+  static Future<Set<String>> getUniqueStates(String countryISO) async {
+    QuerySnapshot querySnapshot = await communityCollection
+        .where('countryISO', isEqualTo: countryISO)
+        .get();
+    Set<String> uniqueStates = {};
+
+    for (var doc in querySnapshot.docs) {
+      String state = doc['state'];
+      uniqueStates.add(state);
+    }
+    return uniqueStates;
+  }
 }

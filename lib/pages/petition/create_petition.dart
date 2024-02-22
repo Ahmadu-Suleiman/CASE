@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/petition.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
 import 'package:case_be_heard/shared/petition_helper.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -39,9 +40,7 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                           child: Column(children: [
                         const Text('Create a new Petition',
                             style: TextStyle(
-                              fontSize: 35,
-                              fontWeight: FontWeight.bold,
-                            )),
+                                fontSize: 35, fontWeight: FontWeight.bold)),
                         const SizedBox(height: 20),
                         TextButton.icon(
                             onPressed: () async {
@@ -74,6 +73,8 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                                     communityId: widget.communityId,
                                     dateCreated: Timestamp.now());
                                 await DatabasePetition.uploadPetition(petition);
+                                await DatabaseMember.addCaseOrPetitionCommunity(
+                                    member, widget.communityId);
                                 if (context.mounted) {
                                   PetitionHelper.showNextSteps(
                                       context, title, description);
@@ -101,16 +102,13 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15.0),
-                              child: imagePath.isNotEmpty
-                                  ? Image.file(
-                                      File(imagePath),
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 250,
-                                    )
-                                  : Container(),
-                            )),
+                                borderRadius: BorderRadius.circular(15.0),
+                                child: imagePath.isNotEmpty
+                                    ? Image.file(File(imagePath),
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: 250)
+                                    : Container())),
                         const SizedBox(height: 20),
                         TextFormField(
                             initialValue: title,
@@ -130,14 +128,11 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                                     icon: const Icon(Icons.lightbulb_outline)),
                                 hintText: 'Petition title',
                                 border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)))),
                             maxLines: 1,
                             style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            )),
+                                fontSize: 18, color: Colors.black)),
                         const SizedBox(height: 20),
                         TextFormField(
                             initialValue: description,
@@ -149,10 +144,7 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                                           description.isNotEmpty) {
                                         PetitionHelper
                                             .showRecommendedDescription(
-                                          context,
-                                          title,
-                                          description,
-                                        );
+                                                context, title, description);
                                       } else {
                                         Utility.showSnackBar(context,
                                             'Please add a title and some details first');

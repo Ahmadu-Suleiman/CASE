@@ -82,7 +82,7 @@ class _CommunityMainPageState extends State<CommunityMainPage>
           if (snapshot.hasData) {
             Community community = snapshot.data!;
             return DefaultTabController(
-                length: 2,
+                length: 3,
                 child: Scaffold(
                     appBar: AppBar(
                         title: Text(community.name),
@@ -109,17 +109,11 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                               })
                         ],
                         bottom: const TabBar(tabs: [
-                          Tab(text: "Information"),
                           Tab(text: "Cases"),
-                          Tab(text: "Petitions")
+                          Tab(text: "Petitions"),
+                          Tab(text: "Information")
                         ])),
                     body: TabBarView(children: [
-                      ListView(children: [
-                        const Text('Community guidelines',
-                            style: TextStyle(
-                                fontSize: 35, fontWeight: FontWeight.bold)),
-                        SelectableText(community.regulations)
-                      ]),
                       PagedListView<DocumentSnapshot?, CaseRecord>(
                           pagingController: _pagingCaseRecordController,
                           builderDelegate:
@@ -149,7 +143,17 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                               noMoreItemsIndicatorBuilder: (_) =>
                                   const MesssageScreen(
                                       message: 'No more cases found',
-                                      icon: Icon(Icons.search_off))))
+                                      icon: Icon(Icons.search_off)))),
+                      ListView(padding: const EdgeInsets.all(8), children: [
+                        const Text('Community description',
+                            style: TextStyle(
+                                fontSize: 35, fontWeight: FontWeight.bold)),
+                        SelectableText(community.description),
+                        const Text('Community guidelines',
+                            style: TextStyle(
+                                fontSize: 35, fontWeight: FontWeight.bold)),
+                        SelectableText(community.regulations)
+                      ])
                     ])));
           }
           return const Loading();

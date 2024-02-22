@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/services/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:quiver/iterables.dart';
 
 class DatabasePetition {
   static final CollectionReference petitionCollection =
@@ -32,15 +31,8 @@ class DatabasePetition {
   static Future<List<Petition>> getPetitionsByIds(List<String> ids) async {
     List<Petition> caseRecords = [];
 
-    // Split the list into chunks of   10 or fewer
-    List<List<String>> chunks =
-        List.generate((ids.length / 10).ceil(), (index) {
-      int start = index * 10;
-      int end = min(start + 10, ids.length);
-      return ids.sublist(start, end);
-    });
+    List<List<String>> chunks = partition(ids, 10).toList();
 
-    // Query Firestore for each chunk and merge the results
     for (var chunk in chunks) {
       QuerySnapshot querySnapshot = await petitionCollection
           .where(FieldPath.documentId, whereIn: chunk)
@@ -76,41 +68,21 @@ class DatabasePetition {
       query = query.where('communityId', isEqualTo: communityId);
     }
     if (communityIds != null && communityIds.isNotEmpty) {
-      // Split communityIds into chunks of   10 and perform queries for each chunk
-      final chunks = List.generate(
-          (communityIds.length / 10).ceil(),
-          (index) => communityIds.sublist(
-              index * 10,
-              (index + 1) * 10 > communityIds.length
-                  ? communityIds.length
-                  : (index + 1) * 10));
-
-      // Initialize an empty list to hold all the results
-      List<QueryDocumentSnapshot> allResults = [];
-
-      for (var chunk in chunks) {
-        // Perform a query for each chunk and add the results to allResults
-        querySnapshot =
-            await query.where('communityId', whereIn: chunk).limit(limit).get();
-        allResults.addAll(querySnapshot.docs);
+      for (var communityId in communityIds) {
+        query = query.where('communityIds', arrayContains: communityId);
       }
-
-      // Handle the allResults here, e.g., update the pagingController
-      _handleQuerySnapshot(allResults, pagingController, limit);
-    } else {
-      if (pageKey != null) {
-        querySnapshot =
-            await query.startAfterDocument(pageKey).limit(limit).get();
-      } else {
-        querySnapshot = await query.limit(limit).get();
-      }
-
-      // Handle the querySnapshot here, e.g., update the pagingController
-      _handleQuerySnapshot(querySnapshot.docs, pagingController, limit);
     }
+
+    if (pageKey != null) {
+      querySnapshot =
+          await query.startAfterDocument(pageKey).limit(limit).get();
+    } else {
+      querySnapshot = await query.limit(limit).get();
+    }
+
+    _handleQuerySnapshot(querySnapshot.docs, pagingController, limit);
   }
 
-// Helper method to handle the pagination logic
   static void _handleQuerySnapshot(List<QueryDocumentSnapshot> docs,
       PagingController pagingController, int limit) async {
     if (docs.isNotEmpty) {

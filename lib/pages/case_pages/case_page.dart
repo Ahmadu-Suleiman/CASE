@@ -99,42 +99,27 @@ class _CasePageState extends State<CasePage> {
                                 child: ClipRRect(
                                     borderRadius: BorderRadius.circular(30.0),
                                     child: CachedNetworkImage(
-                                      imageUrl: caseRecord.mainImage,
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 250,
-                                    )))),
+                                        imageUrl: caseRecord.mainImage,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: 250)))),
                         const SizedBox(height: 20),
-                        Text(
-                            caseRecord
-                                .title, // Use the title if it's not null, otherwise use 'Case title' as a placeholder
+                        Text(caseRecord.title,
                             maxLines: 1,
-                            overflow: TextOverflow
-                                .ellipsis, // To handle long text that might exceed one line
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            )),
+                                fontSize: 18, color: Colors.black)),
                         const SizedBox(height: 20),
-                        Text(
-                            caseRecord
-                                .summary, // Use the shortDescription if it's not null, otherwise use 'Short description' as a placeholder
-                            maxLines:
-                                3, // Retain the maxLines property to limit the number of lines
-                            overflow: TextOverflow
-                                .ellipsis, // Handle text that might exceed three lines
+                        Text(caseRecord.summary,
+                            maxLines: 4,
+                            overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
-                              fontSize:
-                                  18, // Maintain the same font size as the original TextFormField
-                              color: Colors.black,
-                            ))
+                                fontSize: 18, color: Colors.black))
                       ])),
                       Text(
-                        caseRecord
-                            .details, // Use the detailedDescription if it's not null, otherwise use 'Detailed description' as a placeholder
+                        caseRecord.details,
                         style: const TextStyle(
-                          fontSize:
-                              18, // Maintain the same font size as the original TextFormField
+                          fontSize: 18,
                           color: Colors.black,
                         ),
                       ),

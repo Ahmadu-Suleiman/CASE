@@ -180,6 +180,15 @@ class DatabaseMember {
     return updatedBookmarks;
   }
 
+  static Future<void> addCaseOrPetitionCommunity(
+      CommunityMember member, String communityId) async {
+    String memberId = member.id!;
+    DocumentReference memberRef = communityMemberCollection.doc(memberId);
+    await memberRef.update({
+      'communityIds': FieldValue.arrayUnion([communityId])
+    });
+  }
+
   static Future<List<String>> addCommunity(
       CommunityMember member, Community community) async {
     String memberId = member.id!;

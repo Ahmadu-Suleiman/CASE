@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:case_be_heard/custom_widgets/case_card.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -70,35 +69,34 @@ class _HomePageState extends State<HomePage> {
                     padding: const EdgeInsets.only(left: 6),
                     children: <Widget>[
                       UserAccountsDrawerHeader(
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                        ),
-                        accountName: Text(
-                          Utility.getFirstAndlastName(member),
-                          style: const TextStyle(
-                              color: Colors.black, fontWeight: FontWeight.bold),
-                        ),
-                        accountEmail: Text(
-                          member.email,
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                        currentAccountPicture: CachedAvatar(
-                            url: member.photoUrl,
-                            size: 80,
-                            onPressed: () => context
-                                .push('${Routes.memberProfile}/${member.id}')),
-                      ),
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                          ),
+                          accountName: Text(
+                            Utility.getFirstAndlastName(member),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          accountEmail: Text(
+                            member.email,
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                          currentAccountPicture: CachedAvatar(
+                              url: member.photoUrl,
+                              size: 80,
+                              onPressed: () => context.push(
+                                  '${Routes.memberProfile}/${member.id}'))),
                       ListTile(
-                        title: const Text(
-                          'Case catalog',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        leading: const Icon(Icons.folder),
-                        onTap: () {
-                          context.push(Routes.caseCatalog);
-                          Navigator.pop(context);
-                        },
-                      ),
+                          title: const Text(
+                            'Case catalog',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          leading: const Icon(Icons.folder),
+                          onTap: () {
+                            context.push(Routes.caseCatalog);
+                            Navigator.pop(context);
+                          }),
                       ListTile(
                           title: const Text(
                             'Petitions',
@@ -126,11 +124,8 @@ class _HomePageState extends State<HomePage> {
                           ),
                           leading: const Icon(Icons.people),
                           onTap: () {
-                            context.pushNamed(Routes.communitiesPage,
-                                pathParameters: {
-                                  'state': member.placemark.administrativeArea!,
-                                  'countryISO': member.placemark.isoCountryCode!
-                                });
+                            Utility.communityRouter(
+                                context, Routes.communitiesPage, member);
                             Navigator.pop(context);
                           }),
                       ListTile(
@@ -209,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                       child: FloatingActionButton.large(
                           heroTag: null,
                           child: const Icon(Icons.article),
-                          onPressed: () => _chooseCommunity(
+                          onPressed: () => Utility.communityRouter(context,
                               Routes.chooseCommunityPetition, member)))),
               GestureDetector(
                 onLongPress: () =>
@@ -220,8 +215,8 @@ class _HomePageState extends State<HomePage> {
                   child: FloatingActionButton.large(
                       heroTag: null,
                       child: const Icon(Icons.insert_drive_file),
-                      onPressed: () =>
-                          _chooseCommunity(Routes.chooseCommunityCase, member)),
+                      onPressed: () => Utility.communityRouter(
+                          context, Routes.chooseCommunityCase, member)),
                 ),
               )
             ]),
@@ -247,7 +242,4 @@ class _HomePageState extends State<HomePage> {
     _pagingController.dispose();
     super.dispose();
   }
-
-  void _chooseCommunity(String page, CommunityMember member) => context.push(
-      '$page/${member.placemark.administrativeArea}/${member.placemark.isoCountryCode}');
 }

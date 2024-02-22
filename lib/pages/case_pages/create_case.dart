@@ -5,6 +5,7 @@ import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/video.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
+import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -104,6 +105,8 @@ class _CreateCaseState extends State<CreateCase> {
                                     audios: audios,
                                     links: links);
                                 await DatabaseCase.uploadCaseRecord(caseRecord);
+                                await DatabaseMember.addCaseOrPetitionCommunity(
+                                    member, widget.communityId);
                                 if (context.mounted) {
                                   CaseHelper.showNextSteps(context, title,
                                       detailedDescription, summary);

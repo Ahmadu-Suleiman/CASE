@@ -5,6 +5,7 @@ import 'package:case_be_heard/services/storage.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -82,4 +83,9 @@ class Utility {
     // If the snapshot does not exist, the data is null, or the field is not a list, return an empty list
     return [];
   }
+
+  static void communityRouter(
+          BuildContext context, String page, CommunityMember member) =>
+      context.push(
+          '$page/${member.placemark.administrativeArea}/${member.placemark.isoCountryCode}');
 }
