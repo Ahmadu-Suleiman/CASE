@@ -170,13 +170,10 @@ class DatabaseMember {
     await memberRef.update({
       'bookmarksPetition': FieldValue.arrayRemove([petitionId])
     });
-    // Fetch the updated document to get the new list of bookmarked petitions
     DocumentSnapshot updatedMemberDoc = await memberRef.get();
     List<dynamic> updatedBookmarkedPetitionIds =
         updatedMemberDoc.get('bookmarksPetition') ?? [];
-    // Convert the list of dynamic to a list of strings
     List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
-    // Return the updated list of bookmarked petition IDs
     return updatedBookmarks;
   }
 
@@ -197,13 +194,10 @@ class DatabaseMember {
     await memberRef.update({
       'communityIds': FieldValue.arrayUnion([communityId])
     });
-    // Fetch the updated document to get the new list of bookmarked petitions
     DocumentSnapshot updatedMemberDoc = await memberRef.get();
     List<dynamic> updatedCommunityIds =
         updatedMemberDoc.get('communityIds') ?? [];
-    // Convert the list of dynamic to a list of strings
     List<String> updatedCommunities = updatedCommunityIds.cast<String>();
-    // Return the updated list of bookmarked petition IDs
     return updatedCommunities;
   }
 
@@ -215,13 +209,10 @@ class DatabaseMember {
     await memberRef.update({
       'communityIds': FieldValue.arrayRemove([communityId])
     });
-    // Fetch the updated document to get the new list of bookmarked petitions
     DocumentSnapshot updatedMemberDoc = await memberRef.get();
     List<dynamic> updatedCommunityIds =
         updatedMemberDoc.get('communityIds') ?? [];
-    // Convert the list of dynamic to a list of strings
     List<String> updatedCommunities = updatedCommunityIds.cast<String>();
-    // Return the updated list of bookmarked petition IDs
     return updatedCommunities;
   }
 }
