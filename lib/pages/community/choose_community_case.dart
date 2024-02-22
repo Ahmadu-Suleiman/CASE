@@ -10,18 +10,18 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-class ChoseCaseCommunityPageWidget extends StatefulWidget {
+class ChooseCaseCommunityPageWidget extends StatefulWidget {
   final String state;
   final String countryISO;
-  const ChoseCaseCommunityPageWidget(
+  const ChooseCaseCommunityPageWidget(
       {super.key, required this.state, required this.countryISO});
 
   @override
-  State<ChoseCaseCommunityPageWidget> createState() =>
+  State<ChooseCaseCommunityPageWidget> createState() =>
       _CommunityCaseWidgetState();
 }
 
-class _CommunityCaseWidgetState extends State<ChoseCaseCommunityPageWidget>
+class _CommunityCaseWidgetState extends State<ChooseCaseCommunityPageWidget>
     with WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, Community> _pagingController =
       PagingController(firstPageKey: null);
@@ -74,7 +74,7 @@ class _CommunityCaseWidgetState extends State<ChoseCaseCommunityPageWidget>
               SliverToBoxAdapter(
                   child: Card(
                       child: Column(children: [
-                      const Text('Choose community for case',
+                const Text('Choose community for your case',
                     style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
@@ -94,14 +94,15 @@ class _CommunityCaseWidgetState extends State<ChoseCaseCommunityPageWidget>
                         border: OutlineInputBorder(),
                         prefixIcon: Icon(Icons.search))),
                 const Divider(),
-             
               ]))),
               PagedSliverList<DocumentSnapshot?, Community>(
                   pagingController: _pagingController,
                   builderDelegate: PagedChildBuilderDelegate<Community>(
                       itemBuilder: (context, community, index) =>
-                          CommunityWidget(community: community,onChoose: ()=>
-                                  context.replace('${Routes.createCase}/${community.id}')),
+                          CommunityWidget(
+                              community: community,
+                              onChoose: () => context.replace(
+                                  '${Routes.createCase}/${community.id}')),
                       noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
                           message: 'No communities found',
                           icon: Icon(Icons.search_off))))

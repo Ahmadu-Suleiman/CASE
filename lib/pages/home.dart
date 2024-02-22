@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:case_be_heard/custom_widgets/case_card.dart';
 import 'package:flutter_expandable_fab/flutter_expandable_fab.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -200,16 +201,16 @@ class _HomePageState extends State<HomePage> {
             ),
             children: [
               GestureDetector(
-                onLongPress: () =>
-                    Utility.showSnackBar(context, 'Create a petition'),
-                child: SizedBox(
-                    width: 60,
-                    height: 60,
-                    child: FloatingActionButton.large(
-                        heroTag: null,
-                        child: const Icon(Icons.article),
-                        onPressed: () => context.push(Routes.createPetition))),
-              ),
+                  onLongPress: () =>
+                      Utility.showSnackBar(context, 'Create a petition'),
+                  child: SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: FloatingActionButton.large(
+                          heroTag: null,
+                          child: const Icon(Icons.article),
+                          onPressed: () => _chooseCommunity(
+                              Routes.chooseCommunityPetition, member)))),
               GestureDetector(
                 onLongPress: () =>
                     Utility.showSnackBar(context, 'Create a case'),
@@ -219,7 +220,8 @@ class _HomePageState extends State<HomePage> {
                   child: FloatingActionButton.large(
                       heroTag: null,
                       child: const Icon(Icons.insert_drive_file),
-                      onPressed: () => context.push(Routes.createCase)),
+                      onPressed: () =>
+                          _chooseCommunity(Routes.chooseCommunityCase, member)),
                 ),
               )
             ]),
@@ -245,4 +247,7 @@ class _HomePageState extends State<HomePage> {
     _pagingController.dispose();
     super.dispose();
   }
+
+  void _chooseCommunity(String page, CommunityMember member) => context.push(
+      '$page/${member.placemark.administrativeArea}/${member.placemark.isoCountryCode}');
 }

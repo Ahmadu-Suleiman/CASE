@@ -5,6 +5,7 @@ import 'package:case_be_heard/pages/case_pages/create_case.dart';
 import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps.dart';
 import 'package:case_be_heard/pages/community/choose_community_case.dart';
+import 'package:case_be_heard/pages/community/choose_community_petition.dart';
 import 'package:case_be_heard/pages/community/community_main_page.dart';
 import 'package:case_be_heard/pages/community/create_community.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
@@ -45,6 +46,7 @@ class Routes {
   static const String createCommunity = '/create-community';
   static const String mainCommunityPage = '/main-community-page';
   static const String chooseCommunityCase = '/choose-community-case';
+  static const String chooseCommunityPetition = '/choose-community-petition';
 
   static final router = GoRouter(initialLocation: wrapper, routes: [
     GoRoute(
@@ -87,15 +89,13 @@ class Routes {
           return ProfileOthers(memberId: memberId!);
         }),
     GoRoute(
-      name: 'editMemberProfile',
-      path: editMemberProfile,
-      builder: (context, state) => const EditProfile(),
-    ),
+        name: 'editMemberProfile',
+        path: editMemberProfile,
+        builder: (context, state) => const EditProfile()),
     GoRoute(
-      name: 'profileImage',
-      path: profileImage,
-      builder: (context, state) => const ProfileImage(),
-    ),
+        name: 'profileImage',
+        path: profileImage,
+        builder: (context, state) => const ProfileImage()),
     GoRoute(
         name: 'casePhoto',
         path: '$casePhoto/:photoUrl',
@@ -169,8 +169,8 @@ class Routes {
           return CommunityMainPage(communityId: communityId!);
         }),
     GoRoute(
-        name: communitiesPage,
-        path: '/communitiesPage/:state/:countryISO',
+        name: 'communitiesPage',
+        path: '$communitiesPage/:state/:countryISO',
         builder: (context, state) {
           String communityState = state.pathParameters['state']!;
           String countryISO = state.pathParameters['countryISO']!;
@@ -183,8 +183,17 @@ class Routes {
         builder: (context, state) {
           String communityState = state.pathParameters['state']!;
           String countryISO = state.pathParameters['countryISO']!;
-          return ChoseCaseCommunityPageWidget(
+          return ChooseCaseCommunityPageWidget(
               state: communityState, countryISO: countryISO);
         }),
+    GoRoute(
+        name: 'chooseCommunityPetition',
+        path: '$chooseCommunityPetition/:state/:countryISO',
+        builder: (context, state) {
+          String communityState = state.pathParameters['state']!;
+          String countryISO = state.pathParameters['countryISO']!;
+          return ChoosePetitionCommunityPageWidget(
+              state: communityState, countryISO: countryISO);
+        })
   ]);
 }

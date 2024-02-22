@@ -10,19 +10,19 @@ import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
-class ChosePetitionCommunityPageWidget extends StatefulWidget {
+class ChoosePetitionCommunityPageWidget extends StatefulWidget {
   final String state;
   final String countryISO;
-  const ChosePetitionCommunityPageWidget(
+  const ChoosePetitionCommunityPageWidget(
       {super.key, required this.state, required this.countryISO});
 
   @override
-  State<ChosePetitionCommunityPageWidget> createState() =>
+  State<ChoosePetitionCommunityPageWidget> createState() =>
       _CommunityPetitionWidgetState();
 }
 
 class _CommunityPetitionWidgetState
-    extends State<ChosePetitionCommunityPageWidget>
+    extends State<ChoosePetitionCommunityPageWidget>
     with WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, Community> _pagingController =
       PagingController(firstPageKey: null);
@@ -75,7 +75,7 @@ class _CommunityPetitionWidgetState
               SliverToBoxAdapter(
                   child: Card(
                       child: Column(children: [
-                const Text('Choose community for case',
+                const Text('Choose community for your petiion',
                     style: TextStyle(
                       fontSize: 35,
                       fontWeight: FontWeight.bold,
