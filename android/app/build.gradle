@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 flutter.targetSdkVersion =  34
-flutter.compileSdkVersion =  34
+flutter.compileSdkVersion =   34
 
 
 android {
