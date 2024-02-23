@@ -116,7 +116,7 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                                             context, name, description);
                                       } else {
                                         Utility.showSnackBar(context,
-                                            'Please add a title and some details first');
+                                            'Please add a name and some details first');
                                       }
                                     },
                                     icon: const Icon(Icons.lightbulb_outline)),

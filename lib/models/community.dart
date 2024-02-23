@@ -22,6 +22,15 @@ class Community {
       required this.image,
       required this.state,
       required this.countryISO});
+  Community.forUpdate(
+      {required this.name,
+      required this.maintainerIds,
+      required this.memberIds,
+      required this.description,
+      required this.regulations,
+      required this.image,
+      required this.state,
+      required this.countryISO});
   Community(
       {required this.id,
       required this.name,
