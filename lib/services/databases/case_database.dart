@@ -219,7 +219,7 @@ class DatabaseCase {
     caseRecord.audios = await StorageService.updateCaseRecordAudios(
         caseRecord.id, caseRecord.audios);
 
-    await caseCollection.doc(caseRecord.id).update(caseRecord.toMap());
+    await caseCollection.doc(caseRecord.id).update(caseRecord.toMapUpdate());
   }
 
   static Future<void> deleteCaseRecord(CaseRecord caseRecord) async {

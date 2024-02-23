@@ -5,14 +5,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class CaseRecord {
   late String id;
   Timestamp dateCreated = Timestamp.now();
-  String uidMember;
+  late String uidMember;
   String title = '', details = '', summary = '', type, progress, mainImage = '';
   late CommunityMember member;
   late GeoPoint location;
   late List<String> photos, audios, links;
   late List<Video> videos;
   late List<String> viewIds, readIds;
-  String communityId;
+  late String communityId;
 
   CaseRecord(
       {required this.id,
@@ -50,8 +50,6 @@ class CaseRecord {
       required this.links});
   CaseRecord.forUpdate(
       {required this.id,
-      required this.uidMember,
-      required this.communityId,
       required this.title,
       required this.details,
       required this.summary,
@@ -69,6 +67,25 @@ class CaseRecord {
       'uidMember': uidMember,
       'communityId': communityId,
       'dateCreated': dateCreated,
+      'title': title,
+      'details': details,
+      'summary': summary,
+      'type': type,
+      'progress': progress,
+      'mainImage': mainImage,
+      'location': location,
+      'photos': photos,
+      'videos': videos.map((video) => video.videoUrl),
+      'thumbnails': videos.map((video) => video.thumbnailUrl),
+      'audios': audios,
+      'links': links,
+      'viewIds': viewIds,
+      'readIds': viewIds
+    };
+  }
+
+  Map<String, dynamic> toMapUpdate() {
+    return {
       'title': title,
       'details': details,
       'summary': summary,

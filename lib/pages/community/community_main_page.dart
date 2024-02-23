@@ -7,6 +7,7 @@ import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
 import 'package:case_be_heard/shared/community_helper.dart';
+import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:case_be_heard/custom_widgets/message_screen.dart';
@@ -14,6 +15,7 @@ import 'package:case_be_heard/models/community.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 
@@ -84,49 +86,42 @@ class _CommunityMainPageState extends State<CommunityMainPage>
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             Community community = snapshot.data!;
-            bool isCommunityMaintainer = community.maintainerIds.contains(member.id);
+            bool isCommunityMaintainer =
+                community.maintainerIds.contains(member.id);
             return DefaultTabController(
                 length: 3,
                 initialIndex: 0,
                 child: Scaffold(
                     appBar: AppBar(
                         title: Text(community.name),
-                        actions: <Widget>[isCommunityMaintainer?IconButton(
-                              icon: const Icon(Icons.settings),
-                              onPressed: () async {
-                                if (CommunityHelper.isCommunityMember(
-                                    member, community)) {
-                                  await DatabaseMember.removeCommunity(
+                        actions: <Widget>[
+                          isCommunityMaintainer
+                              ? IconButton(
+                                  icon: const Icon(Icons.settings),
+                                  onPressed: () => context.push(
+                                      '${Routes.communitySettings}/${community.id}'))
+                              : IconButton(
+                                  icon: const Icon(Icons.group_add),
+                                  color: CommunityHelper.isCommunityMember(
                                           member, community)
-                                      .then((communityIds) => setState(() =>
-                                          member.communityIds = communityIds));
-                                } else {
-                                  await DatabaseMember.addCommunity(
-                                          member, community)
-                                      .then((communityIds) => setState(() =>
-                                          member.communityIds = communityIds));
-                                }
-                              }):
-                          IconButton(
-                              icon: const Icon(Icons.group_add),
-                              color: CommunityHelper.isCommunityMember(
-                                      member, community)
-                                  ? Style.primaryColor
-                                  : Colors.black,
-                              onPressed: () async {
-                                if (CommunityHelper.isCommunityMember(
-                                    member, community)) {
-                                  await DatabaseMember.removeCommunity(
-                                          member, community)
-                                      .then((communityIds) => setState(() =>
-                                          member.communityIds = communityIds));
-                                } else {
-                                  await DatabaseMember.addCommunity(
-                                          member, community)
-                                      .then((communityIds) => setState(() =>
-                                          member.communityIds = communityIds));
-                                }
-                              })
+                                      ? Style.primaryColor
+                                      : Colors.black,
+                                  onPressed: () async {
+                                    if (CommunityHelper.isCommunityMember(
+                                        member, community)) {
+                                      await DatabaseMember.removeCommunity(
+                                              member, community)
+                                          .then((communityIds) => setState(() =>
+                                              member.communityIds =
+                                                  communityIds));
+                                    } else {
+                                      await DatabaseMember.addCommunity(
+                                              member, community)
+                                          .then((communityIds) => setState(() =>
+                                              member.communityIds =
+                                                  communityIds));
+                                    }
+                                  })
                         ],
                         bottom: TabBar(controller: _tabController, tabs: const [
                           Tab(text: "Cases"),

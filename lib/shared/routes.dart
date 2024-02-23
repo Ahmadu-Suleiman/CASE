@@ -7,6 +7,7 @@ import 'package:case_be_heard/pages/case_pages/next_steps.dart';
 import 'package:case_be_heard/pages/community/choose_community_case.dart';
 import 'package:case_be_heard/pages/community/choose_community_petition.dart';
 import 'package:case_be_heard/pages/community/communities_from_state.dart';
+import 'package:case_be_heard/pages/community/comunity_settings.dart';
 import 'package:case_be_heard/pages/community/states_for_communities.dart';
 import 'package:case_be_heard/pages/community/community_main_page.dart';
 import 'package:case_be_heard/pages/community/create_community.dart';
@@ -51,6 +52,7 @@ class Routes {
   static const String chooseCommunityPetition = '/choose-community-petition';
   static const String statesForCommunities = '/state-for-communities';
   static const String communitiesFromState = '/communities-from-state';
+  static const String communitySettings = '/community-settings';
 
   static final router = GoRouter(initialLocation: wrapper, routes: [
     GoRoute(
@@ -214,6 +216,13 @@ class Routes {
           String countryISO = state.pathParameters['countryISO']!;
           return CommunitiesFromStatePage(
               state: communityState, countryISO: countryISO);
+        }),
+    GoRoute(
+        name: 'communitySettings',
+        path: '$communitySettings/:communityId',
+        builder: (context, state) {
+          final communityId = state.pathParameters['communityId'];
+          return CommunitySettingsPage(communityId: communityId!);
         })
   ]);
 }

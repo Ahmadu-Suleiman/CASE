@@ -21,7 +21,7 @@ class CommunitySettingsPage extends StatefulWidget {
 class _CommunitySettingsPageState extends State<CommunitySettingsPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  String name = '', description = '', regulations = '', imagePath = '';
+  String imagePath = '';
   bool isLoading = false;
 
   @override
@@ -40,14 +40,12 @@ class _CommunitySettingsPageState extends State<CommunitySettingsPage>
               if (snapshot.hasData) {
                 Community community = snapshot.data!;
                 imagePath = community.image;
-                TextEditingController nameController = TextEditingController();
-                TextEditingController descriptionController =
-                    TextEditingController();
-                TextEditingController regulationsController =
-                    TextEditingController();
-                nameController.text = community.name;
-                descriptionController.text = community.description;
-                regulationsController.text = community.regulations;
+                TextEditingController name = TextEditingController();
+                TextEditingController description = TextEditingController();
+                TextEditingController regulations = TextEditingController();
+                name.text = community.name;
+                description.text = community.description;
+                regulations.text = community.regulations;
 
                 return Scaffold(
                     appBar: AppBar(
@@ -65,24 +63,20 @@ class _CommunitySettingsPageState extends State<CommunitySettingsPage>
                               AsyncSnapshot<List<CommunityMember>> snapshot) {
                             if (snapshot.hasData) {
                               final members = snapshot.data!;
-                              return Scaffold(
-                                  appBar: AppBar(
-                                      title:
-                                          const Text('Community maintainance')),
-                                  body: ListView(children: [
-                                    const TextField(
-                                        decoration: InputDecoration(
-                                            hintText: 'Search members',
-                                            border: OutlineInputBorder(),
-                                            prefixIcon: Icon(Icons.search))),
-                                    ...members.map((member) =>
-                                        CommunityMaintainerWidget(
-                                            community: community,
-                                            member: member,
-                                            onChange: (maintainers) => setState(
-                                                () => community.maintainerIds =
-                                                    maintainers)))
-                                  ]));
+                              return ListView(children: [
+                                const TextField(
+                                    decoration: InputDecoration(
+                                        hintText: 'Search members',
+                                        border: OutlineInputBorder(),
+                                        prefixIcon: Icon(Icons.search))),
+                                ...members.map((member) =>
+                                    CommunityMaintainerWidget(
+                                        community: community,
+                                        member: member,
+                                        onChange: (maintainers) => setState(
+                                            () => community.maintainerIds =
+                                                maintainers)))
+                              ]);
                             } else {
                               return const Loading();
                             }
@@ -90,10 +84,10 @@ class _CommunitySettingsPageState extends State<CommunitySettingsPage>
                       ListView(children: [
                         TextButton.icon(
                             onPressed: () async {
-                              if (name.isEmpty) {
+                              if (name.text.isEmpty) {
                                 Utility.showSnackBar(
                                     context, 'Please add title');
-                              } else if (description.isEmpty) {
+                              } else if (description.text.isEmpty) {
                                 Utility.showSnackBar(
                                     context, 'Please add the details');
                               } else if (imagePath.isEmpty) {
@@ -103,11 +97,12 @@ class _CommunitySettingsPageState extends State<CommunitySettingsPage>
                                 setState(() => isLoading = true);
                                 Community communityForUpdate =
                                     Community.forUpdate(
-                                        name: name,
+                                        id: community.id,
+                                        name: name.text,
                                         maintainerIds: community.maintainerIds,
                                         memberIds: community.memberIds,
-                                        description: description,
-                                        regulations: regulations,
+                                        description: description.text,
+                                        regulations: regulations.text,
                                         image: imagePath,
                                         state: community.state,
                                         countryISO: community.countryISO);
@@ -153,16 +148,16 @@ class _CommunitySettingsPageState extends State<CommunitySettingsPage>
                                             height: 250))),
                         const SizedBox(height: 20),
                         TextFormField(
-                            controller: nameController,
-                            initialValue: name,
-                            onChanged: (value) => name = value,
+                            controller: name,
                             decoration: InputDecoration(
                                 suffixIcon: IconButton(
                                     onPressed: () {
-                                      if (name.isNotEmpty ||
-                                          description.isNotEmpty) {
+                                      if (name.text.isNotEmpty ||
+                                          description.text.isNotEmpty) {
                                         CommunityHelper.showRecommendedName(
-                                            context, name, description);
+                                            context,
+                                            name.text,
+                                            description.text);
                                       } else {
                                         Utility.showSnackBar(context,
                                             'Please add a name and some details first');
@@ -179,17 +174,15 @@ class _CommunitySettingsPageState extends State<CommunitySettingsPage>
                                 fontSize: 18, color: Colors.black)),
                         const SizedBox(height: 20),
                         TextFormField(
-                            controller: descriptionController,
-                            initialValue: description,
-                            onChanged: (value) => description = value,
+                            controller: description,
                             decoration: InputDecoration(
                                 suffixIcon: IconButton(
                                     onPressed: () {
-                                      if (name.isNotEmpty ||
-                                          description.isNotEmpty) {
+                                      if (name.text.isNotEmpty ||
+                                          description.text.isNotEmpty) {
                                         CommunityHelper
-                                            .showRecommendedDescription(
-                                                context, name, description);
+                                            .showRecommendedDescription(context,
+                                                name.text, description.text);
                                       } else {
                                         Utility.showSnackBar(context,
                                             'Please add a name and some description first');
@@ -207,17 +200,18 @@ class _CommunitySettingsPageState extends State<CommunitySettingsPage>
                                 fontSize: 18, color: Colors.black)),
                         const SizedBox(height: 20),
                         TextFormField(
-                            controller: regulationsController,
-                            initialValue: regulations,
-                            onChanged: (value) => regulations = value,
+                            controller: regulations,
                             decoration: InputDecoration(
                                 suffixIcon: IconButton(
                                     onPressed: () {
-                                      if (name.isNotEmpty ||
-                                          description.isNotEmpty) {
+                                      if (name.text.isNotEmpty ||
+                                          description.text.isNotEmpty) {
                                         CommunityHelper
-                                            .showRecommendedRegulations(context,
-                                                name, description, regulations);
+                                            .showRecommendedRegulations(
+                                                context,
+                                                name.text,
+                                                description.text,
+                                                regulations.text);
                                       } else {
                                         Utility.showSnackBar(context,
                                             'Please add a name and some description first');
@@ -226,9 +220,8 @@ class _CommunitySettingsPageState extends State<CommunitySettingsPage>
                                     icon: const Icon(Icons.lightbulb_outline)),
                                 hintText: 'Community guidelines',
                                 border: const OutlineInputBorder(
-                                    borderRadius: BorderRadius.all(
-                                  Radius.circular(8),
-                                ))),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)))),
                             minLines: 10,
                             maxLines: null,
                             style: const TextStyle(

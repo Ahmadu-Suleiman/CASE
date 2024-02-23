@@ -31,14 +31,13 @@ class DatabaseCommunity {
   static Future<void> updateCommunityData(Community community) async {
     community.image = await StorageService.updateCommunityImage(
         community.id, community.image);
-    return await communityCollection.doc(community.id).set({
+    return await communityCollection.doc(community.id).update({
       'name': community.name,
       'image': community.image,
       'state': community.state,
       'countryISO': community.countryISO,
       'maintainerIds': community.maintainerIds,
       'memberIds': community.memberIds,
-      'dateCreated': community.dateCreated,
       'description': community.description,
       'regulations': community.regulations
     });
