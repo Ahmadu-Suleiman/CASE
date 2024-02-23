@@ -26,7 +26,9 @@ class CommunityMainPage extends StatefulWidget {
 }
 
 class _CommunityMainPageState extends State<CommunityMainPage>
-    with WidgetsBindingObserver {
+    with WidgetsBindingObserver, SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
   final PagingController<DocumentSnapshot?, CaseRecord>
       _pagingCaseRecordController = PagingController(firstPageKey: null);
   final PagingController<DocumentSnapshot?, Petition>
@@ -34,6 +36,7 @@ class _CommunityMainPageState extends State<CommunityMainPage>
 
   @override
   void initState() {
+    _tabController = TabController(length: 3, vsync: this);
     DatabaseCommunity.getCommunityById(widget.communityId).then((community) {
       _pagingCaseRecordController.addPageRequestListener((pageKey) {
         WidgetsBinding.instance.addObserver(this);
@@ -57,6 +60,7 @@ class _CommunityMainPageState extends State<CommunityMainPage>
 
   @override
   void dispose() {
+    _tabController.dispose();
     _pagingCaseRecordController.dispose();
     _pagingPetitionController.dispose();
     WidgetsBinding.instance.removeObserver(this);
@@ -75,18 +79,34 @@ class _CommunityMainPageState extends State<CommunityMainPage>
   @override
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
-
     return StreamBuilder(
         stream: DatabaseCommunity.getCommunity(widget.communityId),
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             Community community = snapshot.data!;
+            bool isCommunityMaintainer = community.maintainerIds.contains(member.id);
             return DefaultTabController(
                 length: 3,
+                initialIndex: 0,
                 child: Scaffold(
                     appBar: AppBar(
                         title: Text(community.name),
-                        actions: <Widget>[
+                        actions: <Widget>[isCommunityMaintainer?IconButton(
+                              icon: const Icon(Icons.settings),
+                              onPressed: () async {
+                                if (CommunityHelper.isCommunityMember(
+                                    member, community)) {
+                                  await DatabaseMember.removeCommunity(
+                                          member, community)
+                                      .then((communityIds) => setState(() =>
+                                          member.communityIds = communityIds));
+                                } else {
+                                  await DatabaseMember.addCommunity(
+                                          member, community)
+                                      .then((communityIds) => setState(() =>
+                                          member.communityIds = communityIds));
+                                }
+                              }):
                           IconButton(
                               icon: const Icon(Icons.group_add),
                               color: CommunityHelper.isCommunityMember(
@@ -108,12 +128,12 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                                 }
                               })
                         ],
-                        bottom: const TabBar(tabs: [
+                        bottom: TabBar(controller: _tabController, tabs: const [
                           Tab(text: "Cases"),
                           Tab(text: "Petitions"),
                           Tab(text: "Information")
                         ])),
-                    body: TabBarView(children: [
+                    body: TabBarView(controller: _tabController, children: [
                       PagedListView<DocumentSnapshot?, CaseRecord>(
                           pagingController: _pagingCaseRecordController,
                           builderDelegate:
@@ -137,12 +157,12 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                                       petition: petition, member: member),
                               noItemsFoundIndicatorBuilder: (_) =>
                                   const MesssageScreen(
-                                    message: 'No cases found',
+                                    message: 'No petitions found',
                                     icon: Icon(Icons.search_off),
                                   ),
                               noMoreItemsIndicatorBuilder: (_) =>
                                   const MesssageScreen(
-                                      message: 'No more cases found',
+                                      message: 'No more petitions found',
                                       icon: Icon(Icons.search_off)))),
                       ListView(padding: const EdgeInsets.all(8), children: [
                         const Text('Community description',

@@ -56,7 +56,7 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                                 Community community = Community.forUpload(
                                     name: name,
                                     dateCreated: Timestamp.now(),
-                                    adminIds: [member.id!],
+                                    maintainerIds: [member.id!],
                                     memberIds: [member.id!],
                                     description: description,
                                     regulations: regulations,
@@ -94,16 +94,15 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                         Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: ClipRRect(
-                              borderRadius: BorderRadius.circular(15.0),
-                              child: imagePath.isNotEmpty
-                                  ? Image.file(
-                                      File(imagePath),
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                      height: 250,
-                                    )
-                                  : Container(),
-                            )),
+                                borderRadius: BorderRadius.circular(15.0),
+                                child: imagePath.isNotEmpty
+                                    ? Image.file(
+                                        File(imagePath),
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: 250,
+                                      )
+                                    : Container())),
                         const SizedBox(height: 20),
                         TextFormField(
                             initialValue: name,

@@ -6,6 +6,8 @@ import 'package:case_be_heard/pages/case_pages/edit_case.dart';
 import 'package:case_be_heard/pages/case_pages/next_steps.dart';
 import 'package:case_be_heard/pages/community/choose_community_case.dart';
 import 'package:case_be_heard/pages/community/choose_community_petition.dart';
+import 'package:case_be_heard/pages/community/communities_from_state.dart';
+import 'package:case_be_heard/pages/community/states_for_communities.dart';
 import 'package:case_be_heard/pages/community/community_main_page.dart';
 import 'package:case_be_heard/pages/community/create_community.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
@@ -47,6 +49,8 @@ class Routes {
   static const String mainCommunityPage = '/main-community-page';
   static const String chooseCommunityCase = '/choose-community-case';
   static const String chooseCommunityPetition = '/choose-community-petition';
+  static const String statesForCommunities = '/state-for-communities';
+  static const String communitiesFromState = '/communities-from-state';
 
   static final router = GoRouter(initialLocation: wrapper, routes: [
     GoRoute(
@@ -193,6 +197,22 @@ class Routes {
           String communityState = state.pathParameters['state']!;
           String countryISO = state.pathParameters['countryISO']!;
           return ChoosePetitionCommunityPageWidget(
+              state: communityState, countryISO: countryISO);
+        }),
+    GoRoute(
+        name: 'statesForCommunities',
+        path: '$statesForCommunities/:countryISO',
+        builder: (context, state) {
+          String countryISO = state.pathParameters['countryISO']!;
+          return StatesForCommunitiesPage(countryISO: countryISO);
+        }),
+    GoRoute(
+        name: 'communitiesFromState',
+        path: '$communitiesFromState/:state/:countryISO',
+        builder: (context, state) {
+          String communityState = state.pathParameters['state']!;
+          String countryISO = state.pathParameters['countryISO']!;
+          return CommunitiesFromStatePage(
               state: communityState, countryISO: countryISO);
         })
   ]);

@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:case_be_heard/custom_widgets/text_icon.dart';
 import 'package:case_be_heard/models/community.dart';
 import 'package:flutter/material.dart';
 
@@ -41,12 +42,7 @@ class CommunityWidget extends StatelessWidget {
                               const Icon(Icons.people),
                               Text(community.memberIds.length.toString())
                             ]),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.location_on),
-                              Text(community.state)
-                            ])
+                        IconText(icon: Icons.place, text: community.state)
                       ])
                 ]))));
   }

@@ -8,15 +8,18 @@ class IconText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      Icon(icon, color: Colors.blue),
-      const SizedBox(width: 8),
-      Flexible(
-        child: Text(text,
-            overflow: TextOverflow.ellipsis,
-            maxLines: 1,
-            style: const TextStyle(fontSize: 14, color: Colors.blue)),
-      )
-    ]);
+    return Row(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Icon(icon, color: Colors.blue),
+          const SizedBox(width: 8),
+          Flexible(
+            child: Text(text,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+                style: const TextStyle(fontSize: 14, color: Colors.blue)),
+          )
+        ]);
   }
 }

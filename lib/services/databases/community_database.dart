@@ -1,3 +1,4 @@
+import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:case_be_heard/models/community.dart';
@@ -19,7 +20,7 @@ class DatabaseCommunity {
       'image': community.image,
       'state': community.state,
       'countryISO': community.countryISO,
-      'adminIds': community.adminIds,
+      'maintainerIds': community.maintainerIds,
       'memberIds': community.memberIds,
       'dateCreated': community.dateCreated,
       'description': community.description,
@@ -35,7 +36,7 @@ class DatabaseCommunity {
       'image': community.image,
       'state': community.state,
       'countryISO': community.countryISO,
-      'adminIds': community.adminIds,
+      'maintainerIds': community.maintainerIds,
       'memberIds': community.memberIds,
       'dateCreated': community.dateCreated,
       'description': community.description,
@@ -52,7 +53,7 @@ class DatabaseCommunity {
         countryISO: snapshot['countryISO'] ?? '',
         dateCreated: snapshot['dateCreated'],
         description: snapshot['description'] ?? '',
-        adminIds: Utility.stringList(snapshot, 'adminIds'),
+        maintainerIds: Utility.stringList(snapshot, 'maintainerIds'),
         memberIds: Utility.stringList(snapshot, 'memberIds'),
         regulations: snapshot['regulations'] ?? '');
   }
@@ -118,5 +119,41 @@ class DatabaseCommunity {
       uniqueStates.add(state);
     }
     return uniqueStates;
+  }
+
+  static Future<List<String>> addMaintainer(
+      Community community, CommunityMember member) async {
+    String memberId = member.id!;
+    String communityId = community.id;
+    DocumentReference communityRef = communityCollection.doc(communityId);
+    await communityRef.update({
+      'maintainerIds': FieldValue.arrayUnion([memberId])
+    });
+    // Fetch the updated document to get the new list of bookmarked petitions
+    DocumentSnapshot updatedCommunityDoc = await communityRef.get();
+    List<dynamic> updatedMaintainerIds =
+        updatedCommunityDoc.get('maintainerIds') ?? [];
+    // Convert the list of dynamic to a list of strings
+    List<String> updatedMaintainers = updatedMaintainerIds.cast<String>();
+    // Return the updated list of bookmarked petition IDs
+    return updatedMaintainers;
+  }
+
+  static Future<List<String>> removeMaintainer(
+      Community community, CommunityMember member) async {
+    String memberId = member.id!;
+    String communityId = community.id;
+    DocumentReference communityRef = communityCollection.doc(communityId);
+    await communityRef.update({
+      'maintainerIds': FieldValue.arrayRemove([memberId])
+    });
+    // Fetch the updated document to get the new list of bookmarked petitions
+    DocumentSnapshot updatedCommunityDoc = await communityRef.get();
+    List<dynamic> updatedMaintainerIds =
+        updatedCommunityDoc.get('maintainerIds') ?? [];
+    // Convert the list of dynamic to a list of strings
+    List<String> updatedMaintainers = updatedMaintainerIds.cast<String>();
+    // Return the updated list of bookmarked petition IDs
+    return updatedMaintainers;
   }
 }

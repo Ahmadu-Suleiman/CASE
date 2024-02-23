@@ -94,7 +94,8 @@ class _CommunitiesWidgetState extends State<CommunitiesPageWidget>
                     children: [
                       const Text('Communities'),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () => context.push(
+                              '${Routes.statesForCommunities}/${widget.countryISO}'),
                           child: Text('view all states',
                               style: TextStyle(color: Style.primaryColor)))
                     ])

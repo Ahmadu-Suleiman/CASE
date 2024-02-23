@@ -110,11 +110,12 @@ class _EditCaseState extends State<EditCase> {
                                         String type =
                                             await CaseHelper.getCaseCategory(
                                                 title, details, summary);
-                                        CaseRecord caseRecord =
+                                        CaseRecord caseRecordUpload =
                                             CaseRecord.forUpdate(
                                                 id: uidCase!,
-                                                uidMember: member.id!,
-                                                communityId: member.communityId,
+                                                uidMember: caseRecord.id,
+                                                communityId:
+                                                    caseRecord.communityId,
                                                 title: title,
                                                 summary: summary,
                                                 details: details,
@@ -127,7 +128,7 @@ class _EditCaseState extends State<EditCase> {
                                                 audios: audios,
                                                 links: links);
                                         await DatabaseCase.updateCaseRecord(
-                                            caseRecord);
+                                            caseRecordUpload);
                                         if (context.mounted) {
                                           CaseHelper.showNextSteps(
                                               context, title, details, summary);

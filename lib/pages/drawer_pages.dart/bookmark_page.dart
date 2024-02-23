@@ -38,15 +38,10 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
     CommunityMember member = context.watch<CommunityMember>();
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Bookmark'),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: const [
-              Tab(text: 'Cases'),
-              Tab(text: 'Petitions'),
-            ],
-          ),
-        ),
+            title: const Text('Bookmark'),
+            bottom: TabBar(
+                controller: _tabController,
+                tabs: const [Tab(text: 'Cases'), Tab(text: 'Petitions')])),
         body: TabBarView(controller: _tabController, children: [
           FutureBuilder<List<CaseRecord>>(
               future: DatabaseCase.getCaseRecordsByIds(member.bookmarkCaseIds),

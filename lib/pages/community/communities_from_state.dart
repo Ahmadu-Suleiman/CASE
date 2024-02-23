@@ -1,7 +1,6 @@
 import 'package:case_be_heard/custom_widgets/community_widget.dart';
 import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/models/community.dart';
-import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
@@ -9,19 +8,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:provider/provider.dart';
 
-class CommunitiesPageFromStateWidget extends StatefulWidget {
+class CommunitiesFromStatePage extends StatefulWidget {
   final String state;
   final String countryISO;
-  const CommunitiesPageFromStateWidget(
+  const CommunitiesFromStatePage(
       {super.key, required this.state, required this.countryISO});
 
   @override
-  State<CommunitiesPageFromStateWidget> createState() => _CommunitiesWidgetFromStateState();
+  State<CommunitiesFromStatePage> createState() => _CommunityFromStateState();
 }
 
-class _CommunitiesWidgetFromStateState extends State<CommunitiesPageFromStateWidget>
+class _CommunityFromStateState extends State<CommunitiesFromStatePage>
     with WidgetsBindingObserver {
   final PagingController<DocumentSnapshot?, Community> _pagingController =
       PagingController(firstPageKey: null);
@@ -57,7 +55,6 @@ class _CommunitiesWidgetFromStateState extends State<CommunitiesPageFromStateWid
 
   @override
   Widget build(BuildContext context) {
-    CommunityMember member = context.watch<CommunityMember>();
     return Scaffold(
         appBar: AppBar(
             title: const Image(
@@ -74,15 +71,7 @@ class _CommunitiesWidgetFromStateState extends State<CommunitiesPageFromStateWid
               SliverToBoxAdapter(
                   child: Card(
                       child: Column(children: [
-                Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('${member.placemark.administrativeArea} state'),
-                      TextButton.icon(
-                          onPressed: () => context.push(Routes.createCommunity),
-                          icon: const Icon(Icons.add_circle),
-                          label: const Text('add community'))
-                    ]),
+                Text('${widget.state} state'),
                 const TextField(
                     decoration: InputDecoration(
                         hintText: 'Search communities',
@@ -94,7 +83,8 @@ class _CommunitiesWidgetFromStateState extends State<CommunitiesPageFromStateWid
                     children: [
                       const Text('Communities'),
                       TextButton(
-                          onPressed: () {},
+                          onPressed: () => context.push(
+                              '${Routes.statesForCommunities}/${widget.countryISO}'),
                           child: Text('view all states',
                               style: TextStyle(color: Style.primaryColor)))
                     ])

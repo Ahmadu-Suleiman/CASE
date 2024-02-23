@@ -4,7 +4,7 @@ class Community {
   late String id;
   late Timestamp dateCreated;
   String name;
-  List<String> adminIds;
+  List<String> maintainerIds;
   List<String> memberIds;
   String description;
   String regulations;
@@ -15,7 +15,7 @@ class Community {
   Community.forUpload(
       {required this.name,
       required this.dateCreated,
-      required this.adminIds,
+      required this.maintainerIds,
       required this.memberIds,
       required this.description,
       required this.regulations,
@@ -26,7 +26,7 @@ class Community {
       {required this.id,
       required this.name,
       required this.dateCreated,
-      required this.adminIds,
+      required this.maintainerIds,
       required this.memberIds,
       required this.description,
       required this.regulations,

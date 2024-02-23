@@ -68,8 +68,9 @@ class DatabasePetition {
       query = query.where('communityId', isEqualTo: communityId);
     }
     if (communityIds != null && communityIds.isNotEmpty) {
-      for (var communityId in communityIds) {
-        query = query.where('communityIds', arrayContains: communityId);
+      final chunkIds = partition(communityIds, 10).toList();
+      for (final communityIds in chunkIds) {
+        query = query.where('communityId', whereIn: communityIds);
       }
     }
 

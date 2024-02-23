@@ -130,18 +130,6 @@ class _HomePageState extends State<HomePage> {
                           }),
                       ListTile(
                           title: const Text(
-                            'Achievement section',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                          leading: const Icon(Icons.accessibility_sharp),
-                          onTap: () {
-                            // Update the state of the app
-                            // ...
-                            // Then close the drawer
-                            Navigator.pop(context);
-                          }),
-                      ListTile(
-                          title: const Text(
                             'Settings',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),

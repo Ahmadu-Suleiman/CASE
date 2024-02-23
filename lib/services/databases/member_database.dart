@@ -8,6 +8,7 @@ import 'package:case_be_heard/services/location.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:quiver/iterables.dart';
 
 class DatabaseMember {
   // collection reference
@@ -25,7 +26,6 @@ class DatabaseMember {
       'gender': member.gender,
       'bio': member.bio,
       'photoUrl': member.photoUrl,
-      'communityId': member.communityId,
       'communityIds': member.communityIds,
     });
   }
@@ -46,7 +46,6 @@ class DatabaseMember {
       gender: snapshot['gender'] ?? '',
       photoUrl: snapshot['photoUrl'] ?? '',
       bio: snapshot['bio'] ?? '',
-      communityId: snapshot['communityId'] ?? '',
       bookmarkCaseIds: Utility.stringList(snapshot, 'bookmarksCase'),
       bookmarkPetitionIds: Utility.stringList(snapshot, 'bookmarksPetition'),
       communityIds: Utility.stringList(snapshot, 'communityIds'),
@@ -87,14 +86,8 @@ class DatabaseMember {
       List<String> ids) async {
     List<CommunityMember> communityMembers = [];
 
-    // Split the list into chunks of 10 or fewer
-    List<List<String>> chunks = List.generate((ids.length / 10).ceil(), (i) {
-      int start = i * 10;
-      int end = min(start + 10, ids.length);
-      return ids.sublist(start, end);
-    });
+    List<List<String>> chunks = partition(ids, 10).toList();
 
-    // Query Firestore for each chunk and merge the results
     for (var chunk in chunks) {
       QuerySnapshot querySnapshot = await communityMemberCollection
           .where(FieldPath.documentId, whereIn: chunk)
@@ -108,6 +101,17 @@ class DatabaseMember {
     return communityMembers;
   }
 
+  static Future<List<CommunityMember>> getCommunityMembersForCommunity(
+      String communityId) async {
+    QuerySnapshot querySnapshot = await communityMemberCollection
+        .where('communityIds', arrayContains: communityId)
+        .get();
+
+    return Future.wait(querySnapshot.docs
+        .map((doc) => _communityMemberFromSnapshot(doc))
+        .toList());
+  }
+
   static Future<List<String>> addBookmarkCaseRecord(
       CommunityMember member, CaseRecord caseRecord) async {
     String memberId = member.id!;
@@ -118,15 +122,15 @@ class DatabaseMember {
     });
     // Fetch the updated document to get the new list of bookmarked petitions
     DocumentSnapshot updatedMemberDoc = await memberRef.get();
-    List<dynamic> updatedBookmarkedPetitionIds =
+    List<dynamic> updatedBookmarkedCaseIds =
         updatedMemberDoc.get('bookmarksCase') ?? [];
     // Convert the list of dynamic to a list of strings
-    List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
+    List<String> updatedBookmarks = updatedBookmarkedCaseIds.cast<String>();
     // Return the updated list of bookmarked petition IDs
     return updatedBookmarks;
   }
 
-  static Future<List<String>> removeBookmarkCase(
+  static Future<List<String>> removeBookmarkCaseRecord(
       CommunityMember member, CaseRecord caseRecord) async {
     String memberId = member.id!;
     String caseRecordId = caseRecord.id;
@@ -136,10 +140,10 @@ class DatabaseMember {
     });
     // Fetch the updated document to get the new list of bookmarked petitions
     DocumentSnapshot updatedMemberDoc = await memberRef.get();
-    List<dynamic> updatedBookmarkedPetitionIds =
+    List<dynamic> updatedBookmarkedCaseIds =
         updatedMemberDoc.get('bookmarksCase') ?? [];
     // Convert the list of dynamic to a list of strings
-    List<String> updatedBookmarks = updatedBookmarkedPetitionIds.cast<String>();
+    List<String> updatedBookmarks = updatedBookmarkedCaseIds.cast<String>();
     // Return the updated list of bookmarked petition IDs
     return updatedBookmarks;
   }
