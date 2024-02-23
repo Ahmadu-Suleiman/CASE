@@ -66,7 +66,7 @@ class Utility {
       String link =
           await StorageService.uploadProfileImage(uid, File(imageFile.path));
       member.photoUrl = link;
-      await DatabaseMember.updateCommunityMemberData(member);
+      await DatabaseMember.updateCommunityMember(member);
       return link;
     }
     return null;
@@ -88,4 +88,16 @@ class Utility {
           BuildContext context, String page, CommunityMember member) =>
       context.push(
           '$page/${member.placemark.administrativeArea}/${member.placemark.isoCountryCode}');
+
+  static Future<void> openEmailApp(BuildContext context, String email) async {
+    final Uri emailUri = Uri(
+      scheme: 'mailto',
+      path: email,
+    );
+
+    if (await launchUrl(emailUri)) {
+    } else {
+      if (context.mounted) showSnackBar(context, 'can not open email');
+    }
+  }
 }

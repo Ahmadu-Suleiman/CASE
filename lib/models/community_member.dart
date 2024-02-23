@@ -21,6 +21,14 @@ class CommunityMember {
 
   CommunityMember.empty();
   CommunityMember({required this.id});
+  CommunityMember.login({required this.id, required this.email});
+  CommunityMember.fromGoogle({
+    required this.id,
+    required this.firstName,
+    required this.email,
+    required this.phoneNumber,
+    required this.photoUrl,
+  });
   CommunityMember.full(
       {required this.id,
       required this.firstName,

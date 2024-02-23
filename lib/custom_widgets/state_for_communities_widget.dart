@@ -22,7 +22,11 @@ class StatesForCommunitiesWidget extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold)),
               const SizedBox(height: 8),
-              IconText(icon: Icons.place, text: countryISO),
+              IconText(
+                  icon: Icons.place,
+                  iconSize: 14,
+                  text: countryISO,
+                  fontSize: 14),
               const Divider()
             ])));
   }

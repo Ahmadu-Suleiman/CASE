@@ -12,7 +12,6 @@ class SignIn extends StatefulWidget {
 }
 
 class SignInState extends State<SignIn> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
@@ -28,17 +27,15 @@ class SignInState extends State<SignIn> {
         : Scaffold(
             backgroundColor: Colors.brown[100],
             appBar: AppBar(
-              backgroundColor: Colors.brown[400],
-              elevation: 0.0,
-              title: const Text('Sign in to Brew Crew'),
-              actions: <Widget>[
-                TextButton.icon(
-                  icon: const Icon(Icons.person),
-                  label: const Text('Register'),
-                  onPressed: () => widget.toggleView(),
-                ),
-              ],
-            ),
+                backgroundColor: Colors.brown[400],
+                elevation: 0.0,
+                title: const Text('Sign in to Brew Crew'),
+                actions: <Widget>[
+                  TextButton.icon(
+                      icon: const Icon(Icons.person),
+                      label: const Text('Register'),
+                      onPressed: () => widget.toggleView())
+                ]),
             body: Container(
                 padding: const EdgeInsets.symmetric(
                     vertical: 20.0, horizontal: 50.0),
@@ -78,8 +75,9 @@ class SignInState extends State<SignIn> {
                             if (_formKey.currentState != null &&
                                 _formKey.currentState!.validate()) {
                               setState(() => loading = true);
-                              dynamic result = await _auth
-                                  .signInWithEmailAndPassword(email, password);
+                              dynamic result =
+                                  await AuthService.signInWithEmailAndPassword(
+                                      email, password);
                               if (result == null) {
                                 setState(() {
                                   loading = false;
@@ -89,12 +87,27 @@ class SignInState extends State<SignIn> {
                               }
                             }
                           }),
+                      GestureDetector(
+                          onTap: () async {
+                            dynamic result =
+                                await AuthService.signInWithGoogle();
+                            if (result == null) {
+                              setState(() {
+                                loading = false;
+                                error = 'Sign in failed';
+                              });
+                            }
+                          },
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('asset/google.svg'),
+                                const Text('Sign in with Google')
+                              ])),
                       const SizedBox(height: 12.0),
-                      Text(
-                        error,
-                        style:
-                            const TextStyle(color: Colors.red, fontSize: 14.0),
-                      )
+                      Text(error,
+                          style: const TextStyle(
+                              color: Colors.red, fontSize: 14.0))
                     ]))));
   }
 }

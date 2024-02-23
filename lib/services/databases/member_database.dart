@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community.dart';
@@ -15,7 +14,7 @@ class DatabaseMember {
   static final CollectionReference communityMemberCollection =
       FirebaseFirestore.instance.collection('communityMembers');
 
-  static Future<void> updateCommunityMemberData(CommunityMember member) async {
+  static Future<void> updateCommunityMember(CommunityMember member) async {
     return await communityMemberCollection.doc(member.id).set({
       'firstName': member.firstName,
       'lastName': member.lastName,

@@ -42,7 +42,11 @@ class CommunityWidget extends StatelessWidget {
                               const Icon(Icons.people),
                               Text(community.memberIds.length.toString())
                             ]),
-                        IconText(icon: Icons.place, text: community.state)
+                        IconText(
+                            icon: Icons.place,
+                            iconSize: 14,
+                            text: community.state,
+                            fontSize: 14)
                       ])
                 ]))));
   }

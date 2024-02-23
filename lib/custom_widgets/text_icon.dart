@@ -2,9 +2,16 @@ import 'package:flutter/material.dart';
 
 class IconText extends StatelessWidget {
   final IconData icon;
+  final double iconSize;
   final String text;
+  final double fontSize;
 
-  const IconText({super.key, required this.icon, required this.text});
+  const IconText(
+      {super.key,
+      required this.icon,
+      required this.iconSize,
+      required this.text,
+      required this.fontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -12,14 +19,13 @@ class IconText extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(icon, color: Colors.blue),
+          Icon(icon, size: iconSize),
           const SizedBox(width: 8),
           Flexible(
-            child: Text(text,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 1,
-                style: const TextStyle(fontSize: 14, color: Colors.blue)),
-          )
+              child: Text(text,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  style: TextStyle(fontSize: fontSize)))
         ]);
   }
 }

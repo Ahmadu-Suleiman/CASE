@@ -1,0 +1,8 @@
+Variant: debug
+Config: debug
+Store: C:\Users\Mukhtar Kabir\.android\debug.keystore
+Alias: AndroidDebugKey
+MD5: 66:73:AC:EF:3A:D8:9D:D4:83:8F:7F:11:0E:5B:D9:77
+SHA1: AB:2C:D4:98:A0:00:1A:C0:E3:11:E9:D3:F4:C9:58:4F:75:35:2F:51
+SHA-256: 5E:DB:EC:3A:81:C0:61:5C:1F:F4:71:C6:5C:8A:BD:84:B4:B7:86:87:98:EF:9C:A1:6D:9E:B5:5C:49:B2:18:52
+Valid until: Thursday, January 22, 2054

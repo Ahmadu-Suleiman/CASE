@@ -12,7 +12,6 @@ class Register extends StatefulWidget {
 }
 
 class RegisterState extends State<Register> {
-  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   String error = '';
   bool loading = false;
@@ -78,8 +77,8 @@ class RegisterState extends State<Register> {
                             if (_formKey.currentState != null &&
                                 _formKey.currentState!.validate()) {
                               setState(() => loading = true);
-                              dynamic result =
-                                  await _auth.registerWithEmailAndPassword(
+                              dynamic result = await AuthService
+                                  .registerWithEmailAndPassword(
                                       email, password);
                               if (result == null) {
                                 setState(() {
@@ -89,12 +88,27 @@ class RegisterState extends State<Register> {
                               }
                             }
                           }),
+                      GestureDetector(
+                          onTap: () async {
+                            dynamic result =
+                                await AuthService.signInWithGoogle();
+                            if (result == null) {
+                              setState(() {
+                                loading = false;
+                                error = 'Registration failed';
+                              });
+                            }
+                          },
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('asset/google.svg'),
+                                const Text('Register with Google')
+                              ])),
                       const SizedBox(height: 12.0),
-                      Text(
-                        error,
-                        style:
-                            const TextStyle(color: Colors.red, fontSize: 14.0),
-                      )
+                      Text(error,
+                          style: const TextStyle(
+                              color: Colors.red, fontSize: 14.0))
                     ]))));
   }
 }

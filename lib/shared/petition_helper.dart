@@ -6,10 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 
 class PetitionHelper {
-  static final ImagePicker _picker = ImagePicker();
   static final _gemini = Gemini.instance;
 
   static void showRecommendedTitle(

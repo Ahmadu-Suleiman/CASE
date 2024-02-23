@@ -40,7 +40,8 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
           pagingController: _pagingController,
           limit: 10,
           pageKey: pageKey,
-          progress: progress);
+          progress: progress,
+          memberId: widget.memberId);
     });
     setup();
     super.initState();
@@ -75,10 +76,9 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
       return Scaffold(
           appBar: AppBar(
               title: const Image(
-                height: 80,
-                width: 80,
-                image: AssetImage('assets/case_logo_main.ico'),
-              ),
+                  height: 80,
+                  width: 80,
+                  image: AssetImage('assets/case_logo_main.ico')),
               centerTitle: true),
           body: RefreshIndicator(
               onRefresh: () async {
@@ -92,8 +92,7 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
                       size: 60,
                       onPressed: () => context.push(
                           '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}')),
-                  Text(
-                    '${member.firstName} ${member.lastName}',
+                  Text('${member.firstName} ${member.lastName}',
                     maxLines: 1,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
@@ -101,10 +100,26 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
                         fontWeight: FontWeight.bold,
                         color: Colors.black),
                   ),
-                  IconText(icon: Icons.email, text: member.email),
-                  IconText(icon: Icons.phone, text: member.phoneNumber),
-                  IconText(icon: Icons.work, text: member.occupation),
-                  IconText(icon: Icons.location_on, text: address),
+                  IconText(
+                      icon: Icons.email,
+                      iconSize: 14,
+                      text: member.email,
+                      fontSize: 14),
+                  IconText(
+                      icon: Icons.phone,
+                      iconSize: 14,
+                      text: member.phoneNumber,
+                      fontSize: 14),
+                  IconText(
+                      icon: Icons.work,
+                      iconSize: 14,
+                      text: member.occupation,
+                      fontSize: 14),
+                  IconText(
+                      icon: Icons.location_on,
+                      iconSize: 14,
+                      text: member.address,
+                      fontSize: 14),
                   Text(member.bio, maxLines: 4),
                   SizedBox(
                     width: double.infinity,

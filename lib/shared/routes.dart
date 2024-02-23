@@ -15,6 +15,7 @@ import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/case_catalog.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/communities_page.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/petitions_page.dart';
+import 'package:case_be_heard/pages/drawer_pages.dart/settings.dart';
 import 'package:case_be_heard/pages/feedback/case_reads.dart';
 import 'package:case_be_heard/pages/feedback/case_views.dart';
 import 'package:case_be_heard/pages/feedback/signatories_page.dart';
@@ -53,6 +54,7 @@ class Routes {
   static const String statesForCommunities = '/state-for-communities';
   static const String communitiesFromState = '/communities-from-state';
   static const String communitySettings = '/community-settings';
+  static const String settingsPage = '/settings-page';
 
   static final router = GoRouter(initialLocation: wrapper, routes: [
     GoRoute(
@@ -223,6 +225,10 @@ class Routes {
         builder: (context, state) {
           final communityId = state.pathParameters['communityId'];
           return CommunitySettingsPage(communityId: communityId!);
-        })
+        }),
+    GoRoute(
+        name: 'settingsPage',
+        path: settingsPage,
+        builder: (context, state) => const SettingsPage()),
   ]);
 }

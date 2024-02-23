@@ -44,23 +44,14 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
             leading: Builder(builder: (context) {
               return IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () => Scaffold.of(context).openDrawer(),
-              );
+                  icon: const Icon(Icons.menu),
+                  onPressed: () => Scaffold.of(context).openDrawer());
             }),
             title: const Image(
-              height: 80,
-              width: 80,
-              image: AssetImage('assets/case_logo_main.ico'),
-            ),
-            centerTitle: true,
-            actions: <Widget>[
-              IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {
-                    // Add your logic here
-                  })
-            ]),
+                height: 80,
+                width: 80,
+                image: AssetImage('assets/case_logo_main.ico')),
+            centerTitle: true),
         drawer: Drawer(
             shape: Border.all(),
             child: Container(
@@ -72,12 +63,10 @@ class _HomePageState extends State<HomePage> {
                           decoration: const BoxDecoration(
                             color: Colors.white,
                           ),
-                          accountName: Text(
-                            Utility.getFirstAndlastName(member),
-                            style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          accountName: Text(Utility.getFirstAndlastName(member),
+                              style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold)),
                           accountEmail: Text(
                             member.email,
                             style: const TextStyle(color: Colors.black),
@@ -108,10 +97,8 @@ class _HomePageState extends State<HomePage> {
                             Navigator.pop(context);
                           }),
                       ListTile(
-                          title: const Text(
-                            'Bookmarks',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
+                          title: const Text('Bookmarks',
+                              style: TextStyle(fontWeight: FontWeight.bold)),
                           leading: const Icon(Icons.bookmark),
                           onTap: () {
                             context.push(Routes.bookmarks);
@@ -135,9 +122,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           leading: const Icon(Icons.settings),
                           onTap: () {
-                            // Update the state of the app
-                            // ...
-                            // Then close the drawer
+                            context.push(Routes.settingsPage);
                             Navigator.pop(context);
                           })
                     ]))),
@@ -161,27 +146,24 @@ class _HomePageState extends State<HomePage> {
                             },
                             child: CaseCard(caseRecord: caseRecord)),
                     noItemsFoundIndicatorBuilder: (_) => const MesssageScreen(
-                          message: 'No cases found',
-                          icon: Icon(Icons.search_off),
-                        ),
+                        message: 'No cases found',
+                        icon: Icon(Icons.search_off)),
                     noMoreItemsIndicatorBuilder: (_) => const MesssageScreen(
                         message: 'No more cases found',
                         icon: Icon(Icons.search_off))))),
         floatingActionButton: ExpandableFab(
             openButtonBuilder: RotateFloatingActionButtonBuilder(
-              child: const Icon(Icons.add),
-              fabSize: ExpandableFabSize.regular,
-              foregroundColor: Style.primaryColor,
-              backgroundColor: Colors.white,
-              shape: const CircleBorder(),
-            ),
+                child: const Icon(Icons.add),
+                fabSize: ExpandableFabSize.regular,
+                foregroundColor: Style.primaryColor,
+                backgroundColor: Colors.white,
+                shape: const CircleBorder()),
             closeButtonBuilder: DefaultFloatingActionButtonBuilder(
-              child: const Icon(Icons.close),
-              fabSize: ExpandableFabSize.small,
-              foregroundColor: Style.primaryColor,
-              backgroundColor: Colors.white,
-              shape: const CircleBorder(),
-            ),
+                child: const Icon(Icons.close),
+                fabSize: ExpandableFabSize.small,
+                foregroundColor: Style.primaryColor,
+                backgroundColor: Colors.white,
+                shape: const CircleBorder()),
             children: [
               GestureDetector(
                   onLongPress: () =>
@@ -195,34 +177,33 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () => Utility.communityRouter(context,
                               Routes.chooseCommunityPetition, member)))),
               GestureDetector(
-                onLongPress: () =>
-                    Utility.showSnackBar(context, 'Create a case'),
-                child: SizedBox(
-                  width: 60,
-                  height: 60,
-                  child: FloatingActionButton.large(
-                      heroTag: null,
-                      child: const Icon(Icons.insert_drive_file),
-                      onPressed: () => Utility.communityRouter(
-                          context, Routes.chooseCommunityCase, member)),
-                ),
-              )
+                  onLongPress: () =>
+                      Utility.showSnackBar(context, 'Create a case'),
+                  child: SizedBox(
+                    width: 60,
+                    height: 60,
+                    child: FloatingActionButton.large(
+                        heroTag: null,
+                        child: const Icon(Icons.insert_drive_file),
+                        onPressed: () => Utility.communityRouter(
+                            context, Routes.chooseCommunityCase, member)),
+                  ))
             ]),
         floatingActionButtonLocation: ExpandableFab.location,
-        bottomNavigationBar: AnimatedBottomNavigationBar(
-          icons: const <IconData>[
-            Icons.home,
-            Icons.notifications,
-            Icons.message,
-            Icons.ondemand_video,
-          ],
-          activeIndex: bottomNavIndex,
-          gapLocation: GapLocation.none,
-          notchMargin: 8,
-          elevation: 0.0,
-          notchSmoothness: NotchSmoothness.sharpEdge,
-          onTap: (index) => setState(() => bottomNavIndex = index),
-        ));
+        // bottomNavigationBar: AnimatedBottomNavigationBar( //TODO: to implemeted soon
+        //     icons: const <IconData>[
+        //       Icons.home,
+        //       Icons.notifications,
+        //       Icons.message,
+        //       Icons.ondemand_video
+        //     ],
+        //     activeIndex: bottomNavIndex,
+        //     gapLocation: GapLocation.none,
+        //     notchMargin: 8,
+        //     elevation: 0.0,
+        //     notchSmoothness: NotchSmoothness.sharpEdge,
+        //     onTap: (index) => setState(() => bottomNavIndex = index))
+            );
   }
 
   @override

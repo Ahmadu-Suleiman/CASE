@@ -29,15 +29,14 @@ class _CreateProfileState extends State<CreateProfile> {
                 child: Center(
                     child: ListView(children: [
             ElevatedButton(
-              onPressed: () async {
-                if (_formKey.currentState != null &&
-                    _formKey.currentState!.validate()) {
-                  member.id = user!.uid;
-                  await DatabaseMember.updateCommunityMemberData(member);
-                }
-              },
-              child: const Text('Create community member information'),
-            ),
+                onPressed: () async {
+                  if (_formKey.currentState != null &&
+                      _formKey.currentState!.validate()) {
+                    member.id = user!.uid;
+                    await DatabaseMember.updateCommunityMember(member);
+                  }
+                },
+                child: const Text('Create community member information')),
             Form(
                 key: _formKey,
                 child: Column(children: [
@@ -45,9 +44,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       validator: (val) =>
                           val!.isEmpty ? 'Supply a value' : null,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'First name',
-                      ),
+                          border: OutlineInputBorder(), hintText: 'First name'),
                       initialValue: member.firstName,
                       onChanged: (value) {
                         member.firstName = value;
@@ -56,9 +53,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       validator: (val) =>
                           val!.isEmpty ? 'Supply a value' : null,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Last name',
-                      ),
+                          border: OutlineInputBorder(), hintText: 'Last name'),
                       initialValue: member.lastName,
                       onChanged: (value) {
                         member.lastName = value;
@@ -67,9 +62,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       validator: (val) =>
                           val!.isEmpty ? 'Supply a value' : null,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Email',
-                      ),
+                          border: OutlineInputBorder(), hintText: 'Email'),
                       initialValue: member.email,
                       onChanged: (value) {
                         member.email = value;
@@ -78,9 +71,8 @@ class _CreateProfileState extends State<CreateProfile> {
                       validator: (val) =>
                           val!.isEmpty ? 'Supply a value' : null,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Phone number',
-                      ),
+                          border: OutlineInputBorder(),
+                          hintText: 'Phone number'),
                       initialValue: member.phoneNumber,
                       onChanged: (value) {
                         member.phoneNumber = value;
@@ -89,9 +81,7 @@ class _CreateProfileState extends State<CreateProfile> {
                       validator: (val) =>
                           val!.isEmpty ? 'Supply a value' : null,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Occupation',
-                      ),
+                          border: OutlineInputBorder(), hintText: 'Occupation'),
                       initialValue: member.occupation,
                       onChanged: (value) {
                         member.occupation = value;
@@ -112,18 +102,14 @@ class _CreateProfileState extends State<CreateProfile> {
                       label: Text(
                           address.isEmpty ? 'Choose your location' : address,
                           style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.blue,
-                          ))),
+                              fontSize: 18, color: Colors.blue))),
                   TextFormField(
                       validator: (val) =>
                           val!.isEmpty ? 'Supply a value' : null,
                       minLines: 4,
                       maxLines: null,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Bio',
-                      ),
+                          border: OutlineInputBorder(), hintText: 'Bio'),
                       initialValue: member.bio,
                       onChanged: (value) {
                         member.bio = value;

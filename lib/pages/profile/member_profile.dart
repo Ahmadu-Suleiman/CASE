@@ -62,19 +62,10 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
     return Scaffold(
         appBar: AppBar(
             title: const Image(
-              height: 80,
-              width: 80,
-              image: AssetImage('assets/case_logo_main.ico'),
-            ),
-            centerTitle: true,
-            actions: [
-              IconButton.filled(
-                onPressed: () async {
-                  context.push(Routes.editMemberProfile);
-                },
-                icon: const Icon(Icons.edit),
-              )
-            ]),
+                height: 80,
+                width: 80,
+                image: AssetImage('assets/case_logo_main.ico')),
+            centerTitle: true),
         body: RefreshIndicator(
             onRefresh: () async {
               _pagingController.refresh();
@@ -96,10 +87,26 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                       fontWeight: FontWeight.bold,
                       color: Colors.black),
                 ),
-                IconText(icon: Icons.email, text: member.email),
-                IconText(icon: Icons.phone, text: member.phoneNumber),
-                IconText(icon: Icons.work, text: member.occupation),
-                IconText(icon: Icons.location_on, text: member.address),
+                IconText(
+                    icon: Icons.email,
+                    iconSize: 14,
+                    text: member.email,
+                    fontSize: 14),
+                IconText(
+                    icon: Icons.phone,
+                    iconSize: 14,
+                    text: member.phoneNumber,
+                    fontSize: 14),
+                IconText(
+                    icon: Icons.work,
+                    iconSize: 14,
+                    text: member.occupation,
+                    fontSize: 14),
+                IconText(
+                    icon: Icons.location_on,
+                    iconSize: 14,
+                    text: member.address,
+                    fontSize: 14),
                 Text(member.bio, maxLines: 4),
                 SizedBox(
                     width: double.infinity,
@@ -110,18 +117,14 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                             shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                 const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.zero, // This removes the curve
-                        ))),
+                                    borderRadius: BorderRadius.zero))),
                         segments: const <ButtonSegment<String>>[
                           ButtonSegment<String>(
-                            value: CaseValues.investigationPending,
-                            label: Text(CaseValues.pending),
-                          ),
+                              value: CaseValues.investigationPending,
+                              label: Text(CaseValues.pending)),
                           ButtonSegment<String>(
-                            value: CaseValues.investigationOngoing,
-                            label: Text(CaseValues.ongoing),
-                          ),
+                              value: CaseValues.investigationOngoing,
+                              label: Text(CaseValues.ongoing)),
                           ButtonSegment<String>(
                               value: CaseValues.caseSolved,
                               label: Text(CaseValues.solved))

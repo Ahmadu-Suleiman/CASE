@@ -44,8 +44,7 @@ class _EditProfileState extends State<EditProfile> {
                         onPressed: () async {
                           if (_formKey.currentState != null &&
                               _formKey.currentState!.validate()) {
-                            await DatabaseMember.updateCommunityMemberData(
-                                member);
+                            await DatabaseMember.updateCommunityMember(member);
                             if (context.mounted) {
                               Utility.showSnackBar(
                                   context, 'information updated');
