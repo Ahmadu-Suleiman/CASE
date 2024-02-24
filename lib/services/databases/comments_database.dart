@@ -44,4 +44,11 @@ class DatabaseComments {
       return comments;
     });
   }
+
+  static Future<int> getCommentCounts(String caseRecordId) {
+    return commentsCollection
+        .where('caseRecordId', isEqualTo: caseRecordId)
+        .snapshots()
+        .length;
+  }
 }

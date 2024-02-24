@@ -77,6 +77,7 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
     } else {
       return Scaffold(
           appBar: AppBar(
+              backgroundColor: Style.primaryColor,
               title: const Image(
                   height: 80,
                   width: 80,

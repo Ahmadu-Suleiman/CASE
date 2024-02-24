@@ -13,11 +13,13 @@ class CaseRecord {
   late List<Video> videos;
   late List<String> viewIds, readIds;
   late String communityId;
+  late int commentCount;
 
   CaseRecord(
       {required this.id,
       required this.uidMember,
       required this.member,
+      required this.commentCount,
       required this.communityId,
       required this.dateCreated,
       required this.title,

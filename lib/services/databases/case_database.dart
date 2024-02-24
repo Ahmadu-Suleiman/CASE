@@ -1,6 +1,7 @@
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/video.dart';
+import 'package:case_be_heard/services/databases/comments_database.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/storage.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -24,12 +25,14 @@ class DatabaseCase {
       String thumbnail = thumbnails[index];
       return Video.fromCase(videoLink, thumbnail);
     });
+    int commentCount = await DatabaseComments.getCommentCounts(snapshot.id);
 
     return CaseRecord(
         id: snapshot.id,
         uidMember: snapshot['uidMember'] ?? '',
         dateCreated: snapshot['dateCreated'] ?? Timestamp.now(),
         member: member,
+        commentCount: commentCount,
         communityId: snapshot['communityId'] ?? '',
         title: snapshot['title'] ?? '',
         summary: snapshot['summary'] ?? '',
