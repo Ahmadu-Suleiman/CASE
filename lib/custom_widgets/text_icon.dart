@@ -1,3 +1,4 @@
+import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 
 class IconText extends StatelessWidget {
@@ -19,7 +20,7 @@ class IconText extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(icon, size: iconSize),
+          Icon(icon, color: Style.primaryColor, size: iconSize),
           const SizedBox(width: 8),
           Flexible(
               child: Text(text,

@@ -46,10 +46,10 @@ class LocationService {
     return GeoPoint(currentPosition.latitude, currentPosition.longitude);
   }
 
-  static Future<String> getLocationAddressString(GeoPoint geoPoint,
+  static Future<String> getLocationAddressString(GeoPoint? geoPoint,
       {BuildContext? context}) async {
     List<Placemark> placemarks =
-        await placemarkFromCoordinates(geoPoint.latitude, geoPoint.longitude);
+        await placemarkFromCoordinates(geoPoint!.latitude, geoPoint.longitude);
     Placemark place = placemarks[0];
     List<String> location = [
       place.street,
@@ -61,7 +61,7 @@ class LocationService {
       place.subAdministrativeArea,
       place.subAdministrativeArea,
       place.country
-    ].nonNulls.toList();
+    ].nonNulls.where((element) => element.isNotEmpty).toSet().toList();
     return location.join(',');
   }
 

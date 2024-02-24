@@ -7,6 +7,8 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
+import 'package:case_be_heard/shared/style.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -61,6 +63,7 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
     CommunityMember member = context.watch<CommunityMember>();
     return Scaffold(
         appBar: AppBar(
+            backgroundColor: Style.primaryColor,
             title: const Image(
                 height: 80,
                 width: 80,
@@ -73,47 +76,72 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
             child: CustomScrollView(slivers: [
               SliverToBoxAdapter(
                   child: Column(children: <Widget>[
-                CachedAvatar(
-                    url: member.photoUrl,
-                    size: 60,
-                    onPressed: () => context.push(
-                        '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}')),
-                Text(
-                  '${member.firstName} ${member.lastName}',
-                  maxLines: 1,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontSize: 25.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
+                Container(
+                    padding: const EdgeInsets.all(8),
+                    color: Style.primaryColor,
+                    child: CachedAvatar(
+                        url: member.photoUrl,
+                        size: 60,
+                        onPressed: () => context.push(
+                            '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}'))),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(children: [
+                    const SizedBox(height: 12.0),
+                    Text(
+                      Utility.getFirstAndlastName(member),
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                    ),
+                    const SizedBox(height: 8.0),
+                    IconText(
+                        icon: Icons.email,
+                        iconSize: 18,
+                        text: member.email,
+                        fontSize: 16),
+                    const SizedBox(height: 8.0),
+                    IconText(
+                        icon: Icons.phone,
+                        iconSize: 18,
+                        text: member.phoneNumber,
+                        fontSize: 16),
+                    const SizedBox(height: 8.0),
+                    IconText(
+                        icon: Icons.work,
+                        iconSize: 18,
+                        text: member.occupation,
+                        fontSize: 16),
+                    const SizedBox(height: 8.0),
+                    IconText(
+                        icon: Icons.location_on,
+                        iconSize: 18,
+                        text: member.address,
+                        fontSize: 16),
+                    const SizedBox(height: 8.0),
+                    Text(member.bio,
+                        maxLines: 4,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 14)),
+                  ]),
                 ),
-                IconText(
-                    icon: Icons.email,
-                    iconSize: 14,
-                    text: member.email,
-                    fontSize: 14),
-                IconText(
-                    icon: Icons.phone,
-                    iconSize: 14,
-                    text: member.phoneNumber,
-                    fontSize: 14),
-                IconText(
-                    icon: Icons.work,
-                    iconSize: 14,
-                    text: member.occupation,
-                    fontSize: 14),
-                IconText(
-                    icon: Icons.location_on,
-                    iconSize: 14,
-                    text: member.address,
-                    fontSize: 14),
-                Text(member.bio, maxLines: 4),
                 SizedBox(
                     width: double.infinity,
                     child: SegmentedButton<String>(
                         //fill horizontally
                         showSelectedIcon: false,
                         style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith<Color>(
+                                    (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.selected)) {
+                                return Style.primaryColor;
+                              }
+                              return Colors.white;
+                            }),
                             shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                 const RoundedRectangleBorder(

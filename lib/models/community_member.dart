@@ -8,16 +8,16 @@ class CommunityMember {
   String email = '';
   String phoneNumber = '';
   String occupation = '';
-  String gender = '';
+  String? gender;
   String photoUrl = '';
   String bio = '';
   bool verified = false;
   List<String> bookmarkCaseIds = [];
   List<String> bookmarkPetitionIds = [];
   List<String> communityIds = [];
-  late GeoPoint location;
+  GeoPoint? location;
   late Placemark placemark;
-  late String address;
+  String address = '';
 
   CommunityMember.empty();
   CommunityMember({required this.id});

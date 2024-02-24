@@ -17,6 +17,7 @@ class _ProfileImageState extends State<ProfileImage> {
     CommunityMember member = context.watch<CommunityMember>();
     String? photoUrl = member.photoUrl;
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Container(
           width: double.infinity,
           height: double.infinity,

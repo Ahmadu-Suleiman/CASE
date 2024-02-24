@@ -119,7 +119,7 @@ class _EditCaseState extends State<EditCase> {
                                                 type: type,
                                                 progress: progress,
                                                 mainImage: mainImagePath,
-                                                location: member.location,
+                                                location: member.location!,
                                                 photos: photos,
                                                 videos: videos,
                                                 audios: audios,

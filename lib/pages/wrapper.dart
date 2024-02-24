@@ -12,10 +12,10 @@ class Wrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer2<User?, CommunityMember?>(
-        builder: (context, user, communityMember, child) {
+        builder: (context, user, member, child) {
       if (user == null) {
         return const Authenticate();
-      } else if (communityMember == null) {
+      } else if (member == null || member.location == null) {
         return const CreateProfile();
       } else {
         return const HomePage();

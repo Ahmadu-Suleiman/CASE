@@ -26,4 +26,7 @@ class Style {
       backgroundColor: Colors.white,
       foregroundColor: primaryColor,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero));
+
+  static InputDecoration descriptiveDecoration(String hint) => InputDecoration(
+      floatingLabelBehavior: FloatingLabelBehavior.always, labelText: hint);
 }

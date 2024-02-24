@@ -169,7 +169,7 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                               FilteringTextInputFormatter.digitsOnly,
                             ],
                             decoration: const InputDecoration(
-                              labelText: 'Enter the target numbr of signature',
+                              labelText: 'Enter the target number of signature',
                             ))
                       ]))
                     ]))));

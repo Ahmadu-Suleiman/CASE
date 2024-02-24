@@ -1,5 +1,4 @@
 import 'package:case_be_heard/custom_widgets/settings_widget.dart';
-import 'package:case_be_heard/custom_widgets/text_icon.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/utility.dart';

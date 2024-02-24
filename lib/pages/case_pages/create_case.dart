@@ -99,7 +99,7 @@ class _CreateCaseState extends State<CreateCase> {
                                     type: type,
                                     progress: progress,
                                     mainImage: mainImagePath,
-                                    location: member.location,
+                                    location: member.location!,
                                     photos: photos.map((path) => path).toList(),
                                     videos: videos,
                                     audios: audios,
