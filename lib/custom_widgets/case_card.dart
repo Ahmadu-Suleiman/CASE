@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/custom_widgets/cached_image.dart';
 import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
@@ -55,39 +56,40 @@ class CaseCard extends StatelessWidget {
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.black)),
-                              FilledButton.icon(
-                                  style: ButtonStyle(
-                                      padding: MaterialStateProperty.all(
-                                          const EdgeInsets.all(8)),
-                                      minimumSize:
-                                          MaterialStateProperty.all(Size.zero),
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap),
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.message, size: 12),
-                                  label: const Text('Contact directly',
-                                      style: TextStyle(fontSize: 12))),
-                              TextButton.icon(
-                                  style: const ButtonStyle(
-                                      tapTargetSize:
-                                          MaterialTapTargetSize.shrinkWrap),
-                                  onPressed: () {},
-                                  icon: caseRecord.member.verified
-                                      ? const Icon(Icons.verified)
-                                      : const Icon(Icons.error),
-                                  label: Text(
-                                      caseRecord.member.verified.toString(),
-                                      style: const TextStyle(
-                                          fontSize: 14, color: Colors.blue)))
+                              Text(
+                                caseRecord.member.placemark.administrativeArea!,
+                                style: const TextStyle(fontSize: 14),
+                              ),
+                              Text(
+                                  CaseHelper.verified(
+                                      caseRecord.member.verified),
+                                  style: TextStyle(
+                                      fontSize: 14, color: Style.primaryColor))
                             ])
                       ]),
-                      const SizedBox(height: 20),
-                      Text('Progress: ${caseRecord.progress}',
-                          style:
-                              const TextStyle(fontSize: 14, color: Colors.red)),
-                      Text('Type: ${caseRecord.type}',
-                          style:
-                              const TextStyle(fontSize: 14, color: Colors.red)),
+                      const SizedBox(height: 8),
+                      RichText(
+                          text: TextSpan(
+                              style: DefaultTextStyle.of(context).style,
+                              children: <TextSpan>[
+                            const TextSpan(text: 'Progress: '),
+                            TextSpan(
+                                text: caseRecord.progress,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Style.primaryColor))
+                          ])),
+                      RichText(
+                          text: TextSpan(
+                              style: DefaultTextStyle.of(context).style,
+                              children: <TextSpan>[
+                            const TextSpan(text: 'Type: '),
+                            TextSpan(
+                                text: caseRecord.type,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Style.primaryColor))
+                          ])),
                       Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 16),
@@ -145,7 +147,7 @@ class CaseCard extends StatelessWidget {
                                 ]),
                             TextButton.icon(
                                 onPressed: () => context.push(
-                                    '${Routes.caseReads}/${caseRecord.id}'),
+                                    '${Routes.casePage}/${caseRecord.id}'),
                                 icon: const Icon(Icons.comment),
                                 label: Text(caseRecord.commentCount.toString(),
                                     style: TextStyle(

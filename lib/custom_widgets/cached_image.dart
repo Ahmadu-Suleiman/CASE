@@ -18,8 +18,13 @@ class CachedAvatar extends StatelessWidget {
             imageBuilder: (context, imageProvider) => Center(
                 child:
                     CircleAvatar(backgroundImage: imageProvider, radius: size)),
-            placeholder: (context, url) => Icon(Icons.image, size: size),
-            errorWidget: (context, url, error) =>
-                Icon(Icons.image, size: size)));
+            placeholder: (context, url) => CircleAvatar(
+                backgroundColor: Colors.black,
+                radius: size,
+                child: Icon(Icons.image, size: size)),
+            errorWidget: (context, url, error) => CircleAvatar(
+                backgroundColor: Colors.black,
+                radius: size,
+                child: Icon(Icons.error, size: size))));
   }
 }

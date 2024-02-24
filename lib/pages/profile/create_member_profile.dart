@@ -116,7 +116,6 @@ class _CreateProfileState extends State<CreateProfile> {
                           style: TextStyle(fontSize: 18)),
                       icon: Icon(Icons.person, color: Style.primaryColor),
                       iconSize: 24,
-                      elevation: 16,
                       style: TextStyle(fontSize: 18, color: Style.primaryColor),
                       underline:
                           Container(height: 2, color: Style.primaryColor),

@@ -40,51 +40,56 @@ class CaseCardEdit extends StatelessWidget {
                                 'Uploaded ${timeago.format(caseRecord.dateCreated.toDate())}',
                                 style: const TextStyle(fontSize: 16),
                               ))),
-                      Text('Progress: ${caseRecord.progress}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.red,
-                          )),
-                      Text('Type: ${caseRecord.type}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            color: Colors.red,
-                          )),
+                      RichText(
+                          text: TextSpan(
+                              style: DefaultTextStyle.of(context).style,
+                              children: <TextSpan>[
+                            const TextSpan(text: 'Progress: '),
+                            TextSpan(
+                                text: caseRecord.progress,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Style.primaryColor))
+                          ])),
+                      RichText(
+                          text: TextSpan(
+                              style: DefaultTextStyle.of(context).style,
+                              children: <TextSpan>[
+                            const TextSpan(text: 'Type: '),
+                            TextSpan(
+                                text: caseRecord.type,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Style.primaryColor))
+                          ])),
                       Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 8, horizontal: 16),
                           child: ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
                               child: CachedNetworkImage(
-                                imageUrl: caseRecord.mainImage,
-                                width: double.infinity,
-                                height: 250,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    const Icon(Icons.image),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                              ))),
+                                  imageUrl: caseRecord.mainImage,
+                                  width: double.infinity,
+                                  height: 250,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) =>
+                                      const Icon(Icons.image),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error)))),
                       Center(
-                          child: Text(
-                        caseRecord.title,
-                        maxLines: 3,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      )),
-                      const SizedBox(
-                        height: 12,
-                      ),
-                      Text(
-                        caseRecord.summary,
-                        maxLines: 4,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 18.0, color: Colors.black),
-                      ),
+                          child: Text(caseRecord.title,
+                              maxLines: 3,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                  fontSize: 25.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black))),
+                      const SizedBox(height: 12),
+                      Text(caseRecord.summary,
+                          maxLines: 4,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 18.0, color: Colors.black)),
                       const Divider(),
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -115,7 +120,7 @@ class CaseCardEdit extends StatelessWidget {
                                 ]),
                             TextButton.icon(
                                 onPressed: () => context.push(
-                                    '${Routes.caseReads}/${caseRecord.id}'),
+                                    '${Routes.casePage}/${caseRecord.id}'),
                                 icon: const Icon(Icons.comment),
                                 label: Text(caseRecord.commentCount.toString(),
                                     style: TextStyle(

@@ -305,4 +305,7 @@ class CaseHelper {
   static bool isBookmark(CommunityMember member, CaseRecord caseRecord) {
     return member.bookmarkCaseIds.contains(caseRecord.id);
   }
+
+  static String verified(bool verified) =>
+      verified ? 'ID verified' : 'ID not verified';
 }

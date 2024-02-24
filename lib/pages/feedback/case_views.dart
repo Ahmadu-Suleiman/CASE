@@ -38,18 +38,17 @@ class _CaseViewsState extends State<CaseViewsWidget> {
     return isLoading
         ? const Loading()
         : Scaffold(
+            appBar: AppBar(
+                title: const Text('Viewed by', style: TextStyle(fontSize: 25))),
             body: ListView(children: [
-            const Text('Views',
-                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            ListView.builder(
-                padding: const EdgeInsets.all(8),
-                shrinkWrap: true,
-                itemCount: membersViews.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final member = membersViews[index];
-                  return MembersListWidget(member: member);
-                })
-          ]));
+              ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  shrinkWrap: true,
+                  itemCount: membersViews.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final member = membersViews[index];
+                    return MembersListWidget(member: member);
+                  })
+            ]));
   }
 }
