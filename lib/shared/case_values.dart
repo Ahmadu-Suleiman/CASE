@@ -14,7 +14,7 @@ class CaseValues {
   static const verifiedID = 'Identity verified';
   static const notVerfiedID = 'Identity not verified';
 
-  static final dropdownItemsCommentsType = [
+  static final itemsCommentsType = [
     commentVerified,
     commentUseful,
     commentOthers,

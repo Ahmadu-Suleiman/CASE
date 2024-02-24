@@ -3,6 +3,7 @@ import 'package:case_be_heard/models/comment.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
+import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -44,9 +45,14 @@ class CommentWidget extends StatelessWidget {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(Utility.getFirstAndlastName(author)),
                             Text(
-                                'Uploaded ${timeago.format(comment.dateCreated.toDate())}')
+                              Utility.getFirstAndlastName(author),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Style.primaryColor),
+                            ),
+                            Text(timeago.format(comment.dateCreated.toDate()))
                           ]),
                       Text(comment.commentText)
                     ])),
@@ -54,7 +60,10 @@ class CommentWidget extends StatelessWidget {
               if (isCaseRecordCreator)
                 DropdownButton<String>(
                     value: comment.commentType,
-                    items: CaseValues.dropdownItemsCommentsType
+                    icon:
+                        Icon(Icons.arrow_drop_down, color: Style.primaryColor),
+                    style: TextStyle(fontSize: 18, color: Style.primaryColor),
+                    items: CaseValues.itemsCommentsType
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
