@@ -16,7 +16,6 @@ class Register extends StatefulWidget {
 
 class RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
-  String error = '';
   bool loading = false;
 
   // text field state
@@ -81,11 +80,11 @@ class RegisterState extends State<Register> {
                                   .registerWithEmailAndPassword(
                                       email, password);
                               if (result == null) {
-                                setState(() => loading = false);
                                 if (context.mounted) {
                                   Utility.showSnackBar(
                                       context, 'Please supply a valid email');
                                 }
+                                setState(() => loading = false);
                               }
                             }
                           },
@@ -99,6 +98,7 @@ class RegisterState extends State<Register> {
                             TextButton(
                                 child: Text('Sign In',
                                     style: TextStyle(
+                                        fontWeight: FontWeight.bold,
                                         color: Style.primaryColor,
                                         fontSize: 18)),
                                 onPressed: () => widget.toggleView())
@@ -110,10 +110,7 @@ class RegisterState extends State<Register> {
                             dynamic result =
                                 await AuthService.signInWithGoogle();
                             if (result == null) {
-                              setState(() {
-                                loading = false;
-                                error = 'Registration failed';
-                              });
+                              setState(() => loading = false);
                             }
                           },
                           icon: const FaIcon(FontAwesomeIcons.google),

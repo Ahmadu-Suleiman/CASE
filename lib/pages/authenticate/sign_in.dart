@@ -1,7 +1,9 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/shared/style.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;
@@ -13,7 +15,6 @@ class SignIn extends StatefulWidget {
 
 class SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-  String error = '';
   bool loading = false;
 
   // text field state
@@ -25,37 +26,42 @@ class SignInState extends State<SignIn> {
     return loading
         ? const Loading()
         : Scaffold(
-            backgroundColor: Colors.brown[100],
-            appBar: AppBar(
-                backgroundColor: Colors.brown[400],
-                elevation: 0.0,
-                title: const Text('Sign in to Brew Crew'),
-                actions: <Widget>[
-                  TextButton.icon(
-                      icon: const Icon(Icons.person),
-                      label: const Text('Register'),
-                      onPressed: () => widget.toggleView())
-                ]),
+            backgroundColor: Colors.white,
+            appBar: AppBar(backgroundColor: Colors.white, elevation: 0.0),
             body: Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 50.0),
+                padding: const EdgeInsets.all(20),
                 child: Form(
                     key: _formKey,
-                    child: Column(children: <Widget>[
+                    child: ListView(children: <Widget>[
+                      Image.asset('assets/case_logo_main.ico',
+                          width: 150, height: 150, fit: BoxFit.cover),
                       const SizedBox(height: 20.0),
+                      const Center(
+                          child: Text('Sign into your community account',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 26, fontWeight: FontWeight.bold))),
+                      const SizedBox(height: 20.0),
+                      const Text('Email address',
+                          style: TextStyle(fontSize: 16)),
+                      const SizedBox(height: 10.0),
                       TextFormField(
+                          style: const TextStyle(fontSize: 18.0),
                           decoration: Style.textInputDecoration
-                              .copyWith(hintText: 'email'),
+                              .copyWith(hintText: 'Enter email'),
                           validator: (val) =>
                               val!.isEmpty ? 'Enter an email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           }),
                       const SizedBox(height: 20.0),
+                      const Text('Password', style: TextStyle(fontSize: 16)),
+                      const SizedBox(height: 10.0),
                       TextFormField(
-                          obscureText: true,
+                          style: const TextStyle(fontSize: 18.0),
                           decoration: Style.textInputDecoration
-                              .copyWith(hintText: 'password'),
+                              .copyWith(hintText: 'Enter password'),
+                          obscureText: true,
                           validator: (val) => val!.length < 6
                               ? 'Enter a password 6+ chars long'
                               : null,
@@ -64,13 +70,7 @@ class SignInState extends State<SignIn> {
                           }),
                       const SizedBox(height: 20.0),
                       ElevatedButton(
-                          style: const ButtonStyle(
-                              iconColor:
-                                  MaterialStatePropertyAll<Color>(Colors.pink)),
-                          child: const Text(
-                            'Sign In',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                          style: Style.buttonDecoration,
                           onPressed: () async {
                             if (_formKey.currentState != null &&
                                 _formKey.currentState!.validate()) {
@@ -79,35 +79,41 @@ class SignInState extends State<SignIn> {
                                   await AuthService.signInWithEmailAndPassword(
                                       email, password);
                               if (result == null) {
-                                setState(() {
-                                  loading = false;
-                                  error =
-                                      'Could not sign in with those credentials';
-                                });
+                                if (context.mounted) {
+                                  Utility.showSnackBar(context,
+                                      'Could not sign in with those credentials');
+                                }
+                                setState(() => loading = false);
                               }
                             }
-                          }),
-                      GestureDetector(
-                          onTap: () async {
+                          },
+                          child: const Text('Sign In')),
+                      const SizedBox(height: 20.0),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Don\'t have an account?',
+                                style: TextStyle(fontSize: 16)),
+                            TextButton(
+                                child: Text('Register',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Style.primaryColor,
+                                        fontSize: 18)),
+                                onPressed: () => widget.toggleView())
+                          ]),
+                      const SizedBox(height: 40.0),
+                      OutlinedButton.icon(
+                          style: Style.buttonGoogleDecoration,
+                          onPressed: () async {
                             dynamic result =
                                 await AuthService.signInWithGoogle();
                             if (result == null) {
-                              setState(() {
-                                loading = false;
-                                error = 'Sign in failed';
-                              });
+                              setState(() => loading = false);
                             }
                           },
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('asset/google.svg'),
-                                const Text('Sign in with Google')
-                              ])),
-                      const SizedBox(height: 12.0),
-                      Text(error,
-                          style: const TextStyle(
-                              color: Colors.red, fontSize: 14.0))
+                          icon: const FaIcon(FontAwesomeIcons.google),
+                          label: const Text('Login with Google'))
                     ]))));
   }
 }
