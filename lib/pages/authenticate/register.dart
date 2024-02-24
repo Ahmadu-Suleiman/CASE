@@ -1,7 +1,10 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/shared/style.dart';
+import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 class Register extends StatefulWidget {
   final Function toggleView;
@@ -25,38 +28,41 @@ class RegisterState extends State<Register> {
     return loading
         ? const Loading()
         : Scaffold(
-            backgroundColor: Colors.brown[100],
-            appBar: AppBar(
-              backgroundColor: Colors.brown[400],
-              elevation: 0.0,
-              title: const Text('Sign up to Brew Crew'),
-              actions: <Widget>[
-                TextButton.icon(
-                  icon: const Icon(Icons.person),
-                  label: const Text('Sign In'),
-                  onPressed: () => widget.toggleView(),
-                ),
-              ],
-            ),
+            backgroundColor: Colors.white,
+            appBar: AppBar(backgroundColor: Colors.white, elevation: 0.0),
             body: Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 50.0),
+                padding: const EdgeInsets.all(20),
                 child: Form(
                     key: _formKey,
-                    child: Column(children: <Widget>[
+                    child: ListView(children: <Widget>[
+                      Image.asset('assets/case_logo_main.ico',
+                          width: 150, height: 150, fit: BoxFit.cover),
                       const SizedBox(height: 20.0),
+                      const Center(
+                          child: Text('Register your community account',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 26, fontWeight: FontWeight.bold))),
+                      const SizedBox(height: 20.0),
+                      const Text('Email address',
+                          style: TextStyle(fontSize: 16)),
+                      const SizedBox(height: 10.0),
                       TextFormField(
+                          style: const TextStyle(fontSize: 18.0),
                           decoration: Style.textInputDecoration
-                              .copyWith(hintText: 'email'),
+                              .copyWith(hintText: 'Enter email'),
                           validator: (val) =>
                               val!.isEmpty ? 'Enter an email' : null,
                           onChanged: (val) {
                             setState(() => email = val);
                           }),
                       const SizedBox(height: 20.0),
+                      const Text('Password', style: TextStyle(fontSize: 16)),
+                      const SizedBox(height: 10.0),
                       TextFormField(
+                          style: const TextStyle(fontSize: 18.0),
                           decoration: Style.textInputDecoration
-                              .copyWith(hintText: 'password'),
+                              .copyWith(hintText: 'Enter password'),
                           obscureText: true,
                           validator: (val) => val!.length < 6
                               ? 'Enter a password 6+ chars long'
@@ -66,13 +72,7 @@ class RegisterState extends State<Register> {
                           }),
                       const SizedBox(height: 20.0),
                       ElevatedButton(
-                          style: const ButtonStyle(
-                              iconColor:
-                                  MaterialStatePropertyAll<Color>(Colors.pink)),
-                          child: const Text(
-                            'Register',
-                            style: TextStyle(color: Colors.white),
-                          ),
+                          style: Style.buttonDecoration,
                           onPressed: () async {
                             if (_formKey.currentState != null &&
                                 _formKey.currentState!.validate()) {
@@ -81,15 +81,32 @@ class RegisterState extends State<Register> {
                                   .registerWithEmailAndPassword(
                                       email, password);
                               if (result == null) {
-                                setState(() {
-                                  loading = false;
-                                  error = 'Please supply a valid email';
-                                });
+                                setState(() => loading = false);
+                                if (context.mounted) {
+                                  Utility.showSnackBar(
+                                      context, 'Please supply a valid email');
+                                }
                               }
                             }
-                          }),
-                      GestureDetector(
-                          onTap: () async {
+                          },
+                          child: const Text('Register')),
+                      const SizedBox(height: 20.0),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text('Already have an account?',
+                                style: TextStyle(fontSize: 16)),
+                            TextButton(
+                                child: Text('Sign In',
+                                    style: TextStyle(
+                                        color: Style.primaryColor,
+                                        fontSize: 18)),
+                                onPressed: () => widget.toggleView())
+                          ]),
+                      const SizedBox(height: 40.0),
+                      OutlinedButton.icon(
+                          style: Style.buttonGoogleDecoration,
+                          onPressed: () async {
                             dynamic result =
                                 await AuthService.signInWithGoogle();
                             if (result == null) {
@@ -99,16 +116,8 @@ class RegisterState extends State<Register> {
                               });
                             }
                           },
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset('asset/google.svg'),
-                                const Text('Register with Google')
-                              ])),
-                      const SizedBox(height: 12.0),
-                      Text(error,
-                          style: const TextStyle(
-                              color: Colors.red, fontSize: 14.0))
+                          icon: const FaIcon(FontAwesomeIcons.google),
+                          label: const Text('Login with Google'))
                     ]))));
   }
 }

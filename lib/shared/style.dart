@@ -8,13 +8,22 @@ class Style {
   static Color colorDark = const Color(0xFF1A3140);
 
   static final textInputDecoration = InputDecoration(
-      fillColor: Colors.white,
-      filled: true,
       contentPadding: const EdgeInsets.all(12.0),
-      enabledBorder: const OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.white, width: 2.0),
-      ),
+      enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: const BorderSide(color: Colors.black, width: 1.0)),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: primaryColor, width: 2.0),
-      ));
+          borderRadius: BorderRadius.circular(20.0),
+          borderSide: BorderSide(color: primaryColor, width: 1.0)));
+
+  static final buttonDecoration = ElevatedButton.styleFrom(
+      padding: const EdgeInsets.all(14.0),
+      backgroundColor: primaryColor,
+      foregroundColor: Colors.white,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)));
+  static final buttonGoogleDecoration = OutlinedButton.styleFrom(
+      padding: const EdgeInsets.all(14.0),
+      backgroundColor: Colors.white,
+      foregroundColor: primaryColor,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero));
 }
