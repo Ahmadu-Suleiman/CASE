@@ -99,7 +99,7 @@ class _CreateCaseState extends State<CreateCase> {
                 ]),
             resizeToAvoidBottomInset: true,
             body: Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 35.0),
                 child: ListView(children: [
                   Center(
                       child: Column(children: [
@@ -131,25 +131,20 @@ class _CreateCaseState extends State<CreateCase> {
                               setState(() => mainImagePath = imagePath));
                         },
                         icon: const Icon(Icons.image),
-                        label: const Text('Add main image',
+                        label: Text('Add main image',
                             style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.blue,
-                            ))),
+                                fontSize: 14, color: Style.primaryColor))),
                     const SizedBox(height: 20),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: mainImagePath.isNotEmpty
-                              ? Image.file(
-                                  File(mainImagePath),
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: 250,
-                                )
-                              : Container(),
-                        )),
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: mainImagePath.isNotEmpty
+                                ? Image.file(File(mainImagePath),
+                                    fit: BoxFit.cover,
+                                    width: double.infinity,
+                                    height: 250)
+                                : Container())),
                     const SizedBox(height: 20),
                     TextFormField(
                         initialValue: title,
@@ -169,14 +164,11 @@ class _CreateCaseState extends State<CreateCase> {
                                 icon: const Icon(Icons.lightbulb_outline)),
                             hintText: 'Case title',
                             border: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)))),
                         maxLines: 1,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                        )),
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.black)),
                     const SizedBox(height: 20),
                     TextFormField(
                         initialValue: detailedDescription,
@@ -199,15 +191,12 @@ class _CreateCaseState extends State<CreateCase> {
                                 icon: const Icon(Icons.lightbulb_outline)),
                             hintText: 'Detailed description',
                             border: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)))),
                         minLines: 10,
                         maxLines: null,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                        )),
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.black)),
                     const SizedBox(height: 20),
                     TextFormField(
                         initialValue: summary,
@@ -243,28 +232,16 @@ class _CreateCaseState extends State<CreateCase> {
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       )),
-                  TextButton.icon(
-                      onPressed: () async {
-                        await CaseHelper.addPhotos((photoList) =>
-                            setState(() => photos.addAll(photoList)));
-                      },
-                      icon: const Icon(Icons.image),
-                      label: const Text('Upload photos here',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                          ))),
                   const SizedBox(height: 20),
                   GridView.builder(
-                      shrinkWrap:
-                          true, // Use shrinkWrap to avoid unbounded height
+                      shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: photos.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            3, // Adjust the number of columns as needed
-                      ),
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 4,
+                              crossAxisSpacing: 4),
                       itemBuilder: (context, index) {
                         return Stack(children: [
                           Image.file(
@@ -286,126 +263,76 @@ class _CreateCaseState extends State<CreateCase> {
                       }),
                   const SizedBox(height: 20),
                   const Text('Videos',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  const SizedBox(height: 20),
-                  TextButton.icon(
-                      onPressed: () async {
-                        await CaseHelper.addVideo(
-                            (video) => setState(() => videos.add(video)));
-                      },
-                      icon: const Icon(Icons.image),
-                      label: const Text('Upload videos here',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                          ))),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   GridView.builder(
-                      shrinkWrap:
-                          true, // Use shrinkWrap to avoid unbounded height
+                      shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: videos.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount:
-                            3, // Adjust the number of columns as needed
-                      ),
+                              crossAxisCount: 3,
+                              mainAxisSpacing: 4,
+                              crossAxisSpacing: 4),
                       itemBuilder: (context, index) {
                         return Stack(children: [
-                          Image.memory(
-                            videos[index].thumbnail!,
-                            fit: BoxFit.cover,
-                            width: 250,
-                            height: 250,
-                          ),
+                          Image.memory(videos[index].thumbnail!,
+                              fit: BoxFit.cover, width: 250, height: 250),
                           Positioned(
                               top: 0,
                               right: 0,
                               child: IconButton(
-                                icon: const Icon(Icons.remove_circle),
-                                color: Colors.red,
-                                onPressed: () =>
-                                    {setState(() => videos.removeAt(index))},
-                              ))
+                                  icon: const Icon(Icons.remove_circle),
+                                  color: Colors.red,
+                                  onPressed: () =>
+                                      {setState(() => videos.removeAt(index))}))
                         ]);
                       }),
                   const SizedBox(height: 20),
-                  const Text('Audio',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  const SizedBox(height: 20),
-                  TextButton.icon(
-                      onPressed: () async {
-                        await CaseHelper.addAudios((audioList) =>
-                            setState(() => audios.addAll(audioList)));
-                      },
-                      icon: const Icon(Icons.image),
-                      label: const Text('Upload audios here',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                          ))),
+                  const Text('Audios',
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   ListView.builder(
                       shrinkWrap: true,
                       itemCount: audios.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Dismissible(
-                          key: Key(audios[index]),
-                          onDismissed: (direction) {
-                            setState(() {
-                              audioPlayer.pause();
-                              audios.removeAt(index);
-                            });
-                          },
-                          background: Container(color: Colors.red),
-                          child: AudioWidget(
-                              audioPlayer: audioPlayer, path: audios[index]),
-                        );
+                            key: Key(audios[index]),
+                            onDismissed: (direction) {
+                              setState(() {
+                                audioPlayer.pause();
+                                audios.removeAt(index);
+                              });
+                            },
+                            background: Container(color: Colors.red),
+                            child: AudioWidget(
+                                audioPlayer: audioPlayer, path: audios[index]));
                       }),
                   const SizedBox(height: 20),
                   const Text('External links',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  const SizedBox(height: 20),
-                  TextButton.icon(
-                      onPressed: () async {
-                        setState(() => addLink = !addLink);
-                      },
-                      icon: const Icon(Icons.image),
-                      label: const Text('Upload links here',
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                          ))),
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   Container(
                       child: addLink
                           ? TextField(
+                              //
                               controller: linkController,
                               decoration: InputDecoration(
                                   labelText: 'Enter text',
                                   suffixIcon: IconButton(
-                                      icon: const Icon(Icons.add),
+                                      icon: Icon(Icons.add_circle,
+                                          color: Style.primaryColor),
                                       onPressed: () {
                                         String link = linkController.text;
                                         if (link.isNotEmpty &&
                                             Utility.isValidUrl(link)) {
                                           setState(() => links.add(link));
                                         } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(const SnackBar(
-                                                  content: Text('Invalid Link',
-                                                      style: TextStyle(
-                                                        color: Colors.red,
-                                                      ))));
+                                          Utility.showSnackBar(
+                                              context, 'Invalid Link');
                                         }
                                       })))
                           : Container()),
@@ -433,6 +360,32 @@ class _CreateCaseState extends State<CreateCase> {
                                       color: Colors.blue,
                                     ))));
                       })
-                ])));
+                ])),
+            bottomSheet: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                      onPressed: () async {
+                        await CaseHelper.addPhotos((photoList) =>
+                            setState(() => photos.addAll(photoList)));
+                      },
+                      icon: Icon(Icons.photo, color: Style.primaryColor)),
+                  IconButton(
+                      onPressed: () async {
+                        await CaseHelper.addVideo(
+                            (video) => setState(() => videos.add(video)));
+                      },
+                      icon: Icon(Icons.video_camera_back,
+                          color: Style.primaryColor)),
+                  IconButton(
+                      onPressed: () async {
+                        await CaseHelper.addAudios((audioList) =>
+                            setState(() => audios.addAll(audioList)));
+                      },
+                      icon: Icon(Icons.audio_file, color: Style.primaryColor)),
+                  IconButton(
+                      onPressed: () async => setState(() => addLink = !addLink),
+                      icon: Icon(Icons.link, color: Style.primaryColor)),
+                ]));
   }
 }
