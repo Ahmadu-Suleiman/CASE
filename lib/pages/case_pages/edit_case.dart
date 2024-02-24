@@ -168,6 +168,11 @@ class _EditCaseState extends State<EditCase> {
                               child: Column(children: [
                             DropdownButton<String>(
                                 value: progress,
+                                underline: Container(),
+                                icon: Icon(Icons.arrow_drop_down,
+                                    color: Style.primaryColor),
+                                style: TextStyle(
+                                    fontSize: 18, color: Style.primaryColor),
                                 items: CaseValues.dropdownItemsProgress
                                     .map<DropdownMenuItem<String>>(
                                         (String value) {
@@ -225,8 +230,8 @@ class _EditCaseState extends State<EditCase> {
                                                 'Please add a title and some details first');
                                           }
                                         },
-                                        icon: const Icon(
-                                            Icons.lightbulb_outline)),
+                                        icon: Icon(Icons.lightbulb_outline,
+                                            color: Style.primaryColor)),
                                     hintText: 'Case title',
                                     border: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -257,8 +262,8 @@ class _EditCaseState extends State<EditCase> {
                                                 'Please add a title and some details first');
                                           }
                                         },
-                                        icon: const Icon(
-                                            Icons.lightbulb_outline)),
+                                        icon: Icon(Icons.lightbulb_outline,
+                                            color: Style.primaryColor)),
                                     hintText: 'Detailed description',
                                     border: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -280,8 +285,8 @@ class _EditCaseState extends State<EditCase> {
                                           CaseHelper.showRecommendedSummary(
                                               context, title, details, summary);
                                         },
-                                        icon: const Icon(
-                                            Icons.lightbulb_outline)),
+                                        icon: Icon(Icons.lightbulb_outline,
+                                            color: Style.primaryColor)),
                                     hintText: 'Summary',
                                     border: const OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -293,116 +298,130 @@ class _EditCaseState extends State<EditCase> {
                                   color: Colors.black,
                                 ))
                           ])),
-                          const SizedBox(height: 20),
-                          const Center(
-                              child: Text('Media',
-                                  style: TextStyle(
-                                      fontSize: 35,
-                                      fontWeight: FontWeight.bold))),
-                          const SizedBox(height: 20),
-                          const Text('Photos',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          const SizedBox(height: 20),
-                          GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: photos.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      mainAxisSpacing: 4,
-                                      crossAxisSpacing: 4),
-                              itemBuilder: (context, index) {
-                                return Stack(children: [
-                                  (photos[index].startsWith('http'))
-                                      ? Image.network(photos[index],
-                                          fit: BoxFit.cover,
-                                          width: 250,
-                                          height: 250)
-                                      : Image.file(File(photos[index]),
-                                          fit: BoxFit.cover,
-                                          width: 250,
-                                          height: 250),
-                                  Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: IconButton(
-                                        icon: const Icon(Icons.remove_circle),
-                                        color: Colors.red,
-                                        onPressed: () => {
-                                          setState(() => photos.removeAt(index))
-                                        },
-                                      ))
-                                ]);
-                              }),
-                          const SizedBox(height: 20),
-                          const Text('Videos',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 20),
-                          GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: videos.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      mainAxisSpacing: 4,
-                                      crossAxisSpacing: 4),
-                              itemBuilder: (context, index) {
-                                return Stack(children: [
-                                  (videos[index].thumbnailUrl != null)
-                                      ? Image.network(
-                                          videos[index].thumbnailUrl!,
-                                          fit: BoxFit.cover,
-                                          width: 250,
-                                          height: 250)
-                                      : Image.memory(videos[index].thumbnail!,
-                                          fit: BoxFit.cover,
-                                          width: 250,
-                                          height: 250),
-                                  Positioned(
-                                      top: 0,
-                                      right: 0,
-                                      child: IconButton(
+                          if (photos.isNotEmpty ||
+                              videos.isNotEmpty ||
+                              audios.isNotEmpty ||
+                              links.isNotEmpty) ...[
+                            const SizedBox(height: 20),
+                            const Center(
+                                child: Text('Media',
+                                    style: TextStyle(
+                                        fontSize: 35,
+                                        fontWeight: FontWeight.bold))),
+                            const SizedBox(height: 20),
+                          ],
+                          if (photos.isNotEmpty) ...[
+                            const SizedBox(height: 20),
+                            const Text('Photos',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                            const SizedBox(height: 20),
+                            GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: photos.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        mainAxisSpacing: 4,
+                                        crossAxisSpacing: 4),
+                                itemBuilder: (context, index) {
+                                  return Stack(children: [
+                                    (photos[index].startsWith('http'))
+                                        ? Image.network(photos[index],
+                                            fit: BoxFit.cover,
+                                            width: 250,
+                                            height: 250)
+                                        : Image.file(File(photos[index]),
+                                            fit: BoxFit.cover,
+                                            width: 250,
+                                            height: 250),
+                                    Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: IconButton(
                                           icon: const Icon(Icons.remove_circle),
                                           color: Colors.red,
                                           onPressed: () => {
-                                                setState(() =>
-                                                    videos.removeAt(index))
-                                              }))
-                                ]);
-                              }),
-                          const SizedBox(height: 20),
-                          const Text('Audio',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 20),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: audios.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Dismissible(
-                                  key: Key(audios[index]),
-                                  onDismissed: (direction) {
-                                    setState(() {
-                                      audioPlayer.pause();
-                                      audios.removeAt(index);
-                                    });
-                                  },
-                                  background: Container(color: Colors.red),
-                                  child: AudioWidget(
-                                      audioPlayer: audioPlayer,
-                                      path: audios[index]),
-                                );
-                              }),
-                          const SizedBox(height: 20),
-                          const Text('Links',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                                            setState(
+                                                () => photos.removeAt(index))
+                                          },
+                                        ))
+                                  ]);
+                                }),
+                            const SizedBox(height: 20)
+                          ],
+                          if (videos.isNotEmpty) ...[
+                            const Text('Videos',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 20),
+                            GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: videos.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 3,
+                                        mainAxisSpacing: 4,
+                                        crossAxisSpacing: 4),
+                                itemBuilder: (context, index) {
+                                  return Stack(children: [
+                                    (videos[index].thumbnailUrl != null)
+                                        ? Image.network(
+                                            videos[index].thumbnailUrl!,
+                                            fit: BoxFit.cover,
+                                            width: 250,
+                                            height: 250)
+                                        : Image.memory(videos[index].thumbnail!,
+                                            fit: BoxFit.cover,
+                                            width: 250,
+                                            height: 250),
+                                    Positioned(
+                                        top: 0,
+                                        right: 0,
+                                        child: IconButton(
+                                            icon:
+                                                const Icon(Icons.remove_circle),
+                                            color: Colors.red,
+                                            onPressed: () => {
+                                                  setState(() =>
+                                                      videos.removeAt(index))
+                                                }))
+                                  ]);
+                                }),
+                            const SizedBox(height: 20)
+                          ],
+                          if (audios.isNotEmpty) ...[
+                            const Text('Audio',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                            const SizedBox(height: 20),
+                            ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: audios.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Dismissible(
+                                      key: Key(audios[index]),
+                                      onDismissed: (direction) {
+                                        setState(() {
+                                          audioPlayer.pause();
+                                          audios.removeAt(index);
+                                        });
+                                      },
+                                      background: Container(color: Colors.red),
+                                      child: AudioWidget(
+                                          audioPlayer: audioPlayer,
+                                          path: audios[index]));
+                                }),
+                            const SizedBox(height: 20)
+                          ],
+                          if (links.isNotEmpty)
+                            const Text('Links',
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 20),
                           Container(
                               child: addLink
@@ -427,34 +446,38 @@ class _EditCaseState extends State<EditCase> {
                                                 }
                                               })))
                                   : Container()),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: links
-                                  .asMap()
-                                  .entries
-                                  .mapIndexed((index, element) => Dismissible(
-                                      key: Key('${links[index]}_$index'),
-                                      onDismissed: (direction) {
-                                        setState(() => links.removeAt(index));
-                                      },
-                                      background: Container(color: Colors.red),
-                                      child: TextButton.icon(
-                                          onPressed: () {
-                                            Utility.openLink(
-                                                context, links[index]);
-                                          },
-                                          icon: const Icon(Icons.link),
-                                          label: Text(links[index],
-                                              style: TextStyle(
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                  decorationColor:
-                                                      Style.primaryColor,
-                                                  decorationThickness: 2.0,
-                                                  fontSize: 14,
-                                                  color: Style.primaryColor)))))
-                                  .toList()),
-                          const SizedBox(height: 20),
+                          if (links.isNotEmpty) ...[
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: links
+                                    .asMap()
+                                    .entries
+                                    .mapIndexed((index, element) => Dismissible(
+                                        key: Key('${links[index]}_$index'),
+                                        onDismissed: (direction) {
+                                          setState(() => links.removeAt(index));
+                                        },
+                                        background:
+                                            Container(color: Colors.red),
+                                        child: TextButton.icon(
+                                            onPressed: () {
+                                              Utility.openLink(
+                                                  context, links[index]);
+                                            },
+                                            icon: const Icon(Icons.link),
+                                            label: Text(links[index],
+                                                style: TextStyle(
+                                                    decoration: TextDecoration
+                                                        .underline,
+                                                    decorationColor:
+                                                        Style.primaryColor,
+                                                    decorationThickness: 2.0,
+                                                    fontSize: 14,
+                                                    color:
+                                                        Style.primaryColor)))))
+                                    .toList()),
+                            const SizedBox(height: 20)
+                          ],
                           const Text('Comments',
                               style: TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold)),

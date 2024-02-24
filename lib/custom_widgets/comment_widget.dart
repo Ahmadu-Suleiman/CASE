@@ -60,6 +60,7 @@ class CommentWidget extends StatelessWidget {
               if (isCaseRecordCreator)
                 DropdownButton<String>(
                     value: comment.commentType,
+                    underline: Container(),
                     icon:
                         Icon(Icons.arrow_drop_down, color: Style.primaryColor),
                     style: TextStyle(fontSize: 18, color: Style.primaryColor),

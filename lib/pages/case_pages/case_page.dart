@@ -116,132 +116,103 @@ class _CasePageState extends State<CasePage> {
                             style: const TextStyle(
                                 fontSize: 18, color: Colors.black))
                       ])),
-                      Text(
-                        caseRecord.details,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      const Center(
-                          child: Text('Media',
-                              style: TextStyle(
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold,
-                              ))),
-                      const SizedBox(height: 20),
-                      const Text('Photos',
+                      Text(caseRecord.details,
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.black)),
+                      if (caseRecord.photos.isNotEmpty ||
+                          caseRecord.videos.isNotEmpty ||
+                          caseRecord.audios.isNotEmpty ||
+                          caseRecord.links.isNotEmpty) ...[
+                        const SizedBox(height: 20),
+                        const Center(
+                            child: Text('Media',
+                                style: TextStyle(
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold))),
+                        const SizedBox(height: 20),
+                      ],
+                      if (caseRecord.photos.isNotEmpty) ...[
+                        const Text('Photos',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 20),
+                        GridView.count(
+                            shrinkWrap: true,
+                            mainAxisSpacing: 4,
+                            crossAxisSpacing: 4,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisCount: 3,
+                            children: caseRecord.photos
+                                .map((photo) => ClickableImage(imageUrl: photo))
+                                .toList()),
+                        const SizedBox(height: 20)
+                      ],
+                      if (caseRecord.videos.isNotEmpty) ...[
+                        const Text('Videos',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 20),
+                        GridView.count(
+                            shrinkWrap: true,
+                            mainAxisSpacing: 4,
+                            crossAxisSpacing: 4,
+                            physics: const NeverScrollableScrollPhysics(),
+                            crossAxisCount: 3,
+                            children: caseRecord.videos
+                                .map((video) => GestureDetector(
+                                    onTap: () => context.push(
+                                        '${Routes.caseVideo}/${Uri.encodeComponent(video.videoUrl!)}'),
+                                    child: Image.network(video.thumbnailUrl!,
+                                        fit: BoxFit.cover,
+                                        width: 250,
+                                        height: 250)))
+                                .toList()),
+                        const SizedBox(height: 20)
+                      ],
+                      if (caseRecord.audios.isNotEmpty) ...[
+                        const Text('Audio',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 20),
+                        Column(
+                            children: caseRecord.audios
+                                .map((audio) => AudioWidget(
+                                    audioPlayer: _audioPlayer, path: audio))
+                                .toList()),
+                        const SizedBox(height: 20)
+                      ],
+                      if (caseRecord.links.isNotEmpty) ...[
+                        const Text('External links',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 20),
+                        Column(
+                            children: caseRecord.links
+                                .map((link) => TextButton.icon(
+                                    onPressed: () {
+                                      Utility.openLink(context, link);
+                                    },
+                                    icon: const Icon(Icons.link),
+                                    label: Text(link,
+                                        style: const TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: Colors.blue,
+                                            decorationThickness: 2.0,
+                                            fontSize: 14,
+                                            color: Colors.blue))))
+                                .toList())
+                      ],
+                      const Text('Comments',
                           style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      //photos here
-                      const SizedBox(height: 20),
-                      GridView.count(
-                        shrinkWrap: true,
-                        mainAxisSpacing: 4,
-                        crossAxisSpacing: 4,
-                        physics: const NeverScrollableScrollPhysics(),
-                        crossAxisCount: 3,
-                        children: caseRecord.photos
-                            .map(
-                              (photo) => ClickableImage(
-                                imageUrl: photo,
-                              ),
-                            )
-                            .toList(),
-                      ),
-                      const SizedBox(height: 20),
-                      const Text('Videos',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      const SizedBox(height: 20),
-                      GridView.count(
-                          shrinkWrap: true,
-                          mainAxisSpacing: 4,
-                          crossAxisSpacing: 4,
-                          physics: const NeverScrollableScrollPhysics(),
-                          crossAxisCount: 3,
-                          children: caseRecord.videos
-                              .map((video) => GestureDetector(
-                                  onTap: () => context.push(
-                                      '${Routes.caseVideo}/${Uri.encodeComponent(video.videoUrl!)}'),
-                                  child: Image.network(
-                                    video
-                                        .thumbnailUrl!, // Replace with your actual image URL
-                                    fit: BoxFit.cover,
-                                    width: 250,
-                                    height:
-                                        250, // Optional: Show an error icon if the image fails to load
-                                  )))
-                              .toList()),
-                      const SizedBox(height: 20),
-                      const Text('Audio',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      const SizedBox(height: 20),
-                      Column(
-                          children: caseRecord.audios
-                              .map((audio) => AudioWidget(
-                                  audioPlayer: _audioPlayer, path: audio))
-                              .toList()),
-                      const SizedBox(height: 20),
-                      const Text('External links',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      const SizedBox(height: 20),
-                      Column(
-                          children: caseRecord.links
-                              .map((link) => TextButton.icon(
-                                  onPressed: () {
-                                    Utility.openLink(context, link);
-                                  },
-                                  icon: const Icon(Icons.link),
-                                  label: Text(link,
-                                      style: const TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          decorationColor: Colors.blue,
-                                          decorationThickness: 2.0,
-                                          fontSize: 14,
-                                          color: Colors.blue))))
-                              .toList()),
-                      SegmentedButton<String>(
-                        showSelectedIcon: false,
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.zero, // This removes the curve
-                            ),
-                          ),
-                        ),
-                        segments: const <ButtonSegment<String>>[
-                          ButtonSegment<String>(
-                              value: CaseValues.commentVerified,
-                              label: Text(CaseValues.commentVerified),
-                              icon: Icon(Icons.verified)),
-                          ButtonSegment<String>(
-                              value: CaseValues.commentUseful,
-                              label: Text(CaseValues.commentUseful),
-                              icon: Icon(Icons.thumb_up)),
-                          ButtonSegment<String>(
-                              value: CaseValues.commentOthers,
-                              label: Text(CaseValues.commentOthers),
-                              icon: Icon(Icons.more_vert)),
-                        ],
-                        selected: <String>{commentsType},
-                        onSelectionChanged: (Set<String> newSelection) {
-                          setState(() => commentsType = newSelection.first);
-                        },
-                      ),
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                      TextButton.icon(
+                          style: TextButton.styleFrom(
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.zero),
+                          onPressed: () => _showCommentsType(context),
+                          icon: const Icon(Icons.arrow_drop_down),
+                          label: Text(commentsType)),
                       StreamBuilder<List<Comment>>(
                           stream: DatabaseComments.getComments(
                               caseRecord.id, commentsType),
@@ -270,7 +241,7 @@ class _CasePageState extends State<CasePage> {
                                           CaseHelper.editOrDeleteCommentAsOwner(
                                               context,
                                               comment,
-                                              () => setState(() {}));
+                                              () => {setState(() {})});
                                         },
                                         child: CommentWidget(
                                             comment: comment,
@@ -296,7 +267,8 @@ class _CasePageState extends State<CasePage> {
                           decoration: InputDecoration(
                               hintText: 'Write a comment...',
                               suffixIcon: IconButton(
-                                  icon: const Icon(Icons.send),
+                                  icon: Icon(Icons.send,
+                                      color: Style.primaryColor),
                                   onPressed: () async {
                                     String text = _commentController.text;
                                     if (text.isNotEmpty) {
@@ -316,6 +288,33 @@ class _CasePageState extends State<CasePage> {
           } else {
             return const Loading();
           }
+        });
+  }
+
+  void _showCommentsType(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Container(
+              padding: const EdgeInsets.all(8),
+              height: 200,
+              alignment: Alignment.center,
+              child: ListView.builder(
+                  itemCount: CaseValues.itemsCommentsType.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: TextButton.icon(
+                            label: Text(CaseValues.itemsCommentsType[index],
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            icon: const Icon(Icons.comment),
+                            onPressed: () {
+                              setState(() => commentsType =
+                                  CaseValues.itemsCommentsType[index]);
+                              Navigator.of(context).pop();
+                            }));
+                  }));
         });
   }
 }

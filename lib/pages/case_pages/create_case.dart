@@ -114,13 +114,11 @@ class _CreateCaseState extends State<CreateCase> {
                       child: Column(children: [
                     DropdownButton<String>(
                         value: progress,
-                        icon: Icon(Icons.insert_drive_file,
+                        underline: Container(),
+                        icon: Icon(Icons.arrow_drop_down,
                             color: Style.primaryColor),
-                        iconSize: 24,
                         style:
                             TextStyle(fontSize: 18, color: Style.primaryColor),
-                        underline:
-                            Container(height: 2, color: Style.primaryColor),
                         items: CaseValues.dropdownItemsProgress
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(
@@ -170,7 +168,8 @@ class _CreateCaseState extends State<CreateCase> {
                                         'Please add a title and some details first');
                                   }
                                 },
-                                icon: const Icon(Icons.lightbulb_outline)),
+                                icon: Icon(Icons.lightbulb_outline,
+                                    color: Style.primaryColor)),
                             hintText: 'Case title',
                             border: const OutlineInputBorder(
                                 borderRadius:
@@ -197,7 +196,8 @@ class _CreateCaseState extends State<CreateCase> {
                                         'Please add a title and some details first');
                                   }
                                 },
-                                icon: const Icon(Icons.lightbulb_outline)),
+                                icon: Icon(Icons.lightbulb_outline,
+                                    color: Style.primaryColor)),
                             hintText: 'Detailed description',
                             border: const OutlineInputBorder(
                                 borderRadius:
@@ -216,113 +216,118 @@ class _CreateCaseState extends State<CreateCase> {
                                   CaseHelper.showRecommendedSummary(context,
                                       title, detailedDescription, summary);
                                 },
-                                icon: const Icon(Icons.lightbulb_outline)),
+                                icon: Icon(Icons.lightbulb_outline,
+                                    color: Style.primaryColor)),
                             hintText: 'Summary',
                             border: const OutlineInputBorder(
-                                borderRadius: BorderRadius.all(
-                              Radius.circular(8),
-                            ))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)))),
                         maxLines: 6,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                        ))
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.black))
                   ])),
-                  const SizedBox(height: 20),
-                  const Center(
-                      child: Text('Media',
-                          style: TextStyle(
-                            fontSize: 35,
-                            fontWeight: FontWeight.bold,
-                          ))),
-                  const SizedBox(height: 20),
-                  const Text('Photos',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  const SizedBox(height: 20),
-                  GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: photos.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 4,
-                              crossAxisSpacing: 4),
-                      itemBuilder: (context, index) {
-                        return Stack(children: [
-                          Image.file(
-                            File(photos[index]),
-                            fit: BoxFit.cover,
-                            width: 250,
-                            height: 250,
-                          ),
-                          Positioned(
-                              top: 0,
-                              right: 0,
-                              child: IconButton(
-                                icon: const Icon(Icons.remove_circle),
-                                color: Colors.red,
-                                onPressed: () =>
-                                    {setState(() => photos.removeAt(index))},
-                              ))
-                        ]);
-                      }),
-                  const SizedBox(height: 20),
-                  const Text('Videos',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 20),
-                  GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: videos.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              mainAxisSpacing: 4,
-                              crossAxisSpacing: 4),
-                      itemBuilder: (context, index) {
-                        return Stack(children: [
-                          Image.memory(videos[index].thumbnail!,
-                              fit: BoxFit.cover, width: 250, height: 250),
-                          Positioned(
-                              top: 0,
-                              right: 0,
-                              child: IconButton(
+                  if (photos.isNotEmpty ||
+                      videos.isNotEmpty ||
+                      audios.isNotEmpty ||
+                      links.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    const Center(
+                        child: Text('Media',
+                            style: TextStyle(
+                                fontSize: 35, fontWeight: FontWeight.bold))),
+                    const SizedBox(height: 20),
+                  ],
+                  if (photos.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    const Text('Photos',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 20),
+                    GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: photos.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing: 4,
+                                crossAxisSpacing: 4),
+                        itemBuilder: (context, index) {
+                          return Stack(children: [
+                            Image.file(File(photos[index]),
+                                fit: BoxFit.cover, width: 250, height: 250),
+                            Positioned(
+                                top: 0,
+                                right: 0,
+                                child: IconButton(
                                   icon: const Icon(Icons.remove_circle),
                                   color: Colors.red,
                                   onPressed: () =>
-                                      {setState(() => videos.removeAt(index))}))
-                        ]);
-                      }),
-                  const SizedBox(height: 20),
-                  const Text('Audios',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 20),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: audios.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Dismissible(
-                            key: Key(audios[index]),
-                            onDismissed: (direction) {
-                              setState(() {
-                                audioPlayer.pause();
-                                audios.removeAt(index);
-                              });
-                            },
-                            background: Container(color: Colors.red),
-                            child: AudioWidget(
-                                audioPlayer: audioPlayer, path: audios[index]));
-                      }),
-                  const SizedBox(height: 20),
-                  const Text('Links',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                                      {setState(() => photos.removeAt(index))},
+                                ))
+                          ]);
+                        })
+                  ],
+                  if (videos.isNotEmpty) ...[
+                    const SizedBox(height: 20),
+                    const Text('Videos',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 20),
+                    GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: videos.length,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                mainAxisSpacing: 4,
+                                crossAxisSpacing: 4),
+                        itemBuilder: (context, index) {
+                          return Stack(children: [
+                            Image.memory(videos[index].thumbnail!,
+                                fit: BoxFit.cover, width: 250, height: 250),
+                            Positioned(
+                                top: 0,
+                                right: 0,
+                                child: IconButton(
+                                    icon: const Icon(Icons.remove_circle),
+                                    color: Colors.red,
+                                    onPressed: () => {
+                                          setState(() => videos.removeAt(index))
+                                        }))
+                          ]);
+                        }),
+                    const SizedBox(height: 20)
+                  ],
+                  if (audios.isNotEmpty) ...[
+                    const Text('Audios',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 20),
+                    ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: audios.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Dismissible(
+                              key: Key(audios[index]),
+                              onDismissed: (direction) {
+                                setState(() {
+                                  audioPlayer.pause();
+                                  audios.removeAt(index);
+                                });
+                              },
+                              background: Container(color: Colors.red),
+                              child: AudioWidget(
+                                  audioPlayer: audioPlayer,
+                                  path: audios[index]));
+                        }),
+                    const SizedBox(height: 20)
+                  ],
+                  if (links.isNotEmpty)
+                    const Text('Links',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   Container(
                       child: addLink
@@ -345,30 +350,32 @@ class _CreateCaseState extends State<CreateCase> {
                                         }
                                       })))
                           : Container()),
-                  Column( 
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: links
-                          .asMap()
-                          .entries
-                          .mapIndexed((index, element) => Dismissible(
-                              key: Key('${links[index]}_$index'),
-                              onDismissed: (direction) {
-                                setState(() => links.removeAt(index));
-                              },
-                              background: Container(color: Colors.red),
-                              child: TextButton.icon(
-                                  onPressed: () {
-                                    Utility.openLink(context, links[index]);
-                                  },
-                                  icon: const Icon(Icons.link),
-                                  label: Text(links[index],
-                                      style: TextStyle(
-                                          decoration: TextDecoration.underline,
-                                          decorationColor: Style.primaryColor,
-                                          decorationThickness: 2.0,
-                                          fontSize: 14,
-                                          color: Style.primaryColor)))))
-                          .toList())
+                  if (links.isNotEmpty)
+                    Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: links
+                            .asMap()
+                            .entries
+                            .mapIndexed((index, element) => Dismissible(
+                                key: Key('${links[index]}_$index'),
+                                onDismissed: (direction) {
+                                  setState(() => links.removeAt(index));
+                                },
+                                background: Container(color: Colors.red),
+                                child: TextButton.icon(
+                                    onPressed: () {
+                                      Utility.openLink(context, links[index]);
+                                    },
+                                    icon: const Icon(Icons.link),
+                                    label: Text(links[index],
+                                        style: TextStyle(
+                                            decoration:
+                                                TextDecoration.underline,
+                                            decorationColor: Style.primaryColor,
+                                            decorationThickness: 2.0,
+                                            fontSize: 14,
+                                            color: Style.primaryColor)))))
+                            .toList())
                 ])),
             bottomSheet: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

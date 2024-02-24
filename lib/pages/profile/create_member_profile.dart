@@ -114,11 +114,10 @@ class _CreateProfileState extends State<CreateProfile> {
                       value: member.gender,
                       hint: const Text('Choose your gender',
                           style: TextStyle(fontSize: 18)),
-                      icon: Icon(Icons.person, color: Style.primaryColor),
-                      iconSize: 24,
+                      underline: Container(),
+                      icon: Icon(Icons.arrow_drop_down,
+                          color: Style.primaryColor),
                       style: TextStyle(fontSize: 18, color: Style.primaryColor),
-                      underline:
-                          Container(height: 2, color: Style.primaryColor),
                       onChanged: (String? newValue) {
                         setState(() => member.gender = newValue!);
                       },
