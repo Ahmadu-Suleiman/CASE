@@ -26,7 +26,7 @@ class DatabaseCase {
       return Video.fromCase(videoLink, thumbnail);
     });
     int commentCount = await DatabaseComments.getCommentCounts(snapshot.id);
-
+    print(commentCount);
     return CaseRecord(
         id: snapshot.id,
         uidMember: snapshot['uidMember'] ?? '',

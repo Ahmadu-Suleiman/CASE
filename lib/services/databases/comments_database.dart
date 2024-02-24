@@ -45,10 +45,10 @@ class DatabaseComments {
     });
   }
 
-  static Future<int> getCommentCounts(String caseRecordId) {
-    return commentsCollection
+  static Future<int> getCommentCounts(String caseRecordId) async {
+    final snapshot = await commentsCollection
         .where('caseRecordId', isEqualTo: caseRecordId)
-        .snapshots()
-        .length;
+        .get();
+    return snapshot.docs.length;
   }
 }

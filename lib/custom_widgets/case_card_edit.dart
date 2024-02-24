@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/shared/routes.dart';
+import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -112,11 +113,14 @@ class CaseCardEdit extends StatelessWidget {
                                               fontSize: 14,
                                               color: Colors.blue)))
                                 ]),
-                            IconButton(
-                                icon: const Icon(Icons.share),
-                                onPressed: () {
-                                  // Add your logic here
-                                })
+                            TextButton.icon(
+                                onPressed: () => context.push(
+                                    '${Routes.caseReads}/${caseRecord.id}'),
+                                icon: const Icon(Icons.comment),
+                                label: Text(caseRecord.commentCount.toString(),
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: Style.primaryColor)))
                           ])
                     ]))));
   }

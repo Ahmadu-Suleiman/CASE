@@ -102,15 +102,13 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
                     padding: const EdgeInsets.all(8.0),
                     child: Column(children: [
                       const SizedBox(height: 12.0),
-                      Text(
-                        Utility.getFirstAndlastName(member),
-                        maxLines: 1,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 25.0,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black),
-                      ),
+                      Text(Utility.getFirstAndlastName(member),
+                          maxLines: 1,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black)),
                       const SizedBox(height: 8.0),
                       IconText(
                           icon: Icons.email,

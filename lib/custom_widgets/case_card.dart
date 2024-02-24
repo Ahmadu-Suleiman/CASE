@@ -136,7 +136,7 @@ class CaseCard extends StatelessWidget {
                                   TextButton.icon(
                                       onPressed: () => context.push(
                                           '${Routes.caseReads}/${caseRecord.id}'),
-                                      icon: const Icon(Icons.book),
+                                      icon: const Icon(Icons.mark_chat_read),
                                       label: Text(
                                           caseRecord.readIds.length.toString(),
                                           style: TextStyle(
