@@ -64,15 +64,7 @@ class CaseHelper {
                 icon: const Icon(Icons.add),
                 onPressed: () {
                   String link = linkController.text;
-                  if (link.isNotEmpty && Utility.isValidUrl(link)) {
-                    onLinkSubmitted(link);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        content: Text("Invalid Link",
-                            style: TextStyle(
-                              color: Colors.red,
-                            ))));
-                  }
+                  onLinkSubmitted(link);
                 })));
   }
 

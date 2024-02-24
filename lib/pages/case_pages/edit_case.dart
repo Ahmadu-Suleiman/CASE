@@ -76,6 +76,69 @@ class _EditCaseState extends State<EditCase> {
             return isLoading
                 ? const Loading()
                 : Scaffold(
+                    appBar: AppBar(
+                        backgroundColor: Style.primaryColor,
+                        leading: IconButton(
+                            icon: const Icon(Icons.arrow_back,
+                                color: Colors.white),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            }),
+                        title: const Text('Upload a case',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white)),
+                        actions: [
+                          IconButton(
+                              icon:
+                                  const Icon(Icons.upload, color: Colors.white),
+                              onPressed: () async {
+                                if (title.isEmpty) {
+                                  Utility.showSnackBar(
+                                      context, 'Please add title');
+                                } else if (summary.isEmpty) {
+                                  Utility.showSnackBar(
+                                      context, 'Please add summary');
+                                } else if (detailedDescription.isEmpty) {
+                                  Utility.showSnackBar(
+                                      context, 'Please add the details');
+                                } else if (mainImagePath.isEmpty) {
+                                  Utility.showSnackBar(
+                                      context, 'Please add main image');
+                                } else {
+                                  setState(() => loading = true);
+                                  String type =
+                                      await CaseHelper.getCaseCategory(
+                                          title, detailedDescription, summary);
+                                  CaseRecord caseRecord = CaseRecord.forUpload(
+                                      uidMember: member.id!,
+                                      communityId: widget.communityId,
+                                      dateCreated: Timestamp.now(),
+                                      title: title,
+                                      summary: summary,
+                                      details: detailedDescription,
+                                      type: type,
+                                      progress: progress,
+                                      mainImage: mainImagePath,
+                                      location: member.location!,
+                                      photos:
+                                          photos.map((path) => path).toList(),
+                                      videos: videos,
+                                      audios: audios,
+                                      links: links);
+                                  await DatabaseCase.uploadCaseRecord(
+                                      caseRecord);
+                                  await DatabaseMember
+                                      .addCaseOrPetitionCommunity(
+                                          member, widget.communityId);
+                                  if (context.mounted) {
+                                    CaseHelper.showNextSteps(context, title,
+                                        detailedDescription, summary);
+                                  }
+                                }
+                              })
+                        ]),
                     resizeToAvoidBottomInset: true,
                     body: Material(
                         child: Padding(
@@ -321,30 +384,23 @@ class _EditCaseState extends State<EditCase> {
                                       ))),
                               const SizedBox(height: 20),
                               GridView.builder(
-                                  shrinkWrap:
-                                      true, // Use shrinkWrap to avoid unbounded height
+                                  shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: photos.length,
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount:
-                                        3, // Adjust the number of columns as needed
-                                  ),
+                                          crossAxisCount: 3),
                                   itemBuilder: (context, index) {
                                     return Stack(children: [
                                       (photos[index].startsWith('http'))
-                                          ? Image.network(
-                                              photos[index],
+                                          ? Image.network(photos[index],
                                               fit: BoxFit.cover,
                                               width: 250,
-                                              height: 250,
-                                            )
-                                          : Image.file(
-                                              File(photos[index]),
+                                              height: 250)
+                                          : Image.file(File(photos[index]),
                                               fit: BoxFit.cover,
                                               width: 250,
-                                              height: 250,
-                                            ),
+                                              height: 250),
                                       Positioned(
                                           top: 0,
                                           right: 0,
@@ -362,9 +418,8 @@ class _EditCaseState extends State<EditCase> {
                               const SizedBox(height: 20),
                               const Text('Videos',
                                   style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  )),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold)),
                               const SizedBox(height: 20),
                               TextButton.icon(
                                   onPressed: () async {
@@ -374,20 +429,15 @@ class _EditCaseState extends State<EditCase> {
                                   icon: const Icon(Icons.image),
                                   label: const Text('Upload videos here',
                                       style: TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.blue,
-                                      ))),
+                                          fontSize: 14, color: Colors.blue))),
                               const SizedBox(height: 20),
                               GridView.builder(
-                                  shrinkWrap:
-                                      true, // Use shrinkWrap to avoid unbounded height
+                                  shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemCount: videos.length,
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount:
-                                        3, // Adjust the number of columns as needed
-                                  ),
+                                          crossAxisCount: 3),
                                   itemBuilder: (context, index) {
                                     return Stack(children: [
                                       (videos[index].thumbnailUrl != null)

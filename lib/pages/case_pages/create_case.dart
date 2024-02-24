@@ -11,6 +11,7 @@ import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +27,7 @@ class CreateCase extends StatefulWidget {
 class _CreateCaseState extends State<CreateCase> {
   final audioPlayer = AudioPlayer();
   final linkController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
   bool addLink = false;
   bool loading = false;
   String progress = CaseValues.investigationPending;
@@ -35,6 +37,13 @@ class _CreateCaseState extends State<CreateCase> {
   List<Video> videos = [];
   List<String> audios = [];
   List<String> links = [];
+
+  Future<void> _scrollToBottom() async {
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _scrollController.animateTo(_scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeOut);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +109,7 @@ class _CreateCaseState extends State<CreateCase> {
             resizeToAvoidBottomInset: true,
             body: Padding(
                 padding: const EdgeInsets.fromLTRB(12.0, 12.0, 12.0, 35.0),
-                child: ListView(children: [
+                child: ListView(controller: _scrollController, children: [
                   Center(
                       child: Column(children: [
                     DropdownButton<String>(
@@ -311,14 +320,13 @@ class _CreateCaseState extends State<CreateCase> {
                                 audioPlayer: audioPlayer, path: audios[index]));
                       }),
                   const SizedBox(height: 20),
-                  const Text('External links',
+                  const Text('Links',
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 20),
                   Container(
                       child: addLink
                           ? TextField(
-                              //
                               controller: linkController,
                               decoration: InputDecoration(
                                   labelText: 'Enter text',
@@ -330,36 +338,37 @@ class _CreateCaseState extends State<CreateCase> {
                                         if (link.isNotEmpty &&
                                             Utility.isValidUrl(link)) {
                                           setState(() => links.add(link));
+                                          _scrollToBottom();
                                         } else {
                                           Utility.showSnackBar(
                                               context, 'Invalid Link');
                                         }
                                       })))
                           : Container()),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: links.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Dismissible(
-                            key: Key(links[index]),
-                            onDismissed: (direction) {
-                              setState(() => links.removeAt(index));
-                            },
-                            background: Container(color: Colors.red),
-                            child: TextButton.icon(
-                                onPressed: () {
-                                  Utility.openLink(context, links[index]);
-                                },
-                                icon: const Icon(Icons.link),
-                                label: Text(links[index],
-                                    style: const TextStyle(
-                                      decoration: TextDecoration.underline,
-                                      decorationColor: Colors.blue,
-                                      decorationThickness: 2.0,
-                                      fontSize: 14,
-                                      color: Colors.blue,
-                                    ))));
-                      })
+                  Column( 
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: links
+                          .asMap()
+                          .entries
+                          .mapIndexed((index, element) => Dismissible(
+                              key: Key('${links[index]}_$index'),
+                              onDismissed: (direction) {
+                                setState(() => links.removeAt(index));
+                              },
+                              background: Container(color: Colors.red),
+                              child: TextButton.icon(
+                                  onPressed: () {
+                                    Utility.openLink(context, links[index]);
+                                  },
+                                  icon: const Icon(Icons.link),
+                                  label: Text(links[index],
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          decorationColor: Style.primaryColor,
+                                          decorationThickness: 2.0,
+                                          fontSize: 14,
+                                          color: Style.primaryColor)))))
+                          .toList())
                 ])),
             bottomSheet: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -384,7 +393,10 @@ class _CreateCaseState extends State<CreateCase> {
                       },
                       icon: Icon(Icons.audio_file, color: Style.primaryColor)),
                   IconButton(
-                      onPressed: () async => setState(() => addLink = !addLink),
+                      onPressed: () async {
+                        setState(() => addLink = !addLink);
+                        _scrollToBottom();
+                      },
                       icon: Icon(Icons.link, color: Style.primaryColor)),
                 ]));
   }
