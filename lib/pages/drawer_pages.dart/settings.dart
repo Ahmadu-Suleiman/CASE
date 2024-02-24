@@ -11,36 +11,32 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Settings')),
-      body: Column(
-        children: [
-          SettingsWidget(
-              icon: Icons.person,
-              iconSize: 20,
-              text: 'Edit profile',
-              fontSize: 20,
-              onPressed: () => context.push(Routes.editMemberProfile)),
-          SettingsWidget(
-              icon: Icons.details,
-              iconSize: 20,
-              text: 'About',
-              fontSize: 20,
-              onPressed: () => context.push(Routes.editMemberProfile)),
-          SettingsWidget(
-              icon: Icons.phone,
-              iconSize: 20,
-              text: 'Contact us',
-              fontSize: 20,
-              onPressed: () =>
-                  Utility.openEmailApp(context, 'ahmadumeta4.1@gmail.com')),
-          SettingsWidget(
-              icon: Icons.logout,
-              iconSize: 20,
-              text: 'Logout',
-              fontSize: 20,
-              onPressed: () => AuthService.signOut()),
-        ],
-      ),
-    );
+        appBar: AppBar(title: const Text('Settings'), centerTitle: true),
+        body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              SettingsWidget(
+                  icon: Icons.person,
+                  text: 'Edit profile',
+                  onPressed: () => context.push(Routes.editMemberProfile)),
+              const Divider(),
+              SettingsWidget(
+                  icon: Icons.details,
+                  text: 'About',
+                  onPressed: () => context.push(Routes.editMemberProfile)),
+              const Divider(),
+              SettingsWidget(
+                  icon: Icons.phone,
+                  text: 'Contact us',
+                  onPressed: () =>
+                      Utility.openEmailApp(context, 'ahmadumeta4.1@gmail.com')),
+              const Divider(),
+              SettingsWidget(
+                  icon: Icons.logout,
+                  text: 'Logout',
+                  onPressed: () => AuthService.signOut()),
+              const Divider()
+            ])));
   }
 }

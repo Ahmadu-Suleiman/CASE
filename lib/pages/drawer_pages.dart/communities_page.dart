@@ -59,13 +59,8 @@ class _CommunitiesWidgetState extends State<CommunitiesPageWidget>
   Widget build(BuildContext context) {
     CommunityMember member = context.watch<CommunityMember>();
     return Scaffold(
-        appBar: AppBar(
-            title: const Image(
-              height: 80,
-              width: 80,
-              image: AssetImage('assets/case_logo_main.ico'),
-            ),
-            centerTitle: true),
+        appBar:
+            AppBar(title: const Text('State communities'), centerTitle: true),
         body: RefreshIndicator(
             onRefresh: () async {
               _pagingController.refresh();

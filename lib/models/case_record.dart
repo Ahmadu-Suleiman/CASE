@@ -3,17 +3,17 @@ import 'package:case_be_heard/models/video.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CaseRecord {
-  late String id;
+  String id = '';
   Timestamp dateCreated = Timestamp.now();
-  late String uidMember;
+  String uidMember = '';
   String title = '', details = '', summary = '', type, progress, mainImage = '';
-  late CommunityMember member;
-  late GeoPoint location;
-  late List<String> photos, audios, links;
-  late List<Video> videos;
-  late List<String> viewIds, readIds;
-  late String communityId;
-  late int commentCount;
+  CommunityMember member = CommunityMember.empty();
+  GeoPoint location;
+  List<String> photos, audios, links;
+  List<Video> videos = [];
+  List<String> viewIds = [], readIds = [];
+  String communityId = '';
+  int commentCount = 0;
 
   CaseRecord(
       {required this.id,

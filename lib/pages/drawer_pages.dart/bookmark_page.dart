@@ -38,7 +38,8 @@ class _BookmarkWidgetState extends State<BookmarkWidget>
     CommunityMember member = context.watch<CommunityMember>();
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Bookmark'),
+            title: const Text('Bookmarks'),
+            centerTitle: true,
             bottom: TabBar(
                 controller: _tabController,
                 tabs: const [Tab(text: 'Cases'), Tab(text: 'Petitions')])),

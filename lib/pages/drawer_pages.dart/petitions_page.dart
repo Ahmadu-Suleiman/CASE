@@ -1,6 +1,7 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/custom_widgets/petition_card.dart';
+import 'package:case_be_heard/custom_widgets/petition_card_edit.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
@@ -58,6 +59,7 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
     return Scaffold(
         appBar: AppBar(
             title: const Text('Petitions'),
+            centerTitle: true,
             bottom: TabBar(
                 controller: _tabController,
                 tabs: const [Tab(text: 'Created'), Tab(text: 'Others')])),
@@ -72,8 +74,14 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
                     return ListView.builder(
                         itemCount: petitions.length,
                         itemBuilder: (context, index) {
-                          return PetitionCard(
-                              petition: petitions[index], member: member);
+                          return PetitionCardEdit(
+                              petition: petitions[index],
+                              member: member,
+                              onDelete: () async {
+                                DatabasePetition.deletePetition(
+                                        petitions[index])
+                                    .then((_) => setState(() {}));
+                              });
                         });
                   } else {
                     return const MesssageScreen(

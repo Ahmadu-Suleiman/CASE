@@ -22,7 +22,6 @@ class _CaseVideoPlayerState extends State<CaseVideoPlayer> {
         setState(() {});
       });
       _controller!.initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized.
         _controller!.play();
         setState(() {});
       });

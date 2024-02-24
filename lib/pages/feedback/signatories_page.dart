@@ -38,18 +38,17 @@ class _CaseReadsState extends State<SignatoriesWidget> {
     return isLoading
         ? const Loading()
         : Scaffold(
+            appBar: AppBar(
+                title: const Text('Signed by', style: TextStyle(fontSize: 25))),
             body: ListView(children: [
-            const Text('Reads',
-                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 20),
-            ListView.builder(
-                padding: const EdgeInsets.all(8),
-                shrinkWrap: true,
-                itemCount: membersSigned.length,
-                itemBuilder: (BuildContext context, int index) {
-                  final member = membersSigned[index];
-                  return MembersListWidget(member: member);
-                })
-          ]));
+              ListView.builder(
+                  padding: const EdgeInsets.all(8),
+                  shrinkWrap: true,
+                  itemCount: membersSigned.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    final member = membersSigned[index];
+                    return MembersListWidget(member: member);
+                  })
+            ]));
   }
 }

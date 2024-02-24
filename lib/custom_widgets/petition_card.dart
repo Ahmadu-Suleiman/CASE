@@ -46,65 +46,58 @@ class _PetitionCardState extends State<PetitionCard> {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: CachedNetworkImage(
-                            imageUrl: widget.petition.image,
-                            width: double.infinity,
-                            height: 250,
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                const Icon(Icons.image),
-                            errorWidget: (context, url, error) =>
-                                const Icon(Icons.error),
-                          ))),
+                              imageUrl: widget.petition.image,
+                              width: double.infinity,
+                              height: 250,
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) =>
+                                  const Icon(Icons.image),
+                              errorWidget: (context, url, error) =>
+                                  const Icon(Icons.error)))),
                   Center(
-                    child: Text(
-                      widget.petition.title,
-                      maxLines: 4,
+                      child: Text(widget.petition.title,
+                          maxLines: 4,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black))),
+                  const SizedBox(height: 12),
+                  Text(widget.petition.description,
+                      maxLines: 3,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    widget.petition.description,
-                    maxLines: 3,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18.0, color: Colors.black),
-                  ),
+                      style:
+                          const TextStyle(fontSize: 18.0, color: Colors.black)),
                   LinearProgressBar(
-                    maxSteps: widget.petition.target,
-                    progressType: LinearProgressBar
-                        .progressTypeLinear, // Use Linear progress
-                    currentStep: widget.petition.signatoryIds.length,
-                    progressColor: Style.primaryColor,
-                    backgroundColor: Style.secondaryColor,
-                  ),
+                      maxSteps: widget.petition.target,
+                      progressType: LinearProgressBar
+                          .progressTypeLinear, // Use Linear progress
+                      currentStep: widget.petition.signatoryIds.length,
+                      progressColor: Style.primaryColor,
+                      backgroundColor: Style.secondaryColor),
                   GestureDetector(
-                    onTap: () => context
-                        .push('${Routes.signatories}/${widget.petition.id}'),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
+                      onTap: () => context
+                          .push('${Routes.signatories}/${widget.petition.id}'),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                                widget.petition.signatoryIds.length.toString()),
-                            const Text('Signatures')
-                          ],
-                        ),
-                        Column(
-                          children: [
-                            Text(widget.petition.target.toString()),
-                            const Text('Target Signatures')
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
+                            Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(children: [
+                                  Text(
+                                    widget.petition.signatoryIds.length
+                                        .toString(),
+                                    style: TextStyle(color: Style.primaryColor),
+                                  ),
+                                  Text('Signatures',
+                                      style:
+                                          TextStyle(color: Style.primaryColor))
+                                ])),
+                            Column(children: [
+                              Text(widget.petition.target.toString()),
+                              const Text('Target Signatures')
+                            ])
+                          ])),
                   Row(children: [
                     Expanded(
                         child: ElevatedButton(
@@ -143,11 +136,6 @@ class _PetitionCardState extends State<PetitionCard> {
                                     widget.member, widget.petition);
                               }
                               setState(() {});
-                            }),
-                        IconButton(
-                            icon: const Icon(Icons.share),
-                            onPressed: () {
-                              //TODO: Add your logic here
                             })
                       ])
                 ])));

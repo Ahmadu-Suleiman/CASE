@@ -58,46 +58,40 @@ class _PetitionCardState extends State<PetitionCardEdit> {
                                 const Icon(Icons.error),
                           ))),
                   Center(
-                    child: Text(
-                      widget.petition.title,
-                      maxLines: 4,
+                      child: Text(widget.petition.title,
+                          maxLines: 4,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 25.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black))),
+                  const SizedBox(height: 12),
+                  Text(widget.petition.description,
+                      maxLines: 3,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 12,
-                  ),
-                  Text(
-                    widget.petition.description,
-                    maxLines: 3,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 18.0, color: Colors.black),
-                  ),
+                      style:
+                          const TextStyle(fontSize: 18.0, color: Colors.black)),
                   LinearProgressBar(
-                    maxSteps: widget.petition.target,
-                    progressType: LinearProgressBar
-                        .progressTypeLinear, // Use Linear progress
-                    currentStep: widget.petition.signatoryIds.length,
-                    progressColor: Style.primaryColor,
-                    backgroundColor: Style.secondaryColor,
-                  ),
+                      maxSteps: widget.petition.target,
+                      progressType: LinearProgressBar
+                          .progressTypeLinear, // Use Linear progress
+                      currentStep: widget.petition.signatoryIds.length,
+                      progressColor: Style.primaryColor,
+                      backgroundColor: Style.secondaryColor),
                   GestureDetector(
                       onTap: () => context
                           .push('${Routes.signatories}/${widget.petition.id}'),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              children: [
-                                Text(widget.petition.signatoryIds.length
-                                    .toString()),
-                                const Text('Signatures')
-                              ],
-                            ),
+                            Column(children: [
+                              Text(
+                                widget.petition.signatoryIds.length.toString(),
+                                style: TextStyle(color: Style.primaryColor),
+                              ),
+                              Text('Signatures',
+                                  style: TextStyle(color: Style.primaryColor))
+                            ]),
                             Column(children: [
                               Text(widget.petition.target.toString()),
                               const Text('Target Signatures')
@@ -114,12 +108,7 @@ class _PetitionCardState extends State<PetitionCardEdit> {
                                   _deletePetition().then((delete) {
                                     if (delete) widget.onDelete;
                                   });
-                                })),
-                        IconButton(
-                            icon: const Icon(Icons.share),
-                            onPressed: () {
-                              //TODO: Add your logic here
-                            })
+                                }))
                       ])
                 ])));
   }
