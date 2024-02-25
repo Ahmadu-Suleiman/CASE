@@ -28,7 +28,7 @@ class SettingsPage extends StatelessWidget {
                   icon: Icons.details,
                   text: 'About',
                   onPressed: () => Utility.openLink(context,
-                      'https://ahmadu-suleiman.github.io/landing-page/')),
+                      'https://ahmadu-suleiman.github.io/Case-landing-page/')),
               const Divider(),
               SettingsWidget(
                   icon: Icons.phone,
