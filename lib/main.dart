@@ -38,6 +38,7 @@ class CaseApp extends StatelessWidget {
                     debugShowCheckedModeBanner: false,
                     routerConfig: Routes.router,
                     theme: ThemeData(
+                        fontFamily: 'Poppins',
                         focusColor: Style.secondaryColor,
                         hoverColor: Style.secondaryColor,
                         primaryColor: Style.primaryColor,
@@ -48,6 +49,7 @@ class CaseApp extends StatelessWidget {
                             primary: Style.primaryColor,
                             secondary: Style.secondaryColor)),
                     darkTheme: ThemeData(
+                        fontFamily: 'Poppins',
                         focusColor: Style.secondaryColor,
                         hoverColor: Style.secondaryColor,
                         primaryColor: Style.primaryColor,
