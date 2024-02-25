@@ -27,7 +27,8 @@ class SettingsPage extends StatelessWidget {
               SettingsWidget(
                   icon: Icons.details,
                   text: 'About',
-                  onPressed: () => context.push(Routes.editMemberProfile)),
+                  onPressed: () => Utility.openLink(context,
+                      'https://ahmadu-suleiman.github.io/landing-page/')),
               const Divider(),
               SettingsWidget(
                   icon: Icons.phone,
@@ -38,7 +39,10 @@ class SettingsPage extends StatelessWidget {
               SettingsWidget(
                   icon: Icons.logout,
                   text: 'Logout',
-                  onPressed: () => AuthService.signOut()),
+                  onPressed: () {
+                    AuthService.signOut();
+                    context.pop();
+                  }),
               const Divider()
             ])));
   }
