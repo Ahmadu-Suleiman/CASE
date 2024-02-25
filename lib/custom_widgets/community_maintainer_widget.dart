@@ -20,25 +20,30 @@ class CommunityMaintainerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isMaintainer = community.maintainerIds.contains(member.id);
-    return Row(children: [
-      CachedAvatar(
-          url: member.photoUrl,
-          onPressed: () =>
-              context.push('${Routes.memberProfileOthers}/${member.id}')),
-      Flexible(
-          child: Text(Utility.getFirstAndlastName(member),
-              overflow: TextOverflow.ellipsis)),
-      ElevatedButton(
-          onPressed: () {
-            if (isMaintainer) {
-              DatabaseCommunity.removeMaintainer(community, member)
-                  .then((maintainers) => onChange(maintainers));
-            } else {
-              DatabaseCommunity.addMaintainer(community, member)
-                  .then((maintainers) => onChange(maintainers));
-            }
-          },
-          child: Text(isMaintainer ? 'remove' : 'add'))
-    ]);
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(children: [
+        CachedAvatar(
+            url: member.photoUrl,
+            onPressed: () =>
+                context.push('${Routes.memberProfileOthers}/${member.id}')),
+        const SizedBox(width: 8),
+        Flexible(
+            child: Text(Utility.getFirstAndlastName(member),
+                overflow: TextOverflow.ellipsis)),
+        const SizedBox(width: 8),
+        ElevatedButton(
+            onPressed: () {
+              if (isMaintainer) {
+                DatabaseCommunity.removeMaintainer(community, member)
+                    .then((maintainers) => onChange(maintainers));
+              } else {
+                DatabaseCommunity.addMaintainer(community, member)
+                    .then((maintainers) => onChange(maintainers));
+              }
+            },
+            child: Text(isMaintainer ? 'remove' : 'add'))
+      ]),
+    );
   }
 }

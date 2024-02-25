@@ -14,44 +14,72 @@ class StatesForCommunitiesPage extends StatefulWidget {
 
 class _CommunitiesStateWidget extends State<StatesForCommunitiesPage>
     with WidgetsBindingObserver {
+  final _searchController = TextEditingController();
+  String searchText = '';
+  final Set<String> _uniqueStates = {};
+  List<String> _filteredStates = [];
+
+  @override
+  void initState() {
+    super.initState();
+    setup();
+  }
+
+  void setup() async {
+    final states = await DatabaseCommunity.getUniqueStates(widget.countryISO);
+    _uniqueStates.addAll(states);
+    _filteredStates = _uniqueStates.toList();
+    _searchController.addListener(() {
+      String query = _searchController.text.toLowerCase();
+      setState(() {
+        _filteredStates = _uniqueStates
+            .where((item) => item.toLowerCase().contains(query))
+            .toList();
+      });
+    });
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: DatabaseCommunity.getUniqueStates(widget.countryISO),
-        builder: (BuildContext context, AsyncSnapshot<Set<String>> snapshot) {
-          if (snapshot.hasData) {
-            final states = snapshot.data!;
-            return Scaffold(
-                appBar: AppBar(
-                    title: const Image(
-                      height: 80,
-                      width: 80,
-                      image: AssetImage('assets/case_logo_main.ico'),
-                    ),
-                    centerTitle: true),
-                body: ListView(children: [
+    return _uniqueStates.isNotEmpty
+        ? Scaffold(
+            appBar: AppBar(
+                title: const Text('States',
+                    style:
+                        TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                centerTitle: true),
+            body: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ListView(children: [
                   Card(
-                      child: Column(children: [
-                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                      Text(widget.countryISO,
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
-                      CountryFlag.fromCountryCode(widget.countryISO,
-                          height: 30, width: 30, borderRadius: 8)
-                    ]),
-                    const TextField(
-                        decoration: InputDecoration(
-                            hintText: 'Search state',
-                            border: OutlineInputBorder(),
-                            prefixIcon: Icon(Icons.search))),
-                    const Divider(),
-                    const Text('States')
-                  ])),
-                  ...states.map((state) => StatesForCommunitiesWidget(
+                      child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Column(children: [
+                            Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(widget.countryISO,
+                                      style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold)),
+                                  CountryFlag.fromCountryCode(widget.countryISO,
+                                      height: 30, width: 30, borderRadius: 16)
+                                ]),
+                            const SizedBox(height: 8),
+                            TextField(
+                                controller: _searchController,
+                                style: const TextStyle(fontSize: 18),
+                                decoration: const InputDecoration(
+                                    hintText: 'Search communities',
+                                    border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(16))),
+                                    prefixIcon: Icon(Icons.search)))
+                          ]))),
+                  ..._filteredStates.map((state) => StatesForCommunitiesWidget(
                       state: state, countryISO: widget.countryISO))
-                ]));
-          } else {
-            return const Loading();
-          }
-        });
+                ])))
+        : const Loading();
   }
 }

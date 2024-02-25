@@ -29,7 +29,7 @@ class CasePage extends StatefulWidget {
 }
 
 class _CasePageState extends State<CasePage> {
-  String commentsType = CaseValues.commentVerified;
+  String commentsType = CaseValues.commentOthers;
   final _audioPlayer = AudioPlayer();
   final _scrollController = ScrollController();
   final _commentController = TextEditingController();
@@ -108,17 +108,32 @@ class _CasePageState extends State<CasePage> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
+                        const SizedBox(height: 20),
+                        const Text('Details',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
+                        const SizedBox(height: 12),
+                        Text(caseRecord.details,
+                            style: const TextStyle(
                                 fontSize: 18, color: Colors.black)),
                         const SizedBox(height: 20),
+                        const Text('Summary',
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black)),
+                        const SizedBox(height: 12),
                         Text(caseRecord.summary,
                             maxLines: 4,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(
                                 fontSize: 18, color: Colors.black))
                       ])),
-                      Text(caseRecord.details,
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.black)),
                       if (caseRecord.photos.isNotEmpty ||
                           caseRecord.videos.isNotEmpty ||
                           caseRecord.audios.isNotEmpty ||

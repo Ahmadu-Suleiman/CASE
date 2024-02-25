@@ -99,7 +99,7 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                               ? IconButton(
                                   icon: const Icon(Icons.settings),
                                   onPressed: () => context.push(
-                                      '${Routes.communitySettings}/${community.id}'))
+                                      '${Routes.communityMaintainance}/${community.id}'))
                               : IconButton(
                                   icon: const Icon(Icons.group_add),
                                   color: CommunityHelper.isCommunityMember(
@@ -159,11 +159,12 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                                   const MesssageScreen(
                                       message: 'No more petitions found',
                                       icon: Icon(Icons.search_off)))),
-                      ListView(padding: const EdgeInsets.all(8), children: [
+                      ListView(padding: const EdgeInsets.all(16), children: [
                         const Text('Community description',
                             style: TextStyle(
                                 fontSize: 35, fontWeight: FontWeight.bold)),
                         SelectableText(community.description),
+                        const SizedBox(height: 14),
                         const Text('Community guidelines',
                             style: TextStyle(
                                 fontSize: 35, fontWeight: FontWeight.bold)),

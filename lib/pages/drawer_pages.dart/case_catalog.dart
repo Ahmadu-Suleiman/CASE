@@ -64,7 +64,9 @@ class _CaseCatalogState extends State<CaseCatalog> with WidgetsBindingObserver {
             address = snapshot.data!;
             return Scaffold(
                 appBar: AppBar(
-                  title: const Text('Case catalog'),
+                  title: const Text('Case catalog',
+                      style:
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
                   centerTitle: true,
                 ),
                 body: RefreshIndicator(

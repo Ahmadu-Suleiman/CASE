@@ -58,7 +58,8 @@ class _PetitionsPageWidgetState extends State<PetitionsPageWidget>
     });
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Petitions'),
+            title: const Text('Petitions',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
             centerTitle: true,
             bottom: TabBar(
                 controller: _tabController,

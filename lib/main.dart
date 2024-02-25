@@ -35,6 +35,7 @@ class CaseApp extends StatelessWidget {
               child: Consumer<CommunityMember?>(
                   builder: (context, communityMember, child) {
                 return MaterialApp.router(
+                    debugShowCheckedModeBanner: false,
                     routerConfig: Routes.router,
                     theme: ThemeData(
                         focusColor: Style.secondaryColor,

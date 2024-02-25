@@ -15,7 +15,7 @@ class StatesForCommunitiesWidget extends StatelessWidget {
         onTap: () =>
             context.push('${Routes.communitiesFromState}/$state/$countryISO'),
         child: Padding(
-            padding: const EdgeInsets.all(2.0),
+            padding: const EdgeInsets.all(4.0),
             child: Column(children: [
               Text(state, // GestureDetector only works if thistext is pressd
                   maxLines: 2,

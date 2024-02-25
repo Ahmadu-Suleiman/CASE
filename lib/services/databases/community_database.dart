@@ -71,10 +71,30 @@ class DatabaseCommunity {
     return _communityFromSnapshot(await communityCollection.doc(stateId).get());
   }
 
+  static Future<List<Community>> getAllCommunitiesForState(
+      {String? searchText,
+      required String state,
+      required String countryISO}) async {
+    QuerySnapshot querySnapshot;
+    Query query = communityCollection
+        .orderBy('name')
+        .where('state', isEqualTo: state)
+        .where('countryISO', isEqualTo: countryISO);
+
+    if (searchText != null && searchText.isNotEmpty) {
+      query = query.startAt([searchText]).endAt(['$searchText\uf8ff']);
+    }
+
+    querySnapshot = await query.get();
+    final caseRecords = querySnapshot.docs.map(_communityFromSnapshot).toList();
+    return caseRecords;
+  }
+
   static Future<void> fetchCommunities(
       {int limit = 10,
       DocumentSnapshot? pageKey,
       required PagingController pagingController,
+      String? searchText,
       required String state,
       required String countryISO}) async {
     QuerySnapshot querySnapshot;
@@ -82,6 +102,10 @@ class DatabaseCommunity {
         .orderBy('dateCreated', descending: true)
         .where('state', isEqualTo: state)
         .where('countryISO', isEqualTo: countryISO);
+
+    if (searchText != null && searchText.isNotEmpty) {
+      query = query.startAt([searchText]).endAt(['$searchText\uf8ff']);
+    }
 
     if (pageKey != null) {
       querySnapshot =
