@@ -75,6 +75,8 @@ Once you have created an account you can start exploring the app's features.
 
 ### Uploading Case
 
-To create a community, click on the "Create Community" button in the navigation bar. The communities are customisable with their own banner and profile picture.
+To create a case, tap on the floating button, it will display two buttons, tap on the case button. It will lead you to a page that allows you to choose your case community within your state. After choosing your community, add the required details for your case including media and links. Finally, press the upload button in order to upload your case.
 
-### 🗣️ Sharing Posts
+### Creating Petition
+
+To create a petition, tap on the floating button, it will display two buttons, tap on the petition button. It will lead you to a page that allows you to choose your petition community within your state. After choosing your community, add the required details for your petition. Finally, press the upload button in order to upload your petition.
