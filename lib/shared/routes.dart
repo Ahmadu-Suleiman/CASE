@@ -24,7 +24,6 @@ import 'package:case_be_heard/pages/profile/edit_member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile.dart';
 import 'package:case_be_heard/pages/profile/member_profile_others.dart';
 import 'package:case_be_heard/pages/profile/profile_image.dart';
-import 'package:case_be_heard/pages/splashscreen.dart';
 import 'package:case_be_heard/pages/wrapper.dart';
 import 'package:go_router/go_router.dart';
 
@@ -58,11 +57,7 @@ class Routes {
   static const String communityMaintainance = '/community-maintainance';
   static const String settingsPage = '/settings-page';
 
-  static final router = GoRouter(initialLocation: splashScreen, routes: [
-    GoRoute(
-        name: 'splashScreen',
-        path: splashScreen,
-        builder: (context, state) => const SplashScreen()),
+  static final router = GoRouter(initialLocation: wrapper, routes: [
     GoRoute(
         name: 'wrapper',
         path: wrapper,

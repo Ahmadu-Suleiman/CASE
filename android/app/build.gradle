@@ -5,7 +5,7 @@ plugins {
     id 'com.google.gms.google-services'
 }
 
-def localProperties = new Properties()
+def localProperties = new    Properties()
 def localPropertiesFile = rootProject.file('local.properties')
 if (localPropertiesFile.exists()) {
     localPropertiesFile.withReader('UTF-8') { reader ->
