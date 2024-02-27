@@ -45,6 +45,13 @@ class Utility {
         backgroundColor: Style.primaryColor));
   }
 
+  static SnackBar getSnackBar(String text) {
+    return SnackBar(
+        content: Text(text),
+        duration: const Duration(seconds: 1),
+        backgroundColor: Style.primaryColor);
+  }
+
   static bool isValidUrl(String url) {
     try {
       final uri = Uri.parse(url);

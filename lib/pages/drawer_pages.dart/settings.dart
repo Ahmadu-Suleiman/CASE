@@ -23,19 +23,16 @@ class SettingsPage extends StatelessWidget {
                   icon: Icons.person,
                   text: 'Edit profile',
                   onPressed: () => context.push(Routes.editMemberProfile)),
-              const Divider(),
               SettingsWidget(
                   icon: Icons.details,
                   text: 'About',
                   onPressed: () => Utility.openLink(context,
                       'https://ahmadu-suleiman.github.io/Case-landing-page/')),
-              const Divider(),
               SettingsWidget(
                   icon: Icons.phone,
                   text: 'Contact us',
                   onPressed: () =>
                       Utility.openEmailApp(context, 'ahmadumeta4.1@gmail.com')),
-              const Divider(),
               SettingsWidget(
                   icon: Icons.logout,
                   text: 'Logout',
@@ -43,7 +40,6 @@ class SettingsPage extends StatelessWidget {
                     AuthService.signOut();
                     context.pop();
                   }),
-              const Divider()
             ])));
   }
 }

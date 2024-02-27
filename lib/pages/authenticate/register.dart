@@ -33,8 +33,6 @@ class RegisterState extends State<Register> {
                 child: Form(
                     key: _formKey,
                     child: ListView(children: <Widget>[
-                      Image.asset('assets/case_logo_main.ico',
-                          width: 150, height: 150, fit: BoxFit.cover),
                       const SizedBox(height: 20.0),
                       const Center(
                           child: Text('Register your community account',
@@ -69,6 +67,14 @@ class RegisterState extends State<Register> {
                             setState(() => password = val);
                           }),
                       const SizedBox(height: 20.0),
+                      TextFormField(
+                          style: const TextStyle(fontSize: 18.0),
+                          decoration: Style.textInputDecoration
+                              .copyWith(hintText: 'Confirm password'),
+                          obscureText: true,
+                          validator: (val) =>
+                              val != password ? 'Password not matching' : null),
+                      const SizedBox(height: 20.0),
                       ElevatedButton(
                           style: Style.buttonDecoration,
                           onPressed: () async {
@@ -79,10 +85,6 @@ class RegisterState extends State<Register> {
                                   .registerWithEmailAndPassword(
                                       email, password);
                               if (result == null) {
-                                if (context.mounted) {
-                                  Utility.showSnackBar(
-                                      context, 'Please supply a valid email');
-                                }
                                 setState(() => loading = false);
                               }
                             }
