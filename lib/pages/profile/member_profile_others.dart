@@ -96,8 +96,12 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
                       child: CachedAvatar(
                           url: member.photoUrl,
                           size: 60,
-                          onPressed: () => context.push(
-                              '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}'))),
+                          onPressed: () {
+                            if (member.photoUrl.isNotEmpty) {
+                              context.push(
+                                  '${Routes.casePhoto}/${Uri.encodeComponent(member.photoUrl)}');
+                            }
+                          })),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(children: [

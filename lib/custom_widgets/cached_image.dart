@@ -25,6 +25,6 @@ class CachedAvatar extends StatelessWidget {
             errorWidget: (context, url, error) => CircleAvatar(
                 backgroundColor: Colors.black,
                 radius: size,
-                child: Icon(Icons.error, size: size))));
+                child: Icon(Icons.person, size: size))));
   }
 }
