@@ -36,6 +36,9 @@ CASE is a platform designed to empower and connect community members, providing 
 
 ## Features To Be Implemented Soon
 
+### Local langauges integration
+- Enables community members to use the platform in their native language to improve their user experience.
+
 ### Anonymous Reporting
 - Allows community members to share information about cases anonymously, fostering a secure environment for disclosure.
 
