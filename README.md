@@ -51,6 +51,9 @@ CASE is a platform designed to empower and connect community members, providing 
 ### Legal Support
 - Connects users with legal professionals who can take up cases pro bono or through paid services, ensuring accessible legal aid for all.
 
+### Organizational Accounts
+- Enable organizations such as Governmental organizatons and NGOs to create their own recognized accounts.
+
 ### District Achievement Section
 - Highlights community milestones and achievements, promoting a sense of collective accomplishment.
 
