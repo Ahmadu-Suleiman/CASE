@@ -211,7 +211,7 @@ class StorageService {
     }
   }
 
-  static deleteCaseRefernces(String uidCase) async {
+  static deleteCaseReferences(String uidCase) async {
     List<Reference> parents = [
       _photosCaseRef,
       _videosCaseRef,

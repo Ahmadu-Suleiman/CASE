@@ -26,7 +26,7 @@ class DatabaseCase {
       return Video.fromCase(videoLink, thumbnail);
     });
     int commentCount = await DatabaseComments.getCommentCounts(snapshot.id);
-    print(commentCount);
+    // print(commentCount);
     return CaseRecord(
         id: snapshot.id,
         uidMember: snapshot['uidMember'] ?? '',
@@ -226,7 +226,7 @@ class DatabaseCase {
   }
 
   static Future<void> deleteCaseRecord(CaseRecord caseRecord) async {
-    await StorageService.deleteCaseRefernces(caseRecord.id);
+    await StorageService.deleteCaseReferences(caseRecord.id);
     await caseCollection.doc(caseRecord.id).delete();
   }
 
