@@ -23,14 +23,14 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-flutter.targetSdkVersion =  34
-flutter.compileSdkVersion =   34
-
-
 android {
     namespace "com.example.case_be_heard"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+    defaultConfig {
+        minSdkVersion flutter.minSdkVersion
+        targetSdkVersion flutter.targetSdkVersion
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -72,4 +72,5 @@ flutter {
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.7.1')
     implementation 'com.google.firebase:firebase-analytics'
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
