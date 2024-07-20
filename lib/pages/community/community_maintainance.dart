@@ -7,7 +7,7 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/shared/community_helper.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 
@@ -55,7 +55,6 @@ class _CommunityMaintainancePageState extends State<CommunityMaintainancePage>
 
       return Scaffold(
           appBar: AppBar(
-              backgroundColor: Style.primaryColor,
               leading: IconButton(
                   icon: const Icon(Icons.arrow_back, color: Colors.white),
                   onPressed: () {
@@ -98,7 +97,6 @@ class _CommunityMaintainancePageState extends State<CommunityMaintainancePage>
                     })
               ],
               bottom: TabBar(
-                  unselectedLabelColor: Style.secondaryColor,
                   indicatorColor: Colors.white,
                   controller: _tabController,
                   labelColor: Colors.white,
@@ -132,9 +130,9 @@ class _CommunityMaintainancePageState extends State<CommunityMaintainancePage>
                         (imagePath) => setState(() => imagePath = imagePath));
                   },
                   icon: const Icon(Icons.image),
-                  label: Text('Add main image',
+                  label: const Text('Add main image',
                       style:
-                          TextStyle(fontSize: 14, color: Style.primaryColor))),
+                          TextStyle(fontSize: 14,))),
               const SizedBox(height: 4),
               Padding(
                   padding: const EdgeInsets.all(16.0),

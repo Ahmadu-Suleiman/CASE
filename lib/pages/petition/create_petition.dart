@@ -6,7 +6,7 @@ import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
 import 'package:case_be_heard/shared/petition_helper.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -33,7 +33,6 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
         ? const Loading()
         : Scaffold(
             appBar: AppBar(
-                backgroundColor: Style.primaryColor,
                 leading: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () {
@@ -96,9 +95,10 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                               setState(() => this.imagePath = imagePath));
                         },
                         icon: const Icon(Icons.image),
-                        label: Text('Add main image',
+                        label: const Text('Add main image',
                             style: TextStyle(
-                                fontSize: 14, color: Style.primaryColor))),
+                              fontSize: 14,
+                            ))),
                     const SizedBox(height: 8),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -126,8 +126,9 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                                         'Please add a title and some details first');
                                   }
                                 },
-                                icon: Icon(Icons.lightbulb_outline,
-                                    color: Style.primaryColor)),
+                                icon: const Icon(
+                                  Icons.lightbulb_outline,
+                                )),
                             hintText: 'Petition title',
                             border: const OutlineInputBorder(
                                 borderRadius:
@@ -151,8 +152,9 @@ class _CreatePetitionPageState extends State<CreatePetitionPage> {
                                         'Please add a title and some details first');
                                   }
                                 },
-                                icon: Icon(Icons.lightbulb_outline,
-                                    color: Style.primaryColor)),
+                                icon: const Icon(
+                                  Icons.lightbulb_outline,
+                                )),
                             hintText: 'Detailed description',
                             border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(

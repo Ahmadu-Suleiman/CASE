@@ -82,9 +82,8 @@ class _CommunityPetitionWidgetState
                                 onPressed: () =>
                                     context.push(Routes.createCommunity),
                                 icon: const Icon(Icons.add_circle),
-                                label: Text('add community',
-                                    style:
-                                        TextStyle(color: Style.primaryColor)))
+                                label: const Text('add community',
+                                    ))
                           ]),
                       TextField(
                           controller: _searchController,

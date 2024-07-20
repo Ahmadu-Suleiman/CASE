@@ -12,7 +12,7 @@ import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/services/databases/comments_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/case_values.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
@@ -85,7 +85,6 @@ class _EditCaseState extends State<EditCase> {
           ? const Loading()
           : Scaffold(
               appBar: AppBar(
-                  backgroundColor: Style.primaryColor,
                   leading: IconButton(
                       icon: const Icon(Icons.arrow_back, color: Colors.white),
                       onPressed: () {
@@ -156,10 +155,12 @@ class _EditCaseState extends State<EditCase> {
                       DropdownButton<String>(
                           value: progress,
                           underline: Container(),
-                          icon: Icon(Icons.arrow_drop_down,
-                              color: Style.primaryColor),
-                          style: TextStyle(
-                              fontSize: 18, color: Style.primaryColor),
+                          icon: const Icon(
+                            Icons.arrow_drop_down,
+                          ),
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
                           items: CaseValues.dropdownItemsProgress
                               .map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
@@ -176,9 +177,10 @@ class _EditCaseState extends State<EditCase> {
                                 setState(() => mainImagePath = imagePath));
                           },
                           icon: const Icon(Icons.image),
-                          label: Text('Add main image',
+                          label: const Text('Add main image',
                               style: TextStyle(
-                                  fontSize: 14, color: Style.primaryColor))),
+                                fontSize: 14,
+                              ))),
                       const SizedBox(height: 20),
                       Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -213,8 +215,9 @@ class _EditCaseState extends State<EditCase> {
                                           'Please add a title and some details first');
                                     }
                                   },
-                                  icon: Icon(Icons.lightbulb_outline,
-                                      color: Style.primaryColor)),
+                                  icon: const Icon(
+                                    Icons.lightbulb_outline,
+                                  )),
                               hintText: 'Case title',
                               border: const OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
@@ -243,8 +246,9 @@ class _EditCaseState extends State<EditCase> {
                                           'Please add a title and some details first');
                                     }
                                   },
-                                  icon: Icon(Icons.lightbulb_outline,
-                                      color: Style.primaryColor)),
+                                  icon: const Icon(
+                                    Icons.lightbulb_outline,
+                                  )),
                               hintText: 'Detailed description',
                               border: const OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
@@ -265,8 +269,9 @@ class _EditCaseState extends State<EditCase> {
                                     CaseHelper.showRecommendedSummary(context,
                                         title.text, details.text, summary.text);
                                   },
-                                  icon: Icon(Icons.lightbulb_outline,
-                                      color: Style.primaryColor)),
+                                  icon: const Icon(
+                                    Icons.lightbulb_outline,
+                                  )),
                               hintText: 'Summary',
                               border: const OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
@@ -406,8 +411,9 @@ class _EditCaseState extends State<EditCase> {
                                 decoration: InputDecoration(
                                     labelText: 'Enter text',
                                     suffixIcon: IconButton(
-                                        icon: Icon(Icons.add_circle,
-                                            color: Style.primaryColor),
+                                        icon: const Icon(
+                                          Icons.add_circle,
+                                        ),
                                         onPressed: () {
                                           String link = linkController.text;
                                           if (link.isNotEmpty &&
@@ -426,26 +432,29 @@ class _EditCaseState extends State<EditCase> {
                           children: links
                               .asMap()
                               .entries
-                              .mapIndexed((index, element) => Dismissible(
+                              .mapIndexed(
+                                (index, element) => Dismissible(
                                   key: Key('${links[index]}_$index'),
                                   onDismissed: (direction) {
                                     setState(() => links.removeAt(index));
                                   },
                                   background: Container(color: Colors.red),
                                   child: TextButton.icon(
-                                      onPressed: () {
-                                        Utility.openLink(context, links[index]);
-                                      },
-                                      icon: const Icon(Icons.link),
-                                      label: Text(links[index],
-                                          style: TextStyle(
-                                              decoration:
-                                                  TextDecoration.underline,
-                                              decorationColor:
-                                                  Style.primaryColor,
-                                              decorationThickness: 2.0,
-                                              fontSize: 14,
-                                              color: Style.primaryColor)))))
+                                    onPressed: () {
+                                      Utility.openLink(context, links[index]);
+                                    },
+                                    icon: const Icon(Icons.link),
+                                    label: Text(
+                                      links[index],
+                                      style: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        decorationThickness: 2.0,
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              )
                               .toList()),
                       const SizedBox(height: 20)
                     ],
@@ -513,8 +522,9 @@ class _EditCaseState extends State<EditCase> {
                         decoration: InputDecoration(
                             hintText: 'Write a comment...',
                             suffixIcon: IconButton(
-                                icon:
-                                    Icon(Icons.send, color: Style.primaryColor),
+                                icon: const Icon(
+                                  Icons.send,
+                                ),
                                 onPressed: () async {
                                   String text = _commentController.text;
                                   if (text.isNotEmpty) {
@@ -535,31 +545,34 @@ class _EditCaseState extends State<EditCase> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                        onPressed: () async {
-                          await CaseHelper.addPhotos((photoList) =>
-                              setState(() => photos.addAll(photoList)));
-                        },
-                        icon: Icon(Icons.photo, color: Style.primaryColor)),
+                      onPressed: () async {
+                        await CaseHelper.addPhotos((photoList) =>
+                            setState(() => photos.addAll(photoList)));
+                      },
+                      icon: const Icon(
+                        Icons.photo,
+                      ),
+                    ),
                     IconButton(
                         onPressed: () async {
                           await CaseHelper.addVideo(
                               (video) => setState(() => videos.add(video)));
                         },
-                        icon: Icon(Icons.video_camera_back,
-                            color: Style.primaryColor)),
+                        icon: const Icon(Icons.video_camera_back,
+                            )),
                     IconButton(
                         onPressed: () async {
                           await CaseHelper.addAudios((audioList) =>
                               setState(() => audios.addAll(audioList)));
                         },
                         icon:
-                            Icon(Icons.audio_file, color: Style.primaryColor)),
+                            const Icon(Icons.audio_file, )),
                     IconButton(
                         onPressed: () async {
                           setState(() => addLink = !addLink);
                           _scrollToBottom();
                         },
-                        icon: Icon(Icons.link, color: Style.primaryColor)),
+                        icon: const Icon(Icons.link,)),
                   ]));
     }
     return const Loading();

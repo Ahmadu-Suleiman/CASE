@@ -1,4 +1,4 @@
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:case_be_heard/custom_widgets/case_card_edit.dart';
@@ -83,15 +83,11 @@ class _CaseCatalogState extends State<CaseCatalog> with WidgetsBindingObserver {
                                 showSelectedIcon: false,
                                 style: ButtonStyle(
                                     backgroundColor:
-                                        MaterialStateProperty.resolveWith<
-                                            Color>((Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.selected)) {
-                                        return Style.primaryColor;
-                                      }
+                                        WidgetStateProperty.resolveWith<Color>(
+                                            (Set<WidgetState> states) {
                                       return Colors.white;
                                     }),
-                                    shape: MaterialStateProperty.all<
+                                    shape: WidgetStateProperty.all<
                                             RoundedRectangleBorder>(
                                         const RoundedRectangleBorder(
                                       borderRadius: BorderRadius

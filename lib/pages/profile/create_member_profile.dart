@@ -28,7 +28,7 @@ class _CreateProfileState extends State<CreateProfile> {
         ? const Loading()
         : Scaffold(
             appBar: AppBar(
-                backgroundColor: Style.primaryColor,
+               
                 centerTitle: true,
                 title: const Text('Create profile',
                     style: TextStyle(
@@ -115,9 +115,9 @@ class _CreateProfileState extends State<CreateProfile> {
                       hint: const Text('Choose your gender',
                           style: TextStyle(fontSize: 18)),
                       underline: Container(),
-                      icon: Icon(Icons.arrow_drop_down,
-                          color: Style.primaryColor),
-                      style: TextStyle(fontSize: 18, color: Style.primaryColor),
+                      icon: const Icon(Icons.arrow_drop_down,
+                          ),
+                      style: const TextStyle(fontSize: 18, ),
                       onChanged: (String? newValue) {
                         setState(() => member.gender = newValue!);
                       },

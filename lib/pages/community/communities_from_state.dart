@@ -3,7 +3,7 @@ import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/models/community.dart';
 import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -85,8 +85,8 @@ class _CommunityFromStateState extends State<CommunitiesFromStatePage>
                       TextButton(
                           onPressed: () => context.push(
                               '${Routes.statesForCommunities}/${widget.countryISO}'),
-                          child: Text('view all states',
-                              style: TextStyle(color: Style.primaryColor)))
+                          child: const Text('view all states',
+                              ))
                     ])
               ]))),
               PagedSliverList<DocumentSnapshot?, Community>(

@@ -5,7 +5,7 @@ import 'package:case_be_heard/models/community.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:case_be_heard/shared/community_helper.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -29,7 +29,6 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
         ? const Loading()
         : Scaffold(
             appBar: AppBar(
-                backgroundColor: Style.primaryColor,
                 leading: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () {
@@ -86,9 +85,9 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                               setState(() => this.imagePath = imagePath));
                         },
                         icon: const Icon(Icons.image),
-                        label: Text('Add main image',
+                        label: const Text('Add main image',
                             style: TextStyle(
-                                fontSize: 14, color: Style.primaryColor))),
+                                fontSize: 14, ))),
                     const SizedBox(height: 4),
                     Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -118,8 +117,8 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                                         'Please add a name and some details first');
                                   }
                                 },
-                                icon: Icon(Icons.lightbulb_outline,
-                                    color: Style.primaryColor)),
+                                icon: const Icon(Icons.lightbulb_outline,
+                      )),
                             hintText: 'Community name',
                             border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
@@ -149,8 +148,8 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                                         'Please add a name and some description first');
                                   }
                                 },
-                                icon: Icon(Icons.lightbulb_outline,
-                                    color: Style.primaryColor)),
+                                icon: const Icon(Icons.lightbulb_outline,
+                                    )),
                             hintText: 'Detailed description',
                             border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(
@@ -181,8 +180,8 @@ class _CreateCommunityWidgetState extends State<CreateCommunityWidget> {
                                         'Please add a name and some description first');
                                   }
                                 },
-                                icon: Icon(Icons.lightbulb_outline,
-                                    color: Style.primaryColor)),
+                                icon: const Icon(Icons.lightbulb_outline,
+                                  )),
                             hintText: 'Community guidelines',
                             border: const OutlineInputBorder(
                                 borderRadius: BorderRadius.all(

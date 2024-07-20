@@ -10,7 +10,7 @@ import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/location.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +77,7 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
     } else {
       return Scaffold(
           appBar: AppBar(
-              backgroundColor: Style.primaryColor,
+             
               title: const Image(
                   height: 80,
                   width: 80,
@@ -92,7 +92,7 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
                     child: Column(children: <Widget>[
                   Container(
                       padding: const EdgeInsets.all(8),
-                      color: Style.primaryColor,
+                     
                       child: CachedAvatar(
                           url: member.photoUrl,
                           size: 60,
@@ -151,14 +151,11 @@ class _ProfileState extends State<ProfileOthers> with WidgetsBindingObserver {
                           showSelectedIcon: false,
                           style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.resolveWith<Color>(
-                                      (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.selected)) {
-                                  return Style.primaryColor;
-                                }
+                                  WidgetStateProperty.resolveWith<Color>(
+                                      (Set<WidgetState> states) {
                                 return Colors.white;
                               }),
-                              shape: MaterialStateProperty.all<
+                              shape: WidgetStateProperty.all<
                                       RoundedRectangleBorder>(
                                   const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.zero))),

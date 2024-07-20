@@ -8,7 +8,7 @@ import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
 import 'package:case_be_heard/shared/community_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/models/community.dart';
@@ -101,11 +101,10 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                                   onPressed: () => context.push(
                                       '${Routes.communityMaintainance}/${community.id}'))
                               : IconButton(
-                                  icon: const Icon(Icons.group_add),
-                                  color: CommunityHelper.isCommunityMember(
-                                          member, community)
-                                      ? Style.primaryColor
-                                      : Colors.black,
+                                  icon:CommunityHelper.isCommunityMember(
+                                          member, community)? 
+                                          const Icon(
+                                            Icons.group_remove):const Icon(Icons.group_add),
                                   onPressed: () async {
                                     if (CommunityHelper.isCommunityMember(
                                         member, community)) {

@@ -4,7 +4,7 @@ import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +39,6 @@ class _HomePageState extends State<HomePage> {
     });
 
     return Scaffold(
-      backgroundColor: Style.secondaryColor,
       appBar: AppBar(
           leading: Builder(builder: (context) {
             return IconButton(
@@ -144,13 +143,11 @@ class _HomePageState extends State<HomePage> {
           openButtonBuilder: RotateFloatingActionButtonBuilder(
               child: const Icon(Icons.add),
               fabSize: ExpandableFabSize.regular,
-              foregroundColor: Style.primaryColor,
               backgroundColor: Colors.white,
               shape: const CircleBorder()),
           closeButtonBuilder: DefaultFloatingActionButtonBuilder(
               child: const Icon(Icons.close),
               fabSize: ExpandableFabSize.small,
-              foregroundColor: Style.primaryColor,
               backgroundColor: Colors.white,
               shape: const CircleBorder()),
           children: [

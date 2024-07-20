@@ -75,9 +75,9 @@ class _CommunitiesWidgetState extends State<CommunitiesPageWidget> {
                                   icon: const Icon(Icons.add_circle),
                                   label: Text('add community',
                                       style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Style.primaryColor)))
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      )))
                             ]),
                         TextField(
                             controller: _searchController,
@@ -101,9 +101,9 @@ class _CommunitiesWidgetState extends State<CommunitiesPageWidget> {
                                       '${Routes.statesForCommunities}/${widget.countryISO}'),
                                   child: Text('view all states',
                                       style: TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Style.primaryColor)))
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      )))
                             ])
                       ]))),
               Expanded(

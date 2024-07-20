@@ -4,7 +4,7 @@ import 'package:case_be_heard/models/community.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -78,12 +78,13 @@ class _CommunityCaseWidgetState extends State<ChooseCaseCommunityPageWidget> {
                                 style: const TextStyle(
                                     fontSize: 25, fontWeight: FontWeight.bold)),
                             TextButton.icon(
-                                onPressed: () =>
-                                    context.push(Routes.createCommunity),
-                                icon: const Icon(Icons.add_circle),
-                                label: Text('add community',
-                                    style:
-                                        TextStyle(color: Style.primaryColor)))
+                              onPressed: () =>
+                                  context.push(Routes.createCommunity),
+                              icon: const Icon(Icons.add_circle),
+                              label: const Text(
+                                'add community',
+                              ),
+                            ),
                           ]),
                       TextField(
                           controller: _searchController,

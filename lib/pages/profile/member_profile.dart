@@ -7,7 +7,7 @@ import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
+// import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -63,7 +63,6 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
     CommunityMember member = context.watch<CommunityMember>();
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Style.primaryColor,
             title: const Image(
                 height: 80,
                 width: 80,
@@ -78,7 +77,6 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                   child: Column(children: <Widget>[
                 Container(
                     padding: const EdgeInsets.all(8),
-                    color: Style.primaryColor,
                     child: CachedAvatar(
                         url: member.photoUrl,
                         size: 60,
@@ -135,17 +133,14 @@ class _ProfileState extends State<Profile> with WidgetsBindingObserver {
                         showSelectedIcon: false,
                         style: ButtonStyle(
                             backgroundColor:
-                                MaterialStateProperty.resolveWith<Color>(
-                                    (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.selected)) {
-                                return Style.primaryColor;
-                              }
+                                WidgetStateProperty.resolveWith<Color>(
+                                    (Set<WidgetState> states) {
                               return Colors.white;
                             }),
-                            shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.zero))),
+                            shape:
+                                WidgetStateProperty.all<RoundedRectangleBorder>(
+                                    const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.zero))),
                         segments: const <ButtonSegment<String>>[
                           ButtonSegment<String>(
                               value: CaseValues.investigationPending,

@@ -30,7 +30,7 @@ class _EditProfileState extends State<EditProfile> {
         ? const Loading()
         : Scaffold(
             appBar: AppBar(
-                backgroundColor: Style.primaryColor,
+               
                 leading: IconButton(
                   icon: const Icon(Icons.arrow_back,
                       color: Colors.white), // Specify the color here
