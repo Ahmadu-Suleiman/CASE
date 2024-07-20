@@ -3,7 +3,6 @@ import 'package:case_be_heard/custom_widgets/cached_image.dart';
 import 'package:case_be_heard/models/case_record.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -63,8 +62,8 @@ class CaseCard extends StatelessWidget {
                               Text(
                                   CaseHelper.verified(
                                       caseRecord.member.verified),
-                                  style: TextStyle(
-                                      fontSize: 14, color: Style.primaryColor))
+                                  style:
+                                      Theme.of(context).textTheme.titleMedium)
                             ])
                       ]),
                       const SizedBox(height: 8),
@@ -75,9 +74,7 @@ class CaseCard extends StatelessWidget {
                             const TextSpan(text: 'Progress: '),
                             TextSpan(
                                 text: caseRecord.progress,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Style.primaryColor))
+                                style: Theme.of(context).textTheme.titleMedium)
                           ])),
                       RichText(
                           text: TextSpan(
@@ -86,9 +83,7 @@ class CaseCard extends StatelessWidget {
                             const TextSpan(text: 'Type: '),
                             TextSpan(
                                 text: caseRecord.type,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Style.primaryColor))
+                                style: Theme.of(context).textTheme.titleLarge)
                           ])),
                       Padding(
                           padding: const EdgeInsets.symmetric(
@@ -108,10 +103,7 @@ class CaseCard extends StatelessWidget {
                           child: Text(caseRecord.title,
                               maxLines: 4,
                               textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 25.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black))),
+                              style: Theme.of(context).textTheme.displayLarge)),
                       const SizedBox(height: 12),
                       Text(caseRecord.summary,
                           maxLines: 3,
@@ -132,27 +124,26 @@ class CaseCard extends StatelessWidget {
                                       icon: const Icon(Icons.remove_red_eye),
                                       label: Text(
                                           caseRecord.viewIds.length.toString(),
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Style.primaryColor))),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge)),
                                   TextButton.icon(
                                       onPressed: () => context.push(
                                           '${Routes.caseReads}/${caseRecord.id}'),
                                       icon: const Icon(Icons.mark_chat_read),
                                       label: Text(
                                           caseRecord.readIds.length.toString(),
-                                          style: TextStyle(
-                                              fontSize: 14,
-                                              color: Style.primaryColor)))
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelLarge))
                                 ]),
                             TextButton.icon(
                                 onPressed: () => context.push(
                                     '${Routes.casePage}/${caseRecord.id}'),
                                 icon: const Icon(Icons.comment),
                                 label: Text(caseRecord.commentCount.toString(),
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        color: Style.primaryColor)))
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge))
                           ])
                     ]))));
   }

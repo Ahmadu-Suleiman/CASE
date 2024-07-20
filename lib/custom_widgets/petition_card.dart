@@ -5,7 +5,6 @@ import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
 import 'package:case_be_heard/shared/petition_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
@@ -73,8 +72,8 @@ class _PetitionCardState extends State<PetitionCard> {
                       progressType: LinearProgressBar
                           .progressTypeLinear, // Use Linear progress
                       currentStep: widget.petition.signatoryIds.length,
-                      progressColor: Style.primaryColor,
-                      backgroundColor: Style.secondaryColor),
+                      progressColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary),
                   GestureDetector(
                       onTap: () => context
                           .push('${Routes.signatories}/${widget.petition.id}'),
@@ -87,11 +86,13 @@ class _PetitionCardState extends State<PetitionCard> {
                                   Text(
                                     widget.petition.signatoryIds.length
                                         .toString(),
-                                    style: TextStyle(color: Style.primaryColor),
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge,
                                   ),
                                   Text('Signatures',
-                                      style:
-                                          TextStyle(color: Style.primaryColor))
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelLarge)
                                 ])),
                             Column(children: [
                               Text(widget.petition.target.toString()),
@@ -105,7 +106,6 @@ class _PetitionCardState extends State<PetitionCard> {
                               if (!_isSigned()) _sign();
                             },
                             style: ElevatedButton.styleFrom(
-                                backgroundColor: Style.primaryColor,
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 12), // Padding
                                 shape: RoundedRectangleBorder(
@@ -113,7 +113,7 @@ class _PetitionCardState extends State<PetitionCard> {
                             child: _isSigned()
                                 ? const Text('Signed',
                                     style: TextStyle(color: Colors.white))
-                                : const Text('Sign this peition',
+                                : const Text('Sign this petition',
                                     style: TextStyle(color: Colors.white))))
                   ]),
                   const Divider(),
@@ -121,11 +121,10 @@ class _PetitionCardState extends State<PetitionCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
-                            icon: const Icon(Icons.bookmark),
-                            color: PetitionHelper.isBookmark(
+                            icon: PetitionHelper.isBookmark(
                                     widget.member, widget.petition)
-                                ? Style.primaryColor
-                                : Colors.black,
+                                ? const Icon(Icons.bookmark_remove)
+                                : const Icon(Icons.bookmark_add),
                             onPressed: () async {
                               if (PetitionHelper.isBookmark(
                                   widget.member, widget.petition)) {

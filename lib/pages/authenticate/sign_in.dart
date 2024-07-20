@@ -94,10 +94,7 @@ class SignInState extends State<SignIn> {
                           style: TextStyle(fontSize: 16)),
                       TextButton(
                           child: Text('Register',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Style.primaryColor,
-                                  fontSize: 18)),
+                              style: Theme.of(context).textTheme.labelLarge),
                           onPressed: () => widget.toggleView())
                     ]),
                     const SizedBox(height: 40.0),

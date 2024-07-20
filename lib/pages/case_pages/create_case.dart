@@ -1,4 +1,6 @@
 import 'dart:io';
+
+import 'package:audioplayers/audioplayers.dart';
 import 'package:case_be_heard/custom_widgets/audio_widget.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/models/case_record.dart';
@@ -13,7 +15,6 @@ import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:provider/provider.dart';
 
 class CreateCase extends StatefulWidget {
@@ -52,7 +53,6 @@ class _CreateCaseState extends State<CreateCase> {
         ? const Loading()
         : Scaffold(
             appBar: AppBar(
-                backgroundColor: Style.primaryColor,
                 leading: IconButton(
                     icon: const Icon(Icons.arrow_back, color: Colors.white),
                     onPressed: () {
@@ -115,10 +115,8 @@ class _CreateCaseState extends State<CreateCase> {
                     DropdownButton<String>(
                         value: progress,
                         underline: Container(),
-                        icon: Icon(Icons.arrow_drop_down,
-                            color: Style.primaryColor),
-                        style:
-                            TextStyle(fontSize: 18, color: Style.primaryColor),
+                        icon: const Icon(Icons.arrow_drop_down),
+                        style: Theme.of(context).textTheme.labelLarge,
                         items: CaseValues.dropdownItemsProgress
                             .map<DropdownMenuItem<String>>((String value) {
                           return DropdownMenuItem<String>(

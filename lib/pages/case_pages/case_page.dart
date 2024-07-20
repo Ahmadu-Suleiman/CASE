@@ -13,7 +13,6 @@ import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/shared/case_helper.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +21,7 @@ import 'package:provider/provider.dart';
 
 class CasePage extends StatefulWidget {
   final String caseId;
+
   const CasePage({super.key, required this.caseId});
 
   @override
@@ -65,10 +65,9 @@ class _CasePageState extends State<CasePage> {
                     centerTitle: true,
                     actions: <Widget>[
                       IconButton(
-                          icon: const Icon(Icons.bookmark),
-                          color: CaseHelper.isBookmark(member, caseRecord)
-                              ? Style.primaryColor
-                              : Colors.black,
+                          icon: CaseHelper.isBookmark(member, caseRecord)
+                              ? const Icon(Icons.bookmark_add)
+                              : const Icon(Icons.bookmark_remove),
                           onPressed: () async {
                             if (CaseHelper.isBookmark(member, caseRecord)) {
                               await DatabaseMember.removeBookmarkCaseRecord(
@@ -282,8 +281,7 @@ class _CasePageState extends State<CasePage> {
                           decoration: InputDecoration(
                               hintText: 'Write a comment...',
                               suffixIcon: IconButton(
-                                  icon: Icon(Icons.send,
-                                      color: Style.primaryColor),
+                                  icon: const Icon(Icons.send),
                                   onPressed: () async {
                                     String text = _commentController.text;
                                     if (text.isNotEmpty) {

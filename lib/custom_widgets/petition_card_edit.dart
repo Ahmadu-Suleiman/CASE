@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:linear_progress_bar/linear_progress_bar.dart';
@@ -76,8 +75,8 @@ class _PetitionCardState extends State<PetitionCardEdit> {
                       progressType: LinearProgressBar
                           .progressTypeLinear, // Use Linear progress
                       currentStep: widget.petition.signatoryIds.length,
-                      progressColor: Style.primaryColor,
-                      backgroundColor: Style.secondaryColor),
+                      progressColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: Theme.of(context).colorScheme.onPrimary),
                   GestureDetector(
                       onTap: () => context
                           .push('${Routes.signatories}/${widget.petition.id}'),
@@ -87,10 +86,10 @@ class _PetitionCardState extends State<PetitionCardEdit> {
                             Column(children: [
                               Text(
                                 widget.petition.signatoryIds.length.toString(),
-                                style: TextStyle(color: Style.primaryColor),
+                                style: Theme.of(context).textTheme.labelLarge,
                               ),
                               Text('Signatures',
-                                  style: TextStyle(color: Style.primaryColor))
+                                  style: Theme.of(context).textTheme.labelLarge)
                             ]),
                             Column(children: [
                               Text(widget.petition.target.toString()),

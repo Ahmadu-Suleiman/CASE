@@ -3,11 +3,10 @@ import 'package:case_be_heard/models/comment.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/shared/case_values.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:flutter/material.dart';
 
 class CommentWidget extends StatelessWidget {
   final Comment comment;
@@ -47,10 +46,7 @@ class CommentWidget extends StatelessWidget {
                           children: [
                             Text(
                               Utility.getFirstAndlastName(author),
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Style.primaryColor),
+                              style: Theme.of(context).textTheme.labelLarge,
                             ),
                             Text(timeago.format(comment.dateCreated.toDate()))
                           ]),
@@ -61,15 +57,12 @@ class CommentWidget extends StatelessWidget {
                 DropdownButton<String>(
                     value: comment.commentType,
                     underline: Container(),
-                    icon:
-                        Icon(Icons.arrow_drop_down, color: Style.primaryColor),
-                    style: TextStyle(fontSize: 18, color: Style.primaryColor),
+                    icon: const Icon(Icons.arrow_drop_down),
+                    style: Theme.of(context).textTheme.labelLarge,
                     items: CaseValues.itemsCommentsType
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value),
-                      );
+                          value: value, child: Text(value));
                     }).toList(),
                     onChanged: (String? newValue) {
                       onChangeCategory(newValue!);

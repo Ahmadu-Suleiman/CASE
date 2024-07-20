@@ -25,6 +25,10 @@ class CaseApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ColorScheme lightColorScheme =
+        ColorScheme.fromSeed(seedColor: Style.mainColor);
+    ColorScheme darkColorScheme = ColorScheme.fromSeed(
+        seedColor: Style.mainColorDark, brightness: Brightness.dark);
     return StreamProvider<User?>.value(
         value: AuthService().communityMember,
         initialData: null,
@@ -38,27 +42,9 @@ class CaseApp extends StatelessWidget {
                     debugShowCheckedModeBanner: false,
                     routerConfig: Routes.router,
                     theme: ThemeData(
-                        fontFamily: 'Poppins',
-                        focusColor: Style.secondaryColor,
-                        hoverColor: Style.secondaryColor,
-                        primaryColor: Style.primaryColor,
-                        cardTheme: const CardTheme(color: Colors.white),
-                        iconTheme: const IconThemeData(color: Colors.black),
-                        colorScheme: ColorScheme.light(
-                            background: Colors.white,
-                            primary: Style.primaryColor,
-                            secondary: Style.secondaryColor)),
+                        colorScheme: lightColorScheme, fontFamily: 'Lato'),
                     darkTheme: ThemeData(
-                        fontFamily: 'Poppins',
-                        focusColor: Style.secondaryColor,
-                        hoverColor: Style.secondaryColor,
-                        primaryColor: Style.primaryColor,
-                        cardTheme: CardTheme(color: Style.colorDark),
-                        iconTheme: const IconThemeData(color: Colors.white),
-                        colorScheme: ColorScheme.dark(
-                            background: Style.colorDarker,
-                            secondary: Style.colorDark)),
-                    themeMode: ThemeMode.system);
+                        colorScheme: darkColorScheme, fontFamily: 'Lato'));
               }));
         }));
   }

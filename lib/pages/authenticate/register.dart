@@ -1,7 +1,6 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/shared/style.dart';
-import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -98,10 +97,8 @@ class RegisterState extends State<Register> {
                                 style: TextStyle(fontSize: 16)),
                             TextButton(
                                 child: Text('Sign In',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Style.primaryColor,
-                                        fontSize: 18)),
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge),
                                 onPressed: () => widget.toggleView())
                           ]),
                       const SizedBox(height: 40.0),

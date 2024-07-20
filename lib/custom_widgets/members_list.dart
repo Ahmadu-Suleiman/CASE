@@ -1,7 +1,6 @@
 import 'package:case_be_heard/custom_widgets/cached_image.dart';
 import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/shared/routes.dart';
-import 'package:case_be_heard/shared/style.dart';
 import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -25,11 +24,7 @@ class MembersListWidget extends StatelessWidget {
               const SizedBox(width: 4),
               Column(children: [
                 Text(Utility.getFirstAndlastName(member),
-                    style: TextStyle(
-                        color: Style.primaryColor,
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold),
-                    maxLines: 1),
+                    style: Theme.of(context).textTheme.labelLarge, maxLines: 1),
                 const SizedBox(height: 2)
               ])
             ])),
