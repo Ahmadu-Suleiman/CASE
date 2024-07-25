@@ -7,14 +7,16 @@ import 'package:case_be_heard/shared/style.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await dotenv.load();
   Gemini.init(
-      apiKey: 'AIzaSyAurd8bwkqj7UaMlsByZ_4-rDBFTPCjMSk',
+      apiKey: dotenv.env['GEMINI_API_KEY']!,
       safetySettings: GeminiHelp.safetySettings,
       enableDebugging: true);
   runApp(const CaseApp());
