@@ -1,3 +1,4 @@
+import 'package:case_be_heard/pages/authenticate/register.dart';
 import 'package:case_be_heard/pages/case_pages/case_page.dart';
 import 'package:case_be_heard/pages/case_pages/case_play_video.dart';
 import 'package:case_be_heard/pages/case_pages/case_view_photo.dart';
@@ -7,10 +8,10 @@ import 'package:case_be_heard/pages/case_pages/next_steps.dart';
 import 'package:case_be_heard/pages/community/choose_community_case.dart';
 import 'package:case_be_heard/pages/community/choose_community_petition.dart';
 import 'package:case_be_heard/pages/community/communities_from_state.dart';
-import 'package:case_be_heard/pages/community/community_maintainance.dart';
-import 'package:case_be_heard/pages/community/states_for_communities.dart';
 import 'package:case_be_heard/pages/community/community_main_page.dart';
+import 'package:case_be_heard/pages/community/community_maintainance.dart';
 import 'package:case_be_heard/pages/community/create_community.dart';
+import 'package:case_be_heard/pages/community/states_for_communities.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/bookmark_page.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/case_catalog.dart';
 import 'package:case_be_heard/pages/drawer_pages.dart/communities_page.dart';
@@ -29,6 +30,7 @@ import 'package:go_router/go_router.dart';
 
 class Routes {
   static const String wrapper = '/wrapper';
+  static const String register = '/register';
   static const String splashScreen = '/splash-screen';
   static const String createCase = '/create-case';
   static const String editCase = '/edit-case';
@@ -54,14 +56,18 @@ class Routes {
   static const String chooseCommunityPetition = '/choose-community-petition';
   static const String statesForCommunities = '/state-for-communities';
   static const String communitiesFromState = '/communities-from-state';
-  static const String communityMaintainance = '/community-maintainance';
+  static const String communityMaintenance = '/community-maintenance';
   static const String settingsPage = '/settings-page';
 
-  static final router = GoRouter(initialLocation: wrapper, routes: [
+  static final router = GoRouter(initialLocation: register, routes: [
     GoRoute(
         name: 'wrapper',
         path: wrapper,
         builder: (context, state) => const Wrapper()),
+    GoRoute(
+        name: 'register',
+        path: register,
+        builder: (context, state) => const Register()),
     GoRoute(
         name: 'createCase',
         path: '$createCase/:communityId',
@@ -222,7 +228,7 @@ class Routes {
         }),
     GoRoute(
         name: 'communityMaintainance',
-        path: '$communityMaintainance/:communityId',
+        path: '$communityMaintenance/:communityId',
         builder: (context, state) {
           final communityId = state.pathParameters['communityId'];
           return CommunityMaintainancePage(communityId: communityId!);

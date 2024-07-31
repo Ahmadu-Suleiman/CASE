@@ -17,6 +17,10 @@ class AuthService extends ChangeNotifier {
     return _auth.authStateChanges();
   }
 
+  static bool isAuthenticated() {
+    return (_auth.currentUser != null);
+  }
+
   static Future signInWithEmailAndPassword(
       String email, String password) async {
     try {

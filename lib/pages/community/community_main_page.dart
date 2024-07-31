@@ -1,20 +1,20 @@
 import 'package:case_be_heard/custom_widgets/case_card.dart';
 import 'package:case_be_heard/custom_widgets/loading.dart';
+import 'package:case_be_heard/custom_widgets/message_screen.dart';
 import 'package:case_be_heard/custom_widgets/petition_card.dart';
 import 'package:case_be_heard/models/case_record.dart';
+import 'package:case_be_heard/models/community.dart';
+import 'package:case_be_heard/models/community_member.dart';
 import 'package:case_be_heard/models/petition.dart';
 import 'package:case_be_heard/services/databases/case_database.dart';
+import 'package:case_be_heard/services/databases/community_database.dart';
 import 'package:case_be_heard/services/databases/member_database.dart';
 import 'package:case_be_heard/services/databases/petition_database.dart';
 import 'package:case_be_heard/shared/community_helper.dart';
 import 'package:case_be_heard/shared/routes.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:case_be_heard/shared/style.dart';
 import 'package:flutter/material.dart';
-import 'package:case_be_heard/custom_widgets/message_screen.dart';
-import 'package:case_be_heard/models/community.dart';
-import 'package:case_be_heard/models/community_member.dart';
-import 'package:case_be_heard/services/databases/community_database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
@@ -99,12 +99,12 @@ class _CommunityMainPageState extends State<CommunityMainPage>
                               ? IconButton(
                                   icon: const Icon(Icons.settings),
                                   onPressed: () => context.push(
-                                      '${Routes.communityMaintainance}/${community.id}'))
+                                      '${Routes.communityMaintenance}/${community.id}'))
                               : IconButton(
-                                  icon:CommunityHelper.isCommunityMember(
-                                          member, community)? 
-                                          const Icon(
-                                            Icons.group_remove):const Icon(Icons.group_add),
+                                  icon: CommunityHelper.isCommunityMember(
+                                          member, community)
+                                      ? const Icon(Icons.group_remove)
+                                      : const Icon(Icons.group_add),
                                   onPressed: () async {
                                     if (CommunityHelper.isCommunityMember(
                                         member, community)) {

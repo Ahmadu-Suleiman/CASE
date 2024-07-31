@@ -1,7 +1,6 @@
 import 'package:case_be_heard/custom_widgets/loading.dart';
 import 'package:case_be_heard/services/auth.dart';
 import 'package:case_be_heard/shared/style.dart';
-import 'package:case_be_heard/shared/utility.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -80,10 +79,7 @@ class SignInState extends State<SignIn> {
                                     email, password);
                             if (result == null) {
                               setState(() => loading = false);
-                              if (context.mounted) {
-                                Utility.showSnackBar(context,
-                                    'Could not sign in with those credentials');
-                              }
+                              print('could not sign in');
                             }
                           }
                         },
